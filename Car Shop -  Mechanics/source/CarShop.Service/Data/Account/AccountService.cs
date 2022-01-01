@@ -98,20 +98,6 @@
             var fileName = user.ProfilePicture.FileName;
             var uploadResults = await this.cloudinaryService.UploadPictureAsync(user.ProfilePicture, fileName, forUpdate.Username);
 
-            var isSuccess = uploadResults[2];
-
-            if (!string.IsNullOrEmpty(isSuccess))
-            {
-                uploadResults = await this.cloudinaryService.UploadPictureAsync(user.ProfilePicture, fileName, forUpdate.Username);
-
-                isSuccess = uploadResults[2];
-
-                if (!string.IsNullOrEmpty(isSuccess))
-                {
-                    throw new InvalidOperationException(ExceptionMessages.Invalid_Operation_Cloudinary);
-                }
-            }
-
             forUpdate.PicturePath = uploadResults[0];
             forUpdate.PictureId = uploadResults[1];
         }

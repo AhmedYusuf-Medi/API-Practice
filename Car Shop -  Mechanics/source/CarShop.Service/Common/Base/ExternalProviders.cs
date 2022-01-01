@@ -14,7 +14,6 @@
         //Sendgrid
         private const string SendGrid_Password = "passwordpasswordQ1!";
         public const string SendGrid_Secret = "";
-        public const string SendGrid_Key = "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";
         //Sendgrid arguments
         public const string SendGrid_ComfirmMail = "Car shop comfirm email verification flow.";
         public const string SendGrid_LinkForVerification = "http://localhost:1920/api/Accounts/verification?email={0}&code={1}";

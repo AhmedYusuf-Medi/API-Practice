@@ -56,7 +56,7 @@ namespace CarShop.WebAPI
             services.AddScoped<ICloudinaryService, CloudinaryService>();
 
             StartUpConfigurations.ConfigureCloudinary(services);
-            StartUpConfigurations.ConfigureEmailSender(services);
+            StartUpConfigurations.ConfigureEmailSender(services, this.Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

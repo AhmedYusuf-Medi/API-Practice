@@ -1,8 +1,10 @@
 ﻿namespace CarShop.WebAPI.Controllers
 {
+    //Local
     using CarShop.Models.Request.User;
     using CarShop.Models.Response;
     using CarShop.Service.Account.Data;
+    //Public
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Authorization;
@@ -23,6 +25,9 @@
             this.accountService = accountService;
         }
 
+        /// <summary>
+        /// Logins/Authenticates user by taking information from body and settings identity
+        /// </summary>
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody]UserLoginRequestModel requestModel)
         {
@@ -51,7 +56,12 @@
             }
         }
 
+        /// <summary>
+        /// Registers user by taking information from body
+        /// </summary>
         [HttpPost("register")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(InfoResponse))]
         public async Task<IActionResult> Register([FromBody]UserRegisterRequestModel requestModel)
         {
             var result = await accountService.RegisterUserAsync(requestModel);
@@ -67,6 +77,24 @@
         }
 
         /// <summary>
+        /// Edit user profile information by selected arguments
+        /// </summary>
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(InfoResponse))]
+        public async Task<IActionResult> Edit(long id, [FromForm] UserEditRequestModel user)
+        {
+            var result = await this.accountService.EditProfileAsync(id, user);
+
+            if (!result.IsSuccess)
+            {
+                return this.NotFound(result);
+            }
+
+            return this.Ok(result);
+        }
+
+        /// <summary>
         /// Takes the verification url that we send to the user so he can verificates his self
         /// </summary>
         [HttpGet("verification")]
@@ -77,7 +105,11 @@
             return Ok(result);
         }
 
-        [HttpGet]
+        /// <summary>
+        /// Logouts user
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("logout")]
         [Authorize]
         public async Task<IActionResult> Logout()
         {

@@ -43,7 +43,6 @@
             string[] uploadResults = new string[3];
             uploadResults[0] = uploadResult?.SecureUrl.AbsoluteUri;
             uploadResults[1] = uploadResult?.PublicId;
-            uploadResults[3] = uploadResult.Error.Message;
 
             return uploadResults;
         }
