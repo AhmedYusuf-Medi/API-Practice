@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CarShop.WebAPI</name>
+    </assembly>
+    <members>
+        <member name="M:CarShop.WebAPI.Controllers.AccountsController.Verification(System.String,System.Guid)">
+            <summary>
+            Takes the verification url that we send to the user so he can verificates his self
+            </summary>
+        </member>
+    </members>
+</doc>
