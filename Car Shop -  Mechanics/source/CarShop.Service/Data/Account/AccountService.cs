@@ -7,11 +7,13 @@
     using CarShop.Models.Response;
     using CarShop.Models.Response.User;
     using CarShop.Service.Common.Base;
+    using CarShop.Service.Common.Extensions.Query;
     using CarShop.Service.Common.Extensions.Validator;
     using CarShop.Service.Common.Mapper;
     using CarShop.Service.Common.Messages;
     using CarShop.Service.Common.Providers.Cloudinary;
     using CarShop.Service.Common.Providers.SendGrid;
+    using Microsoft.AspNetCore.Identity;
     //Nuget packets
     using Microsoft.EntityFrameworkCore;
     //Public
@@ -23,34 +25,56 @@
     {
         private readonly IMailSender mailSender;
         private readonly ICloudinaryService cloudinaryService;
+        private readonly PasswordHasher<User> passwordHasher;
 
-        public AccountService(CarShopDbContext db, IMailSender mailSender, ICloudinaryService cloudinaryService)
+        public AccountService(CarShopDbContext db, IMailSender mailSender, ICloudinaryService cloudinaryService,
+                              PasswordHasher<User> passwordHasher)
                : base(db)
         {
             this.mailSender = mailSender;
             this.cloudinaryService = cloudinaryService;
+            this.passwordHasher = passwordHasher;
         }
 
-        public async Task<Response<UserLoginResponseModel>> LoginAsync(UserLoginRequestModel userLogin)
+        public async Task<Response<UserResponseModel>> LoginAsync(UserLoginRequestModel userLogin)
         {
-            var responce = new Response<UserLoginResponseModel>();
+            var response = new Response<UserResponseModel>();
 
             var user = await this.db.Users
-                .Where(u => u.Email == userLogin.Email && u.Password == userLogin.Password)
-                .Select(u => new UserLoginResponseModel()
+                .Where(u => u.Email == userLogin.Email)
+                .Select(u => new User()
                 {
                     Id = u.Id,
-                    Username = u.Username,
-                    Roles = u.Roles.Select(r => r.Role.Type),
-                    Avatar = u.PicturePath
+                    Email = u.Email,
+                    Password = u.Password
                 })
                 .FirstOrDefaultAsync();
 
-            EntityValidator.ValidateForNull(user, responce, ResponseMessages.Login_Suceed, Constants.User);
+            EntityValidator.ValidateForNull(user, response, ResponseMessages.Login_Suceed, Constants.User);
 
-            responce.Payload = user;
+            if (response.IsSuccess)
+            {
+                var result = this.passwordHasher.VerifyHashedPassword(user, user.Password, userLogin.Password);
 
-            return responce;
+                if (result != PasswordVerificationResult.Success)
+                {
+                    response.IsSuccess = false;
+                    response.Message = "Invalid Password!";
+                }
+            }
+
+            var userPayload = await this.db.Users
+                .Where(u => u.Email == userLogin.Email)
+                .Select(u => new User()
+                {
+                    Email = u.Email,
+                    Password = u.Password
+                })
+                .FirstOrDefaultAsync();
+
+            response.Payload = await UserQueries.UserByIdAsync(user.Id, this.db);
+
+            return response;
         }
 
         public async Task<InfoResponse> EditProfileAsync(long id, UserEditRequestModel user)
@@ -127,7 +151,7 @@
             {
                 response.IsSuccess = true;
                 response.Message = ResponseMessages.Check_Email_For_Verification;
-                await SendVerification(user, response, code);
+                await SendVerification(user.Email, response, code);
             }
 
             if (!response.IsSuccess)
@@ -135,6 +159,7 @@
                 var newUser = Mapper.ToUser(user);
                 newUser.PicturePath = Constants.Default_Avatar;
                 newUser.Code = code;
+                newUser.Password = this.passwordHasher.HashPassword(newUser, user.Password);
                 await this.db.Users.AddAsync(newUser);
                 await this.db.SaveChangesAsync();
 
@@ -147,7 +172,7 @@
                 await this.db.UserRoles.AddAsync(userRole);
                 await this.db.SaveChangesAsync();
 
-                await SendVerification(user, response, code);
+                await SendVerification(user.Email, response, code);
             }
 
             return response;
@@ -191,25 +216,13 @@
             return response;
         }
 
-        private async Task<SendGrid.Response> SendVerificationMail(string email, Guid code)
+        private async Task SendVerification(string email, InfoResponse response, Guid code)
         {
-            var mailSenderResponse = await this.mailSender.SendEmailAsync(
-                        ExternalProviders.Abv_Account,
-                        ExternalProviders.Sender_Name,
-                        email,
-                        ExternalProviders.SendGrid_ComfirmMail,
-                        string.Format(ExternalProviders.SendGrid_LinkForVerification, email, code));
-
-            return mailSenderResponse;
-        }
-
-        private async Task SendVerification(UserRegisterRequestModel user, InfoResponse response, Guid code)
-        {
-            var mailSenderResponse = await this.SendVerificationMail(user.Email, code);
+            var mailSenderResponse = await this.SendVerificationMail(email, code);
 
             if (!mailSenderResponse.IsSuccessStatusCode)
             {
-                mailSenderResponse = await this.SendVerificationMail(user.Email, code);
+                mailSenderResponse = await this.SendVerificationMail(email, code);
             }
 
             if (mailSenderResponse.IsSuccessStatusCode)
@@ -221,6 +234,18 @@
             {
                 throw new InvalidOperationException(ExceptionMessages.Invalid_Operation_SendGrid);
             }
+        }
+
+        private async Task<SendGrid.Response> SendVerificationMail(string email, Guid code)
+        {
+            var mailSenderResponse = await this.mailSender.SendEmailAsync(
+                        ExternalProviders.Abv_Account,
+                        ExternalProviders.Sender_Name,
+                        email,
+                        ExternalProviders.SendGrid_ComfirmMail,
+                        string.Format(ExternalProviders.SendGrid_LinkForVerification, email, code));
+
+            return mailSenderResponse;
         }
     }
 }

@@ -11,7 +11,7 @@
         public static void ConfigureEmailSender(IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IMailSender>
-                (serviceProvider => new MailSender(configuration["SendGrid:ApiKey"]));
+                (serviceProvider => new MailSender(ExternalProviders.SendGrid_ApiKey));
         }
 
         public static void ConfigureCloudinary(IServiceCollection services)

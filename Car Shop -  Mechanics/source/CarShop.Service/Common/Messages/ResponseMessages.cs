@@ -9,6 +9,10 @@
         public const string Entity_GetAll_Succeed = "Successfully got all {0}!";
         public const string Entity_Get_Succeed = "Successfully got {0}!";
 
+        //User
+        public const string User_Block_Succeed = "Successfully blocked {0}!";
+        public const string User_UnBlock_Succeed = "Successfully Unblocked {0}!";
+
         //Auth
         public const string Logout_Suceed = "Succsessfully logout";
         public const string Login_Suceed = "Successfully loged in!";

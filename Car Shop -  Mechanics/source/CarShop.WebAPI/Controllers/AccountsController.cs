@@ -31,7 +31,7 @@
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody]UserLoginRequestModel requestModel)
         {
-            var result = await accountService.LoginAsync(requestModel);
+            var result = await this.accountService.LoginAsync(requestModel);
 
             if (result.IsSuccess)
             {
@@ -64,7 +64,7 @@
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(InfoResponse))]
         public async Task<IActionResult> Register([FromBody]UserRegisterRequestModel requestModel)
         {
-            var result = await accountService.RegisterUserAsync(requestModel);
+            var result = await this.accountService.RegisterUserAsync(requestModel);
 
             if (result.IsSuccess)
             {
@@ -82,6 +82,7 @@
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(InfoResponse))]
+        //[Authorize("User")]
         public async Task<IActionResult> Edit(long id, [FromForm] UserEditRequestModel user)
         {
             var result = await this.accountService.EditProfileAsync(id, user);
@@ -113,7 +114,7 @@
         [Authorize]
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync();
+            await this.HttpContext.SignOutAsync();
             return Ok();
         }
     }

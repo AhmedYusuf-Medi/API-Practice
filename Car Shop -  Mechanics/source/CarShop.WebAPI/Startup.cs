@@ -2,6 +2,7 @@ namespace CarShop.WebAPI
 {
     using CarShop.Data;
     using CarShop.Data.ModelBuilderExtension.Seeder;
+    using CarShop.Models.Base;
     using CarShop.Service.Account.Data;
     using CarShop.Service.Common.Providers.Cloudinary;
     using CarShop.WebAPI.Configurations;
@@ -9,6 +10,7 @@ namespace CarShop.WebAPI
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -52,6 +54,7 @@ namespace CarShop.WebAPI
 
             services.AddControllers();
 
+            services.AddSingleton<PasswordHasher<User>>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ICloudinaryService, CloudinaryService>();
 
