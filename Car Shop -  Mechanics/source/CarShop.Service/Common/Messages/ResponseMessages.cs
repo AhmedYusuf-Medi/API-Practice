@@ -12,11 +12,11 @@
         //User
         public const string User_Block_Succeed = "Successfully blocked {0}!";
         public const string User_UnBlock_Succeed = "Successfully Unblocked {0}!";
-        public const string Role_Register = "Successfully assigned {0}!";
+        public const string Role_Register_Succeed = "Successfully assigned {0}!";
 
         //Auth
-        public const string Logout_Suceed = "Succsessfully logout";
-        public const string Login_Suceed = "Successfully loged in!";
+        public const string Logout_Succeed = "Succsessfully logout";
+        public const string Login_Succeed = "Successfully loged in!";
         public const string Check_Email_For_Verification = "Please check your email for verification link.";
         public const string Email_Verification_Succeed = "{0} was verified!";
         public const string Send_Mail_Succeed = "Email was successfully send!";

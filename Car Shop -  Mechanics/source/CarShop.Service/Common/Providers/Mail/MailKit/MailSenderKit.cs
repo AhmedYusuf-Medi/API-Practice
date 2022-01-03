@@ -28,7 +28,7 @@ namespace CarShop.Service.Common.Providers.Mail.MailKit
                 await client.SendAsync(message);
                 client.Disconnect(true);
             }
-
+            
             return new InfoResponse() { IsSuccess = true, Message = ResponseMessages.Send_Mail_Succeed };
         }
     }

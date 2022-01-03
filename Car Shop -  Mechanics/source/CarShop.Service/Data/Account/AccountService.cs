@@ -52,7 +52,7 @@
                 })
                 .FirstOrDefaultAsync();
 
-            EntityValidator.ValidateForNull(user, response, ResponseMessages.Login_Suceed, Constants.User);
+            EntityValidator.ValidateForNull(user, response, ResponseMessages.Login_Succeed, Constants.User);
 
             if (response.IsSuccess)
             {
@@ -60,8 +60,7 @@
 
                 if (result != PasswordVerificationResult.Success)
                 {
-                    response.IsSuccess = false;
-                    response.Message = ExceptionMessages.Invalid_Password;
+                    ResponseSetter.SetResponse(response, false, ExceptionMessages.Invalid_Password);
                 }
             }
 
@@ -113,7 +112,6 @@
                 }
 
                 await this.db.SaveChangesAsync();
-
             }
 
             return response;
@@ -145,14 +143,13 @@
 
             if (doesUserExist != null)
             {
-                response.Message = string.Format(ExceptionMessages.Already_Exist, Constants.User);
+                ResponseSetter.SetResponse(response, false, string.Format(ExceptionMessages.Already_Exist, Constants.User));
                 return response;
             }
             else if (doesUserExist != null && doesUserExist.Roles.Any(r => r.Role.Id == Constants.Pending_Id))
             {
-                response.IsSuccess = true;
-                response.Message = ResponseMessages.Check_Email_For_Verification;
                 response = await this.SendVerificationMail(user.Email, code);
+                ResponseSetter.SetResponse(response, true, ResponseMessages.Check_Email_For_Verification);
             }
 
             if (!response.IsSuccess)
@@ -197,8 +194,7 @@
             {
                 if (user.Roles.Any(r => r.RoleId == Constants.User_Id) || userPendingRole == null)
                 {
-                    response.Message = ExceptionMessages.Already_Verified;
-                    response.IsSuccess = false;
+                    ResponseSetter.SetResponse(response, false, ExceptionMessages.Already_Verified);
                 }
                 else
                 {

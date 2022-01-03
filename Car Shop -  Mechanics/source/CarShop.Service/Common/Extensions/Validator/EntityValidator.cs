@@ -1,6 +1,7 @@
 ﻿namespace CarShop.Service.Common.Extensions.Validator
 {
     using CarShop.Models.Response;
+    using CarShop.Service.Common.Base;
     using CarShop.Service.Common.Messages;
 
     public static class EntityValidator
@@ -9,12 +10,11 @@
         {
             if (responseModel.Payload == null)
             {
-                responseModel.Message = string.Format(ExceptionMessages.DOESNT_EXIST, entityType);
+                ResponseSetter.SetResponse(responseModel, false, string.Format(ExceptionMessages.DOESNT_EXIST, entityType));
             }
             else
             {
-                responseModel.Message = string.Format(succeedMessage, entityType);
-                responseModel.IsSuccess = true;
+                ResponseSetter.SetResponse(responseModel, true, string.Format(succeedMessage, entityType));
             }
         }
 
@@ -22,12 +22,11 @@
         {
             if (entity == null)
             {
-                responseModel.Message = string.Format(ExceptionMessages.DOESNT_EXIST, entityType);
+                ResponseSetter.SetResponse(responseModel, true, string.Format(ExceptionMessages.DOESNT_EXIST, entityType));
             }
             else
             {
-                responseModel.Message = string.Format(succeedMessage, entityType);
-                responseModel.IsSuccess = true;
+                ResponseSetter.SetResponse(responseModel, true, string.Format(succeedMessage, entityType));
             }
         }
 

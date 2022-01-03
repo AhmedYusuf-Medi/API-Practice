@@ -33,8 +33,7 @@
 
             var response = new Response<Paginate<UserResponseModel>>();
             response.Payload = payload;
-            response.IsSuccess = true;
-            response.Message = string.Format(ResponseMessages.Entity_GetAll_Succeed, Constants.Users);
+            ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_GetAll_Succeed, Constants.Users));
 
             return response;
         }
@@ -93,15 +92,13 @@
             //If it exists does it have any roles
             if (response.IsSuccess && !user.Roles.Any())
             {
-                response.Message = ExceptionMessages.No_Roles;
-                response.IsSuccess = false;
+                ResponseSetter.SetResponse(response, false, ExceptionMessages.No_Roles);
             }
 
             //Check is already blocked
             if (response.IsSuccess && user.Roles.Any(r => r.RoleId == Constants.Blocked_Id && r.UserId == user.Id))
             {
-                response.Message = ExceptionMessages.Already_Blocked;
-                response.IsSuccess = false;
+                ResponseSetter.SetResponse(response, false, ExceptionMessages.Already_Blocked);
             }
 
             //Check is there previous block so can undelete it
@@ -161,16 +158,14 @@
 
             if (doesHaveRoles)
             {
-                response.Message = ExceptionMessages.No_Roles;
-                response.IsSuccess = false;
+                ResponseSetter.SetResponse(response, false, ExceptionMessages.No_Roles);
             }
 
             //Check is blocked
             bool isBlocked = response.IsSuccess && !user.Roles.Any(r => r.RoleId == Constants.Blocked_Id);
             if (isBlocked)
             {
-                response.Message = "Choosen user is not even blocked!";
-                response.IsSuccess = false;
+                ResponseSetter.SetResponse(response, false, ExceptionMessages.User_Is_Not_Blocked);
             }
 
             //If all states are valid unblock user and return old roles
@@ -236,8 +231,7 @@
 
             var response = new Response<Paginate<UserResponseModel>>();
             response.Payload = payload;
-            response.IsSuccess = true;
-            response.Message = string.Format(ResponseMessages.Entity_GetAll_Succeed, Constants.Users);
+            ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_GetAll_Succeed, Constants.Users));
 
             return response;
         }
@@ -248,7 +242,7 @@
             var user = await this.db.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             //Validates does the user exist
-            EntityValidator.ValidateForNull(user, response, ResponseMessages.Role_Register, Constants.Role);
+            EntityValidator.ValidateForNull(user, response, ResponseMessages.Role_Register_Succeed, Constants.Role);
 
             //Search for role without query filter so if there is
             //option to revive role instead of creating new
