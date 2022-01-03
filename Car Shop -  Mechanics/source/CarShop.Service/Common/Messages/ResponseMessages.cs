@@ -20,5 +20,8 @@
         public const string Check_Email_For_Verification = "Please check your email for verification link.";
         public const string Email_Verification_Succeed = "{0} was verified!";
         public const string Send_Mail_Succeed = "Email was successfully send!";
+
+        //Exception
+        public const string Exception_Checked = "{0} was succesfully checked!";
     }
 }

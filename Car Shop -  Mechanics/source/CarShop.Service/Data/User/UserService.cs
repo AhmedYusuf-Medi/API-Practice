@@ -279,21 +279,6 @@
 
         private async Task RemoveAllRoles(User user)
         {
-            //UserRole userRole;
-
-            //var rolesToRemove = new HashSet<UserRole>();
-
-            //foreach (var role in user.Roles)
-            //{
-            //    userRole = new UserRole
-            //    {
-            //        UserId = role.UserId,
-            //        RoleId = role.RoleId
-            //    };
-
-            //    rolesToRemove.Add(userRole);
-            //}
-
             foreach (var role in user.Roles)
             {
                 this.db.UserRoles.Remove(role);

@@ -10,6 +10,8 @@
         public const string Pending = "Pending";
         public const string Blocked = "Blocked";
         public const string Role = "Role";
+        public const string Exception = "Exception";
+        public const string Exceptions = "exceptions";
         public const int User_Id = 2;
         public const int Mechanic_Id = 3;
         public const int Blocked_Id = 4;

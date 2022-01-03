@@ -24,6 +24,7 @@ namespace CarShop.WebAPI
     using System.Reflection;
     using CarShop.WebAPI.Helpers;
     using CarShop.Service.Data.User;
+    using CarShop.Service.Data.Exception;
 
     public class Startup
     {
@@ -59,6 +60,7 @@ namespace CarShop.WebAPI
             services.AddControllers();
 
             services.AddSingleton<PasswordHasher<User>>();
+            services.AddScoped<IExceptionLogService, ExceptionLogService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICloudinaryService, CloudinaryService>();

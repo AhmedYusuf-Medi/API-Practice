@@ -1,6 +1,8 @@
 ﻿namespace CarShop.WebAPI.Helpers
 {
+    using CarShop.Models.Base;
     using CarShop.Service.Common.Exceptions;
+    using CarShop.Service.Data.Exception;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Http;
     using System;
@@ -17,7 +19,7 @@
             this.next = next;
         }
 
-        public async Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context, IExceptionLogService exceptionLogService)
         {
             try
             {
@@ -34,6 +36,16 @@
                         response.StatusCode = (int)HttpStatusCode.BadRequest;
                         break;
                     default:
+
+                        var exceptionLog = new ExceptionLog
+                        {
+                            ExceptionMessage = error.Message != null ? error.Message : "There is no message!",
+                            InnerException = error.InnerException != null ? error.InnerException.Message : "There is no inner exception!",       
+                            StackTrace = error.StackTrace != null ? error.StackTrace : "There is no stack trace!",
+                        };
+
+                        await exceptionLogService.CreateAsync(exceptionLog);
+
                         response.StatusCode = (int)HttpStatusCode.InternalServerError;
                         break;
                 }
