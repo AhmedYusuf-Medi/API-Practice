@@ -17,7 +17,8 @@
                  Id = u.Id,
                  Username = u.Username,
                  Roles = u.Roles.Select(r => r.Role.Type),
-                 Avatar = u.PicturePath
+                 Avatar = u.PicturePath,
+                 IssueCount = u.Issues.Count
              });
 
         public static async Task<UserResponseModel> UserByIdAsync(long userId, CarShopDbContext db)
@@ -29,7 +30,8 @@
                      Id = u.Id,
                      Username = u.Username,
                      Roles = u.Roles.Select(r => r.Role.Type),
-                     Avatar = u.PicturePath
+                     Avatar = u.PicturePath,
+                     IssueCount = u.Issues.Count
                  })
                  .FirstOrDefaultAsync();
         }

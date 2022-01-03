@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CarShop.Data\CarShop.Data.csproj" />
 	  <ProjectReference Include="..\CarShop.Service\CarShop.Service.csproj" />
+	  <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.11">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

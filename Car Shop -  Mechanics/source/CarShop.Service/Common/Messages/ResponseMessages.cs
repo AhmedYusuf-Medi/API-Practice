@@ -12,6 +12,7 @@
         //User
         public const string User_Block_Succeed = "Successfully blocked {0}!";
         public const string User_UnBlock_Succeed = "Successfully Unblocked {0}!";
+        public const string Role_Register = "Successfully assigned {0}!";
 
         //Auth
         public const string Logout_Suceed = "Succsessfully logout";

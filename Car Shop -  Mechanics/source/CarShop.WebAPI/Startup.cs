@@ -1,17 +1,20 @@
 namespace CarShop.WebAPI
 {
+    //Local
     using CarShop.Data;
     using CarShop.Data.ModelBuilderExtension.Seeder;
     using CarShop.Models.Base;
     using CarShop.Service.Account.Data;
     using CarShop.Service.Common.Providers.Cloudinary;
     using CarShop.WebAPI.Configurations;
+    //Nuget packets
+    using Microsoft.EntityFrameworkCore;
+    //Public
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -19,6 +22,8 @@ namespace CarShop.WebAPI
     using System;
     using System.IO;
     using System.Reflection;
+    using CarShop.WebAPI.Helpers;
+    using CarShop.Service.Data.User;
 
     public class Startup
     {
@@ -39,9 +44,8 @@ namespace CarShop.WebAPI
                     {
                         o.Cookie.Name = "auth_cookie";
                         o.SlidingExpiration = true;
-                        o.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                        o.ExpireTimeSpan = TimeSpan.FromDays(1);
                     });
-
 
             services.AddSwaggerGen(c =>
             {
@@ -56,10 +60,11 @@ namespace CarShop.WebAPI
 
             services.AddSingleton<PasswordHasher<User>>();
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICloudinaryService, CloudinaryService>();
 
             StartUpConfigurations.ConfigureCloudinary(services);
-            StartUpConfigurations.ConfigureEmailSender(services, this.Configuration);
+            StartUpConfigurations.ConfigureMailKit(services);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -86,7 +91,7 @@ namespace CarShop.WebAPI
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Forum"));
             }
 
-            //app.UseExceptionHandler(ExceptionHandler.HandleExceptions());
+            app.UseExceptionHandlingMiddleware();
 
             app.UseRouting();
 

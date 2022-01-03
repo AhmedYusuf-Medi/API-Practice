@@ -50,10 +50,8 @@
 
                 return Ok(result);
             }
-            else
-            {
-                return BadRequest(result);
-            }
+
+            return BadRequest(result);
         }
 
         /// <summary>
@@ -64,16 +62,14 @@
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(InfoResponse))]
         public async Task<IActionResult> Register([FromBody]UserRegisterRequestModel requestModel)
         {
-            var result = await this.accountService.RegisterUserAsync(requestModel);
+            var response = await this.accountService.RegisterUserAsync(requestModel);
 
-            if (result.IsSuccess)
+            if (!response.IsSuccess)
             {
-                return Ok(result);
+                return BadRequest(response);
             }
-            else
-            {
-                return BadRequest(result);
-            }
+
+            return Ok(response);
         }
 
         /// <summary>
@@ -100,10 +96,16 @@
         /// </summary>
         [HttpGet("verification")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
-        public async Task<IActionResult> Verification([FromQuery] string email, Guid code)
+        public async Task<IActionResult> Verification([FromQuery]string email, Guid code)
         {
-            var result = await this.accountService.VerificationAsync(email, code);
-            return Ok(result);
+            var response = await this.accountService.VerificationAsync(email, code);
+
+            if (!response.IsSuccess)
+            {
+                return this.BadRequest(response);
+            }
+
+            return this.Ok(response);
         }
 
         /// <summary>
@@ -115,7 +117,7 @@
         public async Task<IActionResult> Logout()
         {
             await this.HttpContext.SignOutAsync();
-            return Ok();
+            return this.Ok();
         }
     }
 }

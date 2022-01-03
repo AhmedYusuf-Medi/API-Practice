@@ -7,12 +7,13 @@
     using CarShop.Models.Response;
     using CarShop.Models.Response.User;
     using CarShop.Service.Common.Base;
+    using CarShop.Service.Common.Exceptions;
     using CarShop.Service.Common.Extensions.Query;
     using CarShop.Service.Common.Extensions.Validator;
     using CarShop.Service.Common.Mapper;
     using CarShop.Service.Common.Messages;
     using CarShop.Service.Common.Providers.Cloudinary;
-    using CarShop.Service.Common.Providers.SendGrid;
+    using CarShop.Service.Common.Providers.Mail.SendGrid;
     using Microsoft.AspNetCore.Identity;
     //Nuget packets
     using Microsoft.EntityFrameworkCore;
@@ -23,11 +24,12 @@
 
     public class AccountService : BaseService, IAccountService
     {
-        private readonly IMailSender mailSender;
+        private readonly IMailSender<InfoResponse> mailSender;
+        //private readonly IMailSender<Response> mailSender;
         private readonly ICloudinaryService cloudinaryService;
         private readonly PasswordHasher<User> passwordHasher;
 
-        public AccountService(CarShopDbContext db, IMailSender mailSender, ICloudinaryService cloudinaryService,
+        public AccountService(CarShopDbContext db, IMailSender<InfoResponse> mailSender, ICloudinaryService cloudinaryService,
                               PasswordHasher<User> passwordHasher)
                : base(db)
         {
@@ -59,7 +61,7 @@
                 if (result != PasswordVerificationResult.Success)
                 {
                     response.IsSuccess = false;
-                    response.Message = "Invalid Password!";
+                    response.Message = ExceptionMessages.Invalid_Password;
                 }
             }
 
@@ -138,7 +140,6 @@
                 })
                 .FirstOrDefaultAsync();
 
-
             var code = new Guid();
             code = Guid.NewGuid();
 
@@ -151,7 +152,7 @@
             {
                 response.IsSuccess = true;
                 response.Message = ResponseMessages.Check_Email_For_Verification;
-                await SendVerification(user.Email, response, code);
+                response = await this.SendVerificationMail(user.Email, code);
             }
 
             if (!response.IsSuccess)
@@ -172,7 +173,7 @@
                 await this.db.UserRoles.AddAsync(userRole);
                 await this.db.SaveChangesAsync();
 
-                await SendVerification(user.Email, response, code);
+                response = await SendVerificationMail(user.Email, code);
             }
 
             return response;
@@ -188,18 +189,19 @@
 
             EntityValidator.ValidateForNull(user, response, ResponseMessages.Email_Verification_Succeed, email);
 
+            var userPendingRole = await this.db.UserRoles
+                .Where(ur => ur.RoleId == Constants.Pending_Id && ur.UserId == user.Id)
+                .FirstOrDefaultAsync();
+
             if (response.IsSuccess)
             {
-                if (user.Roles.Any(r => r.RoleId == Constants.User_Id))
+                if (user.Roles.Any(r => r.RoleId == Constants.User_Id) || userPendingRole == null)
                 {
                     response.Message = ExceptionMessages.Already_Verified;
+                    response.IsSuccess = false;
                 }
                 else
                 {
-                    var userPendingRole = await this.db.UserRoles
-                        .Where(ur => ur.RoleId == Constants.Pending_Id && ur.UserId == user.Id)
-                        .FirstOrDefaultAsync();
-
                     this.db.UserRoles.Remove(userPendingRole);
 
                     var userRole = new UserRole()
@@ -216,27 +218,7 @@
             return response;
         }
 
-        private async Task SendVerification(string email, InfoResponse response, Guid code)
-        {
-            var mailSenderResponse = await this.SendVerificationMail(email, code);
-
-            if (!mailSenderResponse.IsSuccessStatusCode)
-            {
-                mailSenderResponse = await this.SendVerificationMail(email, code);
-            }
-
-            if (mailSenderResponse.IsSuccessStatusCode)
-            {
-                response.IsSuccess = true;
-                response.Message = ResponseMessages.Check_Email_For_Verification;
-            }
-            else
-            {
-                throw new InvalidOperationException(ExceptionMessages.Invalid_Operation_SendGrid);
-            }
-        }
-
-        private async Task<SendGrid.Response> SendVerificationMail(string email, Guid code)
+        private async Task<InfoResponse> SendVerificationMail(string email, Guid code)
         {
             var mailSenderResponse = await this.mailSender.SendEmailAsync(
                         ExternalProviders.Abv_Account,
@@ -247,5 +229,91 @@
 
             return mailSenderResponse;
         }
+
+        //Register with sendgrid mail sender
+        //public async Task<InfoResponse> RegisterUserAsync(UserRegisterRequestModel user)
+        //{
+        //    var response = new InfoResponse();
+
+        //    var doesUserExist = await this.db.Users
+        //        .Where(u => u.Email == user.Email || u.Username == user.Username)
+        //        .Select(u => new User
+        //        {
+        //            Roles = u.Roles
+        //        })
+        //        .FirstOrDefaultAsync();
+
+
+        //    var code = new Guid();
+        //    code = Guid.NewGuid();
+
+        //    if (doesUserExist != null)
+        //    {
+        //        response.Message = string.Format(ExceptionMessages.Already_Exist, Constants.User);
+        //        return response;
+        //    }
+        //    else if (doesUserExist != null && doesUserExist.Roles.Any(r => r.Role.Id == Constants.Pending_Id))
+        //    {
+        //        response.IsSuccess = true;
+        //        response.Message = ResponseMessages.Check_Email_For_Verification;
+        //        await SendVerification(user.Email, response, code);
+        //    }
+
+        //    if (!response.IsSuccess)
+        //    {
+        //        var newUser = Mapper.ToUser(user);
+        //        newUser.PicturePath = Constants.Default_Avatar;
+        //        newUser.Code = code;
+        //        newUser.Password = this.passwordHasher.HashPassword(newUser, user.Password);
+        //        await this.db.Users.AddAsync(newUser);
+        //        await this.db.SaveChangesAsync();
+
+        //        var userRole = new UserRole()
+        //        {
+        //            RoleId = Constants.Pending_Id,
+        //            UserId = newUser.Id
+        //        };
+
+        //        await this.db.UserRoles.AddAsync(userRole);
+        //        await this.db.SaveChangesAsync();
+
+        //        await SendVerification(user.Email, response, code);
+        //    }
+
+        //    return response;
+        //}
+
+        //private async Task SendVerification(string email, InfoResponse response, Guid code)
+        //{
+        //    var mailSenderResponse = await this.SendVerificationMail(email, code);
+
+        //    if (!mailSenderResponse.IsSuccessStatusCode)
+        //    {
+        //        mailSenderResponse = await this.SendVerificationMail(email, code);
+        //    }
+
+        //    if (mailSenderResponse.IsSuccessStatusCode)
+        //    {
+        //        response.IsSuccess = true;
+        //        response.Message = ResponseMessages.Check_Email_For_Verification;
+        //    }
+        //    else
+        //    {
+        //        throw new InvalidOperationException(ExceptionMessages.Invalid_Operation_SendGrid);
+        //    }
+        //}
+
+
+        //private async Task<SendGrid.Response> SendVerificationMail(string email, Guid code)
+        //{
+        //    var mailSenderResponse = await this.mailSender.SendEmailAsync(
+        //                ExternalProviders.Abv_Account,
+        //                ExternalProviders.Sender_Name,
+        //                email,
+        //                ExternalProviders.SendGrid_ComfirmMail,
+        //                string.Format(ExternalProviders.SendGrid_LinkForVerification, email, code));
+
+        //    return mailSenderResponse;
+        //}
     }
 }

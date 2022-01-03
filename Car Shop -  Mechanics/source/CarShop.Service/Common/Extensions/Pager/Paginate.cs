@@ -1,15 +1,15 @@
-﻿//Local
-using CarShop.Models.Pagination;
-//Nuget packets
-using Microsoft.EntityFrameworkCore;
-//Public
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace CarShop.Service.Common.Extensions.Pager
+﻿namespace CarShop.Service.Common.Extensions.Pager
 {
+    //Local
+    using CarShop.Models.Pagination;
+    //Nuget packets
+    using Microsoft.EntityFrameworkCore;
+    //Public
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
     public class Paginate<T>
     {
         public Paginate(IEnumerable<T> entities, int count, int pageNumber, int postsPerPage,int totalPages)
@@ -42,6 +42,7 @@ namespace CarShop.Service.Common.Extensions.Pager
 
             return new Paginate<T>(chunk, count, pageNumber, postsPerPage, totalPages);
         }
+
         private static IQueryable<T> ValidateChunk(IQueryable<T> entities, int pageNumber, int postsPerPage)
         {
             IQueryable<T> chunk;

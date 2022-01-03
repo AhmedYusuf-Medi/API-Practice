@@ -42,6 +42,7 @@
         public async Task<Response<UserResponseModel>> GetByIdAsync(long id)
         {
             var response = new Response<UserResponseModel>();
+
             var result = await UserQueries.UserByIdAsync(id, this.db);
 
             response.Payload = result;
@@ -74,21 +75,131 @@
             return result;
         }
 
-        public async Task<InfoResponse> BlockAsync(long id)
+        public async Task<InfoResponse> BlockAsync(long userId)
         {
-            var responce = await this.RegisterRoleAsync(id, Constants.Blocked_Id, ResponseMessages.User_Block_Succeed);
+            var user = await this.db.Users.Where(u => u.Id == userId)
+                                          .Select(u => new User 
+                                          {
+                                              Id = u.Id,
+                                              Roles = u.Roles
+                                          })
+                                          .FirstOrDefaultAsync();
 
-            return responce;
+            var response = new InfoResponse();
+
+            //Does the user exist
+            EntityValidator.ValidateForNull(user, response, ResponseMessages.User_Block_Succeed, Constants.User);
+
+            //If it exists does it have any roles
+            if (response.IsSuccess && !user.Roles.Any())
+            {
+                response.Message = ExceptionMessages.No_Roles;
+                response.IsSuccess = false;
+            }
+
+            //Check is already blocked
+            if (response.IsSuccess && user.Roles.Any(r => r.RoleId == Constants.Blocked_Id && r.UserId == user.Id))
+            {
+                response.Message = ExceptionMessages.Already_Blocked;
+                response.IsSuccess = false;
+            }
+
+            //Check is there previous block so can undelete it
+            var userRoleWithoutFilter = await this.db.UserRoles
+                .IgnoreQueryFilters()
+                .Where(r => r.RoleId == Constants.Blocked_Id && r.UserId == userId)
+                .FirstOrDefaultAsync();
+
+            //If its possible instead of creating new user role we revive
+            if (response.IsSuccess && userRoleWithoutFilter != null)
+            {
+                await this.RemoveAllRoles(user);
+
+                this.db.Undelete(userRoleWithoutFilter);
+                await this.db.SaveChangesAsync();
+
+                return response;
+            }
+
+            //If there is no previous block and other states are valid 
+            //user status wents to blocked and all other roles are removed
+            if (response.IsSuccess)
+            {
+                await this.RemoveAllRoles(user);
+
+                var userRole = new UserRole
+                {
+                    UserId = user.Id,
+                    RoleId = Constants.Blocked_Id
+                };
+
+                await this.db.UserRoles.AddAsync(userRole);
+                await this.db.SaveChangesAsync();
+            }
+
+            return response;
         }
 
-        public async Task<InfoResponse> UnBlockAsync(long id)
+        public async Task<InfoResponse> UnBlockAsync(long userId)
         {
-            var responce = await this.RegisterRoleAsync(id, Constants.User_Id, ResponseMessages.User_UnBlock_Succeed);
+            var user = await this.db.Users
+                .Where(u => u.Id == userId)
+                .Select(u => new User
+                {
+                    Id = u.Id,
+                    Roles = u.Roles
+                })
+                .FirstOrDefaultAsync();
 
-            return responce;
+            var response = new InfoResponse();
+
+            //Checks does user exist
+            EntityValidator.ValidateForNull(user, response, ResponseMessages.User_UnBlock_Succeed, Constants.User);
+
+            //Have any roles
+            bool doesHaveRoles = response.IsSuccess && !user.Roles.Any();
+
+            if (doesHaveRoles)
+            {
+                response.Message = ExceptionMessages.No_Roles;
+                response.IsSuccess = false;
+            }
+
+            //Check is blocked
+            bool isBlocked = response.IsSuccess && !user.Roles.Any(r => r.RoleId == Constants.Blocked_Id);
+            if (isBlocked)
+            {
+                response.Message = "Choosen user is not even blocked!";
+                response.IsSuccess = false;
+            }
+
+            //If all states are valid unblock user and return old roles
+            if (response.IsSuccess)
+            {
+                var userRemovedRoles = await this.db.UserRoles
+                    .IgnoreQueryFilters()
+                    .Where(ur => ur.UserId == userId && ur.IsDeleted == true)
+                    .ToListAsync();
+
+                foreach (var role in userRemovedRoles)
+                {
+                    this.db.Undelete(role);
+                }
+
+                await this.db.SaveChangesAsync();
+
+                var userRoleToRemove = await this.db.UserRoles
+                   .Where(r => r.RoleId == Constants.Blocked_Id && r.UserId == userId)
+                   .FirstOrDefaultAsync();
+
+                this.db.UserRoles.Remove(userRoleToRemove);
+                await this.db.SaveChangesAsync();
+            }
+
+            return response;
         }
 
-        public async Task<InfoResponse> ChangeRole(long userId, long roleId)
+        public async Task<InfoResponse> RemoveRole(long userId, long roleId)
         {
             var response = new InfoResponse();
 
@@ -131,19 +242,38 @@
             return response;
         }
 
-        private async Task<InfoResponse> RegisterRoleAsync(long id, int roleId, string msg)
+        public async Task<InfoResponse> RegisterRoleAsync(long userId, long roleId)
         {
             var response = new InfoResponse();
-            var forBlock = await this.db.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var user = await this.db.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
-            EntityValidator.ValidateForNull(forBlock, response, msg, Constants.User);
+            //Validates does the user exist
+            EntityValidator.ValidateForNull(user, response, ResponseMessages.Role_Register, Constants.Role);
 
+            //Search for role without query filter so if there is
+            //option to revive role instead of creating new
+            var roleWithoutFilter = await this.db.UserRoles
+                .IgnoreQueryFilters()
+                .Where(r => r.UserId == userId && r.RoleId == roleId)
+                .FirstOrDefaultAsync();
+
+            //If there is user role deleted it is gonna undelete it
+            if (response.IsSuccess && roleWithoutFilter != null)
+            {
+                this.db.Undelete(roleWithoutFilter);
+                await this.db.SaveChangesAsync();
+
+                return response;
+            }
+
+            //if there is no already existing user role and user exist
+            //creates new user role
             if (response.IsSuccess)
             {
                 var userRole = new UserRole
                 {
                     RoleId = roleId,
-                    UserId = id
+                    UserId = userId
                 };
 
                 await this.db.UserRoles.AddAsync(userRole);
@@ -151,6 +281,31 @@
             }
 
             return response;
+        }
+
+        private async Task RemoveAllRoles(User user)
+        {
+            //UserRole userRole;
+
+            //var rolesToRemove = new HashSet<UserRole>();
+
+            //foreach (var role in user.Roles)
+            //{
+            //    userRole = new UserRole
+            //    {
+            //        UserId = role.UserId,
+            //        RoleId = role.RoleId
+            //    };
+
+            //    rolesToRemove.Add(userRole);
+            //}
+
+            foreach (var role in user.Roles)
+            {
+                this.db.UserRoles.Remove(role);
+            }
+
+            await this.db.SaveChangesAsync();
         }
     }
 }

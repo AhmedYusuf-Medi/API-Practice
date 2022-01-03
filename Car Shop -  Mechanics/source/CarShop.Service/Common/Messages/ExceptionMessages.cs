@@ -24,5 +24,9 @@
         public const string Invalid_Password = "Invalid password!";
         public const string Invalid_Credentials = "You do not have the enough permission for the operation!";
         public const string Already_Verified = "Already verified!";
+
+        //User service
+        public const string No_Roles = "User have no roles!";
+        public const string Already_Blocked = "User is already blocked!";
     }
 }

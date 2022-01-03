@@ -18,8 +18,7 @@
             }
         }
 
-        public static void ValidateForNull<T>(T entity, InfoResponse responseModel, string succeedMessage
-                                             , string entityType)
+        public static void ValidateForNull<T>(T entity, InfoResponse responseModel, string succeedMessage, string entityType)
         {
             if (entity == null)
             {

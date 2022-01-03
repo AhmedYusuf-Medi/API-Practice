@@ -1,4 +1,4 @@
-﻿namespace CarShop.Service.Common.Providers.SendGrid
+﻿namespace CarShop.Service.Common.Providers.Mail.SendGrid
 {
     using CarShop.Service.Common.Messages;
     using global::SendGrid;
@@ -8,11 +8,11 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    public class MailSender : IMailSender
+    public class MailSenderGrid : IMailSender<Response>
     {
         private readonly SendGridClient client;
 
-        public MailSender(string apiKey)
+        public MailSenderGrid(string apiKey)
         {
             this.client = new SendGridClient(apiKey);
         }

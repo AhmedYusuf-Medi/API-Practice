@@ -1,4 +1,4 @@
-﻿namespace CarShop.Service.Common.Providers.SendGrid
+﻿namespace CarShop.Service.Common.Providers.Mail.SendGrid
 {
     public class EmailAttachment
     {
