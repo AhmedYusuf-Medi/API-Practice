@@ -36,5 +36,11 @@
                 && !string.IsNullOrWhiteSpace(property)
                 && !currentProperty.Equals(property);
         }
+
+        public static bool IsStringPropertyValid(string property)
+        {
+            return !string.IsNullOrEmpty(property)
+                && !string.IsNullOrWhiteSpace(property);
+        }
     }
 }

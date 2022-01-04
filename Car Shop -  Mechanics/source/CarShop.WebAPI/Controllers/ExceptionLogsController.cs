@@ -1,6 +1,7 @@
 ﻿namespace CarShop.WebAPI.Controllers
 {
     using CarShop.Models.Pagination;
+    using CarShop.Models.Request.Exception;
     using CarShop.Service.Data.Exception;
     using Microsoft.AspNetCore.Mvc;
     using System;
@@ -49,6 +50,23 @@
             }
 
             return this.Ok(response);
+        }
+
+        [HttpGet("filter")]
+        public async Task<IActionResult> Filter([FromQuery]SortAndFilterRequestModel request)
+        {
+            var respone = await this.exceptionLogService.FilterByAsync(request);
+
+            return this.Ok(respone);
+        }
+
+
+        [HttpGet("sortby")]
+        public async Task<IActionResult> SortBy([FromQuery]SortAndFilterRequestModel request)
+        {
+            var respone = await this.exceptionLogService.SortByAsync(request);
+
+            return this.Ok(respone);
         }
     }
 }
