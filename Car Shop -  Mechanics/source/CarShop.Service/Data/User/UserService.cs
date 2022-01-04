@@ -11,11 +11,13 @@
     using CarShop.Service.Common.Extensions.Pager;
     using CarShop.Service.Common.Extensions.Query;
     using CarShop.Service.Common.Extensions.Validator;
+    using CarShop.Service.Common.Mapper;
     using CarShop.Service.Common.Messages;
     //Nuget packets
     using Microsoft.EntityFrameworkCore;
     //Public
     using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
 
     public class UserService : BaseService, IUserService
@@ -25,11 +27,11 @@
         {
         }
 
-        public async Task<Response<Paginate<UserResponseModel>>> GetAllAsync(PaginationRequestModel request)
+        public async Task<Response<Paginate<UserResponseModel>>> GetAllAsync(PaginationRequestModel requestModel)
         {
             var result = UserQueries.GetAllUserResponse(this.db.Users).AsQueryable();
 
-            var payload = await Paginate<UserResponseModel>.ToPaginatedCollection(result, request.Page, request.PerPage);
+            var payload = await Paginate<UserResponseModel>.ToPaginatedCollection(result, requestModel.Page, requestModel.PerPage);
 
             var response = new Response<Paginate<UserResponseModel>>();
             response.Payload = payload;
@@ -211,23 +213,58 @@
             return response;
         }
 
-        public async Task<Response<Paginate<UserResponseModel>>> SearchByAsync(UserSearchRequestModel model)
+        public async Task<Response<Paginate<UserResponseModel>>> SearchByAsync(UserSearchAndSortRequestModel requestModel)
         {
             var query = this.db.Users.AsQueryable();
 
-            if (!string.IsNullOrEmpty(model.Username))
+            query = UserQueries.Filter(requestModel, query);
+
+            var response = new Response<Paginate<UserResponseModel>>();
+            ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_GetAll_Succeed, Constants.Users));
+
+            if (requestModel.MostVehicles || requestModel.MostActive ||
+                requestModel.Recently || requestModel.Oldest)
             {
-                query = query.Where(u => u.Username.Contains(model.Username));
+                var sortByResponse = await this.SortByAsync(Mapper.ToRequest(requestModel), query);
+
+                var sb = new StringBuilder();
+                sb.AppendLine(response.Message);
+                sb.AppendLine(sortByResponse.Message);
+
+                response.Message = sb.ToString();
+
+                response.Payload = sortByResponse.Payload;
+            }
+            else
+            {
+                var filtered = UserQueries.GetAllUserResponse(query);
+
+                var payload = await Paginate<UserResponseModel>.ToPaginatedCollection(filtered, requestModel.Page, requestModel.PerPage);
+
+                response.Payload = payload;
             }
 
-            if (!string.IsNullOrEmpty(model.Email))
+            return response;
+        }
+
+        public async Task<Response<Paginate<UserResponseModel>>> SortByAsync(UserSortRequestModel model, IQueryable<User> query = null)
+        {
+            IQueryable<User> result;
+
+            if (query != null)
             {
-                query = query.Where(u => u.Email.Contains(model.Email));
+                result = query;
+            }
+            else
+            {
+                result = this.db.Users.AsQueryable();
             }
 
-            var filtered = UserQueries.GetAllUserResponse(query);
+            var sortedQuery = UserQueries.Sort(model, query);
 
-            var payload = await Paginate<UserResponseModel>.ToPaginatedCollection(filtered, model.Page, model.PerPage);
+            var userResponses = UserQueries.GetAllUserResponse(sortedQuery);
+
+            var payload = await Paginate<UserResponseModel>.ToPaginatedCollection(userResponses, model.Page, model.PerPage);
 
             var response = new Response<Paginate<UserResponseModel>>();
             response.Payload = payload;

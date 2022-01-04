@@ -13,9 +13,9 @@
     {
        public Task<InfoResponse> CreateAsync(ExceptionLog exceptionLog);
        public Task<InfoResponse> DeleteAsync(Guid exceptionId);
-       public Task<Response<Paginate<ExceptionLog>>> FilterByAsync(SortAndFilterRequestModel requestModel);
-       public Task<InfoResponse> GetAllAsync(PaginationRequestModel request);
-       public Task<InfoResponse> MarkAsChecked(Guid exceptionId);
-       public Task<Response<Paginate<ExceptionLog>>> SortByAsync(SortAndFilterRequestModel requestModel, IQueryable<ExceptionLog> query = null);
+       public Task<Response<Paginate<ExceptionLog>>> FilterByAsync(ExceptionSortAndFilterRequestModel requestModel);
+       public Task<Response<Paginate<ExceptionLog>>> GetAllAsync(PaginationRequestModel request);
+       public Task<InfoResponse> MarkAsCheckedAsync(Guid exceptionId);
+       public Task<Response<Paginate<ExceptionLog>>> SortByAsync(ExceptionSortRequestModel requestModel, IQueryable<ExceptionLog> query = null);
     }
 }

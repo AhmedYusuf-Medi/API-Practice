@@ -10,6 +10,7 @@
     using CarShop.Service.Common.Extensions.Pager;
     using CarShop.Service.Common.Extensions.Query;
     using CarShop.Service.Common.Extensions.Validator;
+    using CarShop.Service.Common.Mapper;
     using CarShop.Service.Common.Messages;
     //Nuget packets
     using Microsoft.EntityFrameworkCore;
@@ -26,7 +27,7 @@
         {
         }
 
-        public async Task<InfoResponse> GetAllAsync(PaginationRequestModel request)
+        public async Task<Response<Paginate<ExceptionLog>>> GetAllAsync(PaginationRequestModel request)
         {
             var result = this.db.ExceptionLogs.AsQueryable();
 
@@ -68,7 +69,7 @@
             return response;
         }
 
-        public async Task<InfoResponse> MarkAsChecked(Guid exceptionId)
+        public async Task<InfoResponse> MarkAsCheckedAsync(Guid exceptionId)
         {
             var response = new InfoResponse();
 
@@ -85,18 +86,18 @@
             return response;
         }
 
-        public async Task<Response<Paginate<ExceptionLog>>> FilterByAsync(SortAndFilterRequestModel requestModel)
+        public async Task<Response<Paginate<ExceptionLog>>> FilterByAsync(ExceptionSortAndFilterRequestModel requestModel)
         {
             IQueryable<ExceptionLog> result = this.db.ExceptionLogs.AsQueryable();
 
             result = ExceptionQueries.Filter(requestModel, result);
 
             var response = new Response<Paginate<ExceptionLog>>();
-            ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_GetAll_Succeed, Constants.Exceptions));
+            ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_Filter_Succeed, Constants.Exceptions));
 
             if (requestModel.MostRecently || requestModel.Oldest)
             {
-                var sortByResponse = await this.SortByAsync(requestModel, result);
+                var sortByResponse = await this.SortByAsync(Mapper.ToRequest(requestModel), result);
 
                 var sb = new StringBuilder();
                 sb.AppendLine(response.Message);
@@ -116,7 +117,7 @@
             return response;
         }
 
-        public async Task<Response<Paginate<ExceptionLog>>> SortByAsync(SortAndFilterRequestModel requestModel, IQueryable<ExceptionLog> query = null)
+        public async Task<Response<Paginate<ExceptionLog>>> SortByAsync(ExceptionSortRequestModel requestModel, IQueryable<ExceptionLog> query = null)
         {
             IQueryable<ExceptionLog> result;
 
@@ -135,7 +136,7 @@
 
             var response = new Response<Paginate<ExceptionLog>>();
             response.Payload = payload;
-            ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_GetAll_Succeed, Constants.Exceptions));
+            ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_Sort_Succeed, Constants.Exceptions));
 
             return response;
         }

@@ -120,9 +120,22 @@
         [HttpGet("searchby")]
         //[Authorize(Constants.Admin)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<UserResponseModel>>))]
-        public async Task<IActionResult> SearchBy([FromQuery]UserSearchRequestModel model)
+        public async Task<IActionResult> SearchBy([FromQuery]UserSearchAndSortRequestModel model)
         {
             var response = await this.userService.SearchByAsync(model);
+
+            return this.Ok(response);
+        }
+
+        /// <summary>
+        /// Filters and sorts by choosen criterias
+        /// </summary>
+        [HttpGet("sortby")]
+        //[Authorize(Constants.Admin)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<UserResponseModel>>))]
+        public async Task<IActionResult> SortBy([FromQuery]UserSortRequestModel model)
+        {
+            var response = await this.userService.SortByAsync(model);
 
             return this.Ok(response);
         }

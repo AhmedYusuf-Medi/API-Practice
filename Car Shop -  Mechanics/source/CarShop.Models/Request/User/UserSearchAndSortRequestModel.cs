@@ -1,8 +1,6 @@
 ﻿namespace CarShop.Models.Request.User
 {
-    using CarShop.Models.Pagination;
-
-    public class UserSearchRequestModel : PaginationRequestModel
+    public class UserSearchAndSortRequestModel : UserSortRequestModel
     {
         public string Username { get; set; }
 

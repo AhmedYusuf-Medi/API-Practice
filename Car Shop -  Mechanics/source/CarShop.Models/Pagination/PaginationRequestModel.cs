@@ -1,6 +1,8 @@
 ﻿namespace CarShop.Models.Pagination
 {
-    public class PaginationRequestModel
+    using CarShop.Models.Request.Contracts;
+
+    public class PaginationRequestModel : IPageable
     {
         private const int maxEntityCount = 10;
 

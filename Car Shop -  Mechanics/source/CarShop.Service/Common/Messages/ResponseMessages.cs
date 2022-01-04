@@ -8,6 +8,8 @@
         public const string Entity_Edit_Succeed = "{0} was successfully edited!";
         public const string Entity_GetAll_Succeed = "Successfully got all {0}!";
         public const string Entity_Get_Succeed = "Successfully got {0}!";
+        public const string Entity_Filter_Succeed = "Successfully filtered {0}!";
+        public const string Entity_Sort_Succeed = "Successfully sorted {0}!";
 
         //User
         public const string User_Block_Succeed = "Successfully blocked {0}!";

@@ -9,5 +9,6 @@
         public IEnumerable<string> Roles { get; set; }
         public string Avatar { get; set; }
         public long IssueCount { get; set; }
+        public long VehiclesCount { get; set; }
     }
 }
