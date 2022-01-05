@@ -32,7 +32,7 @@
         //[Authorize(Constants.Admin)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<UserResponseModel>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Response<UserResponseModel>))]
-        public async Task<IActionResult> GetById(long id)
+        public async Task<IActionResult> GetByIdAsync(long id)
         {
             var response = await this.userService.GetByIdAsync(id);
 
@@ -50,9 +50,9 @@
         [HttpGet("")]
         //[Authorize(Constants.Admin)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<UserResponseModel>>))]
-        public async Task<IActionResult> GetAll([FromQuery]PaginationRequestModel request)
+        public async Task<IActionResult> GetAllAsync([FromQuery]PaginationRequestModel requestModel)
         {
-            var response = await this.userService.GetAllAsync(request);
+            var response = await this.userService.GetAllAsync(requestModel);
 
             return this.Ok(response);
         }
@@ -64,7 +64,7 @@
         //[Authorize(Constants.Admin)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(InfoResponse))]
-        public async Task<IActionResult> Delete(long id)
+        public async Task<IActionResult> DeleteAsync(long id)
         {
             var response = await this.userService.DeleteAsync(id);
 
@@ -83,7 +83,7 @@
         [Authorize(Roles = Constants.Admin)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(InfoResponse))]
-        public async Task<IActionResult> Block(long id)
+        public async Task<IActionResult> BlockAsync(long id)
         {
             var response = await this.userService.BlockAsync(id);
 
@@ -102,7 +102,7 @@
         //[Authorize(Constants.Admin)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(InfoResponse))]
-        public async Task<IActionResult> UnBlock(long id)
+        public async Task<IActionResult> UnBlockAsync(long id)
         {
             var response = await this.userService.UnBlockAsync(id);
 
@@ -120,9 +120,9 @@
         [HttpGet("searchby")]
         //[Authorize(Constants.Admin)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<UserResponseModel>>))]
-        public async Task<IActionResult> SearchBy([FromQuery]UserSearchAndSortRequestModel model)
+        public async Task<IActionResult> SearchByAsync([FromQuery]UserSearchAndSortRequestModel requestModel)
         {
-            var response = await this.userService.SearchByAsync(model);
+            var response = await this.userService.SearchByAsync(requestModel);
 
             return this.Ok(response);
         }
@@ -133,9 +133,9 @@
         [HttpGet("sortby")]
         //[Authorize(Constants.Admin)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<UserResponseModel>>))]
-        public async Task<IActionResult> SortBy([FromQuery]UserSortRequestModel model)
+        public async Task<IActionResult> SortByAsync([FromQuery]UserSortRequestModel requestModel)
         {
-            var response = await this.userService.SortByAsync(model);
+            var response = await this.userService.SortByAsync(requestModel);
 
             return this.Ok(response);
         }
@@ -147,7 +147,7 @@
         //[Authorize(Roles = Constants.Admin)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(InfoResponse))]
-        public async Task<IActionResult> RemoveRole([FromForm] long userId, long roleId)
+        public async Task<IActionResult> RemoveRoleAsync([FromForm] long userId, long roleId)
         {
             var response = await this.userService.RemoveRole(userId, roleId);
 
@@ -166,7 +166,7 @@
         //[Authorize(Constants.Admin)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(InfoResponse))]
-        public async Task<IActionResult> RegisterRole([FromForm] long userId, long roleId)
+        public async Task<IActionResult> RegisterRoleAsync([FromForm] long userId, long roleId)
         {
             var response = await this.userService.RegisterRoleAsync(userId, roleId);
 

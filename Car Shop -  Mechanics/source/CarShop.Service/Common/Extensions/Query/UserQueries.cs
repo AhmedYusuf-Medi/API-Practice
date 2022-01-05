@@ -12,8 +12,8 @@
     public static class UserQueries
     {
         public static Func<IQueryable<User>, IQueryable<UserResponseModel>> GetAllUserResponse
-         => (IQueryable<User> posts) =>
-             posts.Select(u => new UserResponseModel()
+         => (IQueryable<User> users) =>
+             users.Select(u => new UserResponseModel()
              {
                  Id = u.Id,
                  Username = u.Username,

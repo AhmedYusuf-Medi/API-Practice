@@ -28,7 +28,7 @@
         [HttpGet]
         //[Authorize(Constants.Admin)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<ExceptionLog>>))]
-        public async Task<IActionResult> GetAll(PaginationRequestModel request)
+        public async Task<IActionResult> GetAllAsync([FromQuery]PaginationRequestModel request)
         {
             var response = await this.exceptionLogService.GetAllAsync(request);
 
@@ -41,7 +41,7 @@
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(InfoResponse))]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> DeleteAsync(Guid id)
         {
             var response = await this.exceptionLogService.DeleteAsync(id);
 
@@ -59,9 +59,9 @@
         [HttpPatch("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(InfoResponse))]
-        public async Task<IActionResult> MarkAsChecked(Guid id)
+        public async Task<IActionResult> MarkAsCheckedAsync(Guid id)
         {
-            var response = await this.exceptionLogService.MarkAsChecked(id);
+            var response = await this.exceptionLogService.MarkAsCheckedAsync(id);
 
             if (!response.IsSuccess)
             {
@@ -76,7 +76,7 @@
         /// </summary>
         [HttpGet("filter")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<ExceptionLog>>))]
-        public async Task<IActionResult> Filter([FromQuery]ExceptionSortAndFilterRequestModel request)
+        public async Task<IActionResult> FilterAsync([FromQuery]ExceptionSortAndFilterRequestModel request)
         {
             var respone = await this.exceptionLogService.FilterByAsync(request);
 
@@ -88,7 +88,7 @@
         /// </summary>
         [HttpGet("sortby")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<ExceptionLog>>))]
-        public async Task<IActionResult> SortBy([FromQuery]ExceptionSortRequestModel request)
+        public async Task<IActionResult> SortByAsync([FromQuery]ExceptionSortRequestModel request)
         {
             var respone = await this.exceptionLogService.SortByAsync(request);
 

@@ -12,6 +12,8 @@
         public const string Role = "Role";
         public const string Exception = "Exception";
         public const string Exceptions = "exceptions";
+        public const string VehicleBrand = "Vehicle Brand";
+        public const string VehicleBrands = "vehicle brands";
         public const int User_Id = 2;
         public const int Mechanic_Id = 3;
         public const int Blocked_Id = 4;

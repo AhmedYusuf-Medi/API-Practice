@@ -29,7 +29,7 @@
         /// Logins/Authenticates user by taking information from body and settings identity
         /// </summary>
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody]UserLoginRequestModel requestModel)
+        public async Task<IActionResult> LoginAsync([FromBody]UserLoginRequestModel requestModel)
         {
             var result = await this.accountService.LoginAsync(requestModel);
 
@@ -60,7 +60,7 @@
         [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(InfoResponse))]
-        public async Task<IActionResult> Register([FromBody]UserRegisterRequestModel requestModel)
+        public async Task<IActionResult> RegisterAsync([FromBody]UserRegisterRequestModel requestModel)
         {
             var response = await this.accountService.RegisterUserAsync(requestModel);
 
@@ -79,7 +79,7 @@
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(InfoResponse))]
         //[Authorize("User")]
-        public async Task<IActionResult> Edit(long id, [FromForm] UserEditRequestModel user)
+        public async Task<IActionResult> EditAsync(long id, [FromForm] UserEditRequestModel user)
         {
             var result = await this.accountService.EditProfileAsync(id, user);
 
@@ -96,7 +96,7 @@
         /// </summary>
         [HttpGet("verification")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
-        public async Task<IActionResult> Verification([FromQuery]string email, Guid code)
+        public async Task<IActionResult> VerificateAsync([FromQuery]string email, Guid code)
         {
             var response = await this.accountService.VerificationAsync(email, code);
 
@@ -114,7 +114,7 @@
         /// <returns></returns>
         [HttpGet("logout")]
         [Authorize]
-        public async Task<IActionResult> Logout()
+        public async Task<IActionResult> LogoutAsync()
         {
             await this.HttpContext.SignOutAsync();
             return this.Ok();

@@ -3,16 +3,25 @@
     using CarShop.Models.Base;
     using CarShop.Models.Request.Exception;
     using CarShop.Models.Request.User;
+    using CarShop.Models.Request.VehicleBrand;
 
     public static class Mapper
     {
-        public static User ToUser(UserRegisterRequestModel user)
+        public static VehicleBrand ToVehicleBrand(VehicleBrandCreateRequestModel requestModel)
+        {
+            return new VehicleBrand()
+            {
+                Brand = requestModel.BrandName,
+            };
+        }
+
+        public static User ToUser(UserRegisterRequestModel requestModel)
         {
             return new User()
             {
-                Username = user.Username,
-                Email = user.Email,
-                Password = user.Password,
+                Username = requestModel.Username,
+                Email = requestModel.Email,
+                Password = requestModel.Password,
             };
         }
 
