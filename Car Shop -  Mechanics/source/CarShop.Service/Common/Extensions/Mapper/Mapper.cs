@@ -4,6 +4,7 @@
     using CarShop.Models.Request.Exception;
     using CarShop.Models.Request.User;
     using CarShop.Models.Request.VehicleBrand;
+    using CarShop.Models.Request.VehicleType;
 
     public static class Mapper
     {
@@ -12,6 +13,14 @@
             return new VehicleBrand()
             {
                 Brand = requestModel.BrandName,
+            };
+        }
+
+        public static VehicleType ToVehicleType(VehicleTypeCreateRequestModel requestModel)
+        {
+            return new VehicleType()
+            {
+                Type = requestModel.TypeName,
             };
         }
 

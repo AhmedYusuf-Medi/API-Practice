@@ -96,9 +96,9 @@
 
         public async Task<Response<Paginate<VehicleBrandResponseModel>>> SortByAsync(VehicleBrandSortRequestModel requestModel)
         {
-            var vehiclebrands = VehicleBrandQueries.Sort(requestModel, this.db.VehicleBrands).AsQueryable();
+            var vehicleBrands = VehicleBrandQueries.Sort(requestModel, this.db.VehicleBrands).AsQueryable();
 
-            var userResponses = VehicleBrandQueries.GetAllVehicleBrandResponse(vehiclebrands);
+            var userResponses = VehicleBrandQueries.GetAllVehicleBrandResponse(vehicleBrands);
 
             var payload = await Paginate<VehicleBrandResponseModel>.ToPaginatedCollection(userResponses, requestModel.Page, requestModel.PerPage);
 

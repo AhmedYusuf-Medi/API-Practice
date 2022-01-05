@@ -4,6 +4,7 @@
     using CarShop.Models.Base;
     using CarShop.Models.Request.User;
     using CarShop.Models.Response.User;
+    using CarShop.Service.Common.Extensions.Validator;
     using Microsoft.EntityFrameworkCore;
     using System;
     using System.Linq;
@@ -41,14 +42,19 @@
 
         public static IQueryable<User> Filter(UserSearchAndSortRequestModel model, IQueryable<User> query)
         {
-            if (!string.IsNullOrEmpty(model.Username))
+            if (EntityValidator.IsStringPropertyValid(model.Username))
             {
                 query = query.Where(u => u.Username.Contains(model.Username));
             }
 
-            if (!string.IsNullOrEmpty(model.Email))
+            if (EntityValidator.IsStringPropertyValid(model.Email))
             {
                 query = query.Where(u => u.Email.Contains(model.Email));
+            }
+
+            if (EntityValidator.IsStringPropertyValid(model.Role))
+            {
+                query = query.Where(u => u.Roles.Any(r => r.Role.Type.ToLower().Contains(model.Role.ToLower())));
             }
 
             return query;

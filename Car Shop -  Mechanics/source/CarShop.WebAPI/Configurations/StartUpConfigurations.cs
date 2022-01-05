@@ -25,6 +25,7 @@
     using System;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.Extensions.Configuration;
+    using CarShop.Service.Data.VehicleType;
 
     public static class StartUpConfigurations
     {
@@ -62,6 +63,7 @@
             services.AddSingleton<PasswordHasher<User>>();
             services.AddScoped<IExceptionLogService, ExceptionLogService>();
             services.AddScoped<IVehicleBrandService, VehicleBrandService>();
+            services.AddScoped<IVehicleTypeService, VehicleTypeService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICloudinaryService, CloudinaryService>();

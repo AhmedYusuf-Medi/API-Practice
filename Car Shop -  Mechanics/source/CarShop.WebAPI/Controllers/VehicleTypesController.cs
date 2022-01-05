@@ -1,35 +1,35 @@
 ﻿namespace CarShop.WebAPI.Controllers
 {
     using CarShop.Models.Pagination;
-    using CarShop.Models.Request.VehicleBrand;
+    using CarShop.Models.Request.VehicleType;
     using CarShop.Models.Response;
-    using CarShop.Models.Response.VehicleBrand;
+    using CarShop.Models.Response.VehicleType;
     using CarShop.Service.Common.Extensions.Pager;
-    using CarShop.Service.Data.VehicleBrand;
+    using CarShop.Service.Data.VehicleType;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using System.Threading.Tasks;
 
     [Route("api/[controller]")]
     [ApiController]
-    public class VehicleBrandsController : ControllerBase
+    public class VehicleTypesController : ControllerBase
     {
-        private readonly IVehicleBrandService vehicleBrandService;
+        private readonly IVehicleTypeService vehicleTypeService;
 
-        public VehicleBrandsController(IVehicleBrandService vehicleBrandService)
+        public VehicleTypesController(IVehicleTypeService vehicleTypeService)
         {
-            this.vehicleBrandService = vehicleBrandService;
+            this.vehicleTypeService = vehicleTypeService;
         }
 
         /// <summary>
-        /// Returns all vehicle brands
+        /// Returns all vehicle types
         /// </summary>
         [HttpGet]
         //[Authorize(Constants.Admin)]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<VehicleBrandResponseModel>>))]
-        public async Task<IActionResult> GetAllAsync([FromQuery]PaginationRequestModel requestModel)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<VehicleTypeResponseModel>>))]
+        public async Task<IActionResult> GetAllAsync([FromQuery] PaginationRequestModel requestModel)
         {
-            var response = await this.vehicleBrandService.GetAllAsync(requestModel);
+            var response = await this.vehicleTypeService.GetAllAsync(requestModel);
 
             return this.Ok(response);
         }
@@ -39,11 +39,11 @@
         /// </summary>
         [HttpGet("{id}")]
         //[Authorize(Constants.Admin)]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<VehicleBrandResponseModel>))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(Response<VehicleBrandResponseModel>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<VehicleTypeResponseModel>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(Response<VehicleTypeResponseModel>))]
         public async Task<IActionResult> GetByIdAsync(long id)
         {
-            var response = await this.vehicleBrandService.GetByIdAsync(id);
+            var response = await this.vehicleTypeService.GetByIdAsync(id);
 
             if (!response.IsSuccess)
             {
@@ -55,28 +55,28 @@
 
 
         /// <summary>
-        /// Creates new vehicle brand if the arguments are valid
+        /// Creates new vehicle type if the arguments are valid
         /// </summary>
         [HttpPost]
         //[Authorize(Constants.Admin)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
-        public async Task<IActionResult> CreateAsync([FromBody]VehicleBrandCreateRequestModel requestModel)
+        public async Task<IActionResult> CreateAsync([FromBody]VehicleTypeCreateRequestModel requestModel)
         {
-            var response = await this.vehicleBrandService.CreateAsync(requestModel);
+            var response = await this.vehicleTypeService.CreateAsync(requestModel);
 
             return this.Ok(response);
         }
 
         /// <summary>
-        /// Updates vehicle brand if the given Id exists
+        /// Updates vehicle type if the given Id exists
         /// </summary>
         [HttpPut("{id}")]
         //[Authorize(Constants.Admin)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(InfoResponse))]
-        public async Task<IActionResult> UpdateAsync(long  id, [FromBody]VehicleBrandCreateRequestModel requestModel)
+        public async Task<IActionResult> UpdateAsync(long id, [FromBody]VehicleTypeCreateRequestModel requestModel)
         {
-            var response = await this.vehicleBrandService.UpdateAsync(id, requestModel);
+            var response = await this.vehicleTypeService.UpdateAsync(id, requestModel);
 
             if (!response.IsSuccess)
             {
@@ -87,7 +87,7 @@
         }
 
         /// <summary>
-        /// Deletes vehicle brand if the given Id exists
+        /// Deletes vehicle type if the given Id exists
         /// </summary>
         [HttpDelete("{id}")]
         //[Authorize(Constants.Admin)]
@@ -95,7 +95,7 @@
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(InfoResponse))]
         public async Task<IActionResult> DeleteAsync(long id)
         {
-            var response = await this.vehicleBrandService.DeleteAsync(id);
+            var response = await this.vehicleTypeService.DeleteAsync(id);
 
             if (!response.IsSuccess)
             {
@@ -106,14 +106,14 @@
         }
 
         /// <summary>
-        /// Sorts vehicle brands by selected criterias
+        /// Sorts vehicle types by selected criterias
         /// </summary>
         [HttpGet("sortby")]
         //[Authorize(Constants.Admin)]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<VehicleBrandResponseModel>>))]
-        public async Task<IActionResult> SortByAsync([FromQuery]VehicleBrandSortRequestModel requestModel)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<VehicleTypeResponseModel>>))]
+        public async Task<IActionResult> SortByAsync([FromQuery]VehicleTypeSortRequestModel requestModel)
         {
-            var response = await this.vehicleBrandService.SortByAsync(requestModel);
+            var response = await this.vehicleTypeService.SortByAsync(requestModel);
 
             return this.Ok(response);
         }
