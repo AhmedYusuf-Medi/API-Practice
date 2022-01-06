@@ -26,6 +26,7 @@
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.Extensions.Configuration;
     using CarShop.Service.Data.VehicleType;
+    using CarShop.Service.Data.IssueStatus;
 
     public static class StartUpConfigurations
     {
@@ -64,6 +65,7 @@
             services.AddScoped<IExceptionLogService, ExceptionLogService>();
             services.AddScoped<IVehicleBrandService, VehicleBrandService>();
             services.AddScoped<IVehicleTypeService, VehicleTypeService>();
+            services.AddScoped<IIssueStatusService, IssueStatusService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICloudinaryService, CloudinaryService>();

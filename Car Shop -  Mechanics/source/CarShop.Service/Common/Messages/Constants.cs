@@ -16,6 +16,14 @@
         public const string VehicleBrands = "vehicle brands";
         public const string VehicleType = "Vehicle Type";
         public const string VehicleTypes = "vehicle types";
+        public const string IssueStatus = "Issue Status";
+        public const string IssueStatuses = "issue statuses";
+        public const string IssuePriority = "Issue Priority";
+        public const string IssuePriorities = "issue priorities";
+        public const string Vehicle = "Vehicle";
+        public const string Vehicles = "vehicles";
+        public const string Issue = "Issue";
+        public const string Issues = "issues";
         public const int User_Id = 2;
         public const int Mechanic_Id = 3;
         public const int Blocked_Id = 4;

@@ -98,9 +98,9 @@
         {
             var vehicleBrands = VehicleBrandQueries.Sort(requestModel, this.db.VehicleBrands).AsQueryable();
 
-            var userResponses = VehicleBrandQueries.GetAllVehicleBrandResponse(vehicleBrands);
+            var responses = VehicleBrandQueries.GetAllVehicleBrandResponse(vehicleBrands);
 
-            var payload = await Paginate<VehicleBrandResponseModel>.ToPaginatedCollection(userResponses, requestModel.Page, requestModel.PerPage);
+            var payload = await Paginate<VehicleBrandResponseModel>.ToPaginatedCollection(responses, requestModel.Page, requestModel.PerPage);
 
             var response = new Response<Paginate<VehicleBrandResponseModel>>();
             ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_Sort_Succeed, Constants.VehicleBrands), payload);

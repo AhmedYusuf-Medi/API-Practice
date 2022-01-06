@@ -2,12 +2,21 @@
 {
     using CarShop.Models.Base;
     using CarShop.Models.Request.Exception;
+    using CarShop.Models.Request.IssueStatus;
     using CarShop.Models.Request.User;
     using CarShop.Models.Request.VehicleBrand;
     using CarShop.Models.Request.VehicleType;
 
     public static class Mapper
     {
+        public static IssueStatus ToIssueStatus(IssueStatusCreateRequestModel requestModel)
+        {
+            return new IssueStatus()
+            {
+                Status = requestModel.StatusName,
+            };
+        }
+
         public static VehicleBrand ToVehicleBrand(VehicleBrandCreateRequestModel requestModel)
         {
             return new VehicleBrand()

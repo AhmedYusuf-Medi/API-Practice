@@ -18,10 +18,11 @@
              {
                  Id = u.Id,
                  Username = u.Username,
+                 Email = u.Email,
                  Roles = u.Roles.Select(r => r.Role.Type),
                  Avatar = u.PicturePath,
-                 IssueCount = u.Issues.Count,
-                 VehiclesCount =  u.Vehicles.Count
+                 IssuesCount = u.Issues.Count,
+                 VehiclesCount = u.Vehicles.Count
              });
 
         public static async Task<UserResponseModel> UserByIdAsync(long userId, CarShopDbContext db)
@@ -32,9 +33,10 @@
                  {
                      Id = u.Id,
                      Username = u.Username,
+                     Email = u.Email,
                      Roles = u.Roles.Select(r => r.Role.Type),
                      Avatar = u.PicturePath,
-                     IssueCount = u.Issues.Count,
+                     IssuesCount = u.Issues.Count,
                      VehiclesCount = u.Vehicles.Count
                  })
                  .FirstOrDefaultAsync();

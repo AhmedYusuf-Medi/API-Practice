@@ -99,9 +99,9 @@
         {
             var vehicleTypes = VehicleTypeQueries.Sort(requestModel, this.db.VehicleTypes).AsQueryable();
 
-            var userResponses = VehicleTypeQueries.GetAllVehicleTypeResponse(vehicleTypes);
+            var responses = VehicleTypeQueries.GetAllVehicleTypeResponse(vehicleTypes);
 
-            var payload = await Paginate<VehicleTypeResponseModel>.ToPaginatedCollection(userResponses, requestModel.Page, requestModel.PerPage);
+            var payload = await Paginate<VehicleTypeResponseModel>.ToPaginatedCollection(responses, requestModel.Page, requestModel.PerPage);
 
             var response = new Response<Paginate<VehicleTypeResponseModel>>();
             ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_Sort_Succeed, Constants.VehicleTypes), payload);

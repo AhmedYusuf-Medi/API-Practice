@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <Folder Include="Data\Issue\" />
+    <Folder Include="Data\IssuePriority\" />
     <Folder Include="Data\Vehicle\" />
   </ItemGroup>
 
