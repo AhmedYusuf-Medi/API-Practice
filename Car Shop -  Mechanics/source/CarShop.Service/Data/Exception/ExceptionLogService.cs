@@ -29,9 +29,9 @@
 
         public async Task<Response<Paginate<ExceptionLog>>> GetAllAsync(PaginationRequestModel request)
         {
-            var result = this.db.ExceptionLogs.AsQueryable();
+            var exceptions = this.db.ExceptionLogs.AsQueryable();
 
-            var payload = await Paginate<ExceptionLog>.ToPaginatedCollection(result, request.Page, request.PerPage);
+            var payload = await Paginate<ExceptionLog>.ToPaginatedCollection(exceptions, request.Page, request.PerPage);
 
             var response = new Response<Paginate<ExceptionLog>>();
             response.Payload = payload;

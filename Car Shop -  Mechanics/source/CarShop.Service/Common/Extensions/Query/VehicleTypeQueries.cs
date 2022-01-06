@@ -12,7 +12,7 @@
     public static class VehicleTypeQueries
     {
         public static Func<IQueryable<VehicleType>, IQueryable<VehicleTypeResponseModel>> GetAllVehicleTypeResponse
-        => (IQueryable<VehicleType> vehicleTypes) =>
+         => (IQueryable<VehicleType> vehicleTypes) =>
             vehicleTypes.Select(vehicleType => new VehicleTypeResponseModel()
             {
                 Id = vehicleType.Id,
@@ -22,18 +22,16 @@
             });
 
         public static async Task<VehicleTypeResponseModel> VehicleTypeByIdAsync(long vehicleBrandId, CarShopDbContext db)
-        {
-            return await db.VehicleTypes
-                 .Where(vehicleType => vehicleType.Id == vehicleBrandId)
-                 .Select(vehicleType => new VehicleTypeResponseModel()
-                 {
-                     Id = vehicleType.Id,
-                     TypeName = vehicleType.Type,
-                     RegisteredSince = vehicleType.CreatedOn.Date,
-                     RegisteredVehiclesAtShop = vehicleType.Vehicles.Count()
-                 })
-                 .FirstOrDefaultAsync();
-        }
+         => await db.VehicleTypes
+            .Where(vehicleType => vehicleType.Id == vehicleBrandId)
+            .Select(vehicleType => new VehicleTypeResponseModel()
+            {
+                Id = vehicleType.Id,
+                TypeName = vehicleType.Type,
+                RegisteredSince = vehicleType.CreatedOn.Date,
+                RegisteredVehiclesAtShop = vehicleType.Vehicles.Count()
+            })
+            .FirstOrDefaultAsync();
 
         public static IOrderedQueryable<VehicleType> Sort(VehicleTypeSortRequestModel model, IQueryable<VehicleType> query)
         {

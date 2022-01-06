@@ -20,6 +20,7 @@
     //Public
     using System;
     using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
 
     public class AccountService : BaseService, IAccountService
@@ -78,40 +79,77 @@
             return response;
         }
 
-        public async Task<InfoResponse> EditProfileAsync(long id, UserEditRequestModel user)
+        public async Task<InfoResponse> EditProfileAsync(long id, UserEditRequestModel requestModel)
         {
             var response = new InfoResponse();
 
-            var forUpdate = await this.db.Users.FirstOrDefaultAsync(u => u.Id == id);
+            var user = await this.db.Users.FirstOrDefaultAsync(u => u.Id == id);
 
-            EntityValidator.ValidateForNull(forUpdate, response, ResponseMessages.Entity_Edit_Succeed, Constants.User);
+            EntityValidator.ValidateForNull(user, response, ResponseMessages.Entity_Edit_Succeed, Constants.User);
 
             if (response.IsSuccess)
             {
-                if (user.ProfilePicture != null)
+                bool isChangesDone = false;
+                var sb = new StringBuilder();
+
+                if (requestModel.ProfilePicture != null)
                 {
-                    if (!string.IsNullOrEmpty(forUpdate.PictureId))
+                    if (!string.IsNullOrEmpty(user.PictureId))
                     {
-                        await this.cloudinaryService.DeleteImageAsync(forUpdate.PictureId);
+                        await this.cloudinaryService.DeleteImageAsync(user.PictureId);
                     }
 
-                    await UploadProfilePicture(user, forUpdate);
+                    await UploadProfilePicture(requestModel, user);
                 }
 
-                if (EntityValidator.IsStringPropertyValid(user.Username, forUpdate.Username))
+                if (EntityValidator.IsStringPropertyValid(requestModel.Username, user.Username))
                 {
-                    forUpdate.Username = user.Username;
-                }
-                if (EntityValidator.IsStringPropertyValid(user.Password, forUpdate.Password))
-                {
-                    forUpdate.Password = user.Password;
-                }
-                if (EntityValidator.IsStringPropertyValid(user.Email, forUpdate.Email))
-                {
-                    forUpdate.Email = user.Email;
+                    if (!await this.db.Users.AnyAsync(user => user.Username == requestModel.Username))
+                    {
+                        user.Username = requestModel.Username;
+                        isChangesDone = true;
+                    }
+                    else
+                    {
+                        sb = new StringBuilder(response.Message);
+                        sb.AppendLine(string.Format(ResponseMessages.Entity_Property_Is_Taken, nameof(requestModel.Username), requestModel.Username));
+                        response.Message = sb.ToString();
+                    }
                 }
 
-                await this.db.SaveChangesAsync();
+                if (EntityValidator.IsStringPropertyValid(user.Password, user.Password))
+                {
+                    user.Password = user.Password;
+                }
+
+                if (EntityValidator.IsStringPropertyValid(user.Email, user.Email))
+                {
+                    if (!await this.db.Users.AnyAsync(user => user.Email == requestModel.Email))
+                    {
+                        user.Email = requestModel.Email;
+                        isChangesDone = true;
+                    }
+                    else
+                    {
+                        sb = new StringBuilder(response.Message);
+                        sb.AppendLine(string.Format(ResponseMessages.Entity_Property_Is_Taken, nameof(requestModel.Email), requestModel.Email));
+                        response.Message = sb.ToString();
+                    }
+                }
+
+                if (isChangesDone)
+                {
+                    response.IsSuccess = true;
+                    sb = new StringBuilder(response.Message);
+                    sb.AppendLine(string.Format(ResponseMessages.Entity_Partial_Edit_Succeed, Constants.User));
+
+                    await this.db.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new BadRequestException(ExceptionMessages.Arguments_Are_Invalid);
+                }
+
             }
 
             return response;

@@ -26,21 +26,19 @@
              });
 
         public static async Task<UserResponseModel> UserByIdAsync(long userId, CarShopDbContext db)
-        {
-            return await db.Users
-                 .Where(user => user.Id == userId)
-                 .Select(user => new UserResponseModel()
-                 {
-                     Id = user.Id,
-                     Username = user.Username,
-                     Email = user.Email,
-                     Roles = user.Roles.Select(role => role.Role.Type),
-                     Avatar = user.PicturePath,
-                     IssuesCount = user.Issues.Count,
-                     VehiclesCount = user.Vehicles.Count
-                 })
-                 .FirstOrDefaultAsync();
-        }
+        => await db.Users
+            .Where(user => user.Id == userId)
+            .Select(user => new UserResponseModel()
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Email = user.Email,
+                Roles = user.Roles.Select(role => role.Role.Type),
+                Avatar = user.PicturePath,
+                IssuesCount = user.Issues.Count,
+                VehiclesCount = user.Vehicles.Count
+            })
+            .FirstOrDefaultAsync();
 
         public static IQueryable<User> Filter(UserSearchAndSortRequestModel model, IQueryable<User> query)
         {

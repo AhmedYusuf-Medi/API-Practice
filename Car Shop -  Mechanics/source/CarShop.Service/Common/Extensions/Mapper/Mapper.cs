@@ -5,11 +5,25 @@
     using CarShop.Models.Request.IssuePriority;
     using CarShop.Models.Request.IssueStatus;
     using CarShop.Models.Request.User;
+    using CarShop.Models.Request.Vehicle;
     using CarShop.Models.Request.VehicleBrand;
     using CarShop.Models.Request.VehicleType;
 
     public static class Mapper
     {
+        public static Vehicle ToVehicle(VehicleCreateRequestModel requestModel)
+        {
+            return new Vehicle()
+            {
+                Year = requestModel.Year,
+                Model = requestModel.Model,
+                PlateNumber = requestModel.PlateNumber,
+                BrandId = requestModel.BrandId,
+                VehicleTypeId = requestModel.VehicleTypeId,
+                OwnerId = requestModel.OwnerId
+            };
+        }
+
         public static IssuePriority ToIssuePriority(IssuePriorityCreateRequestModel requestModel)
         {
             return new IssuePriority()

@@ -91,7 +91,7 @@
             }
             else
             {
-                throw new BadRequestException(ExceptionMessages.Argumenst_Are_Invalid);
+                throw new BadRequestException(ExceptionMessages.Arguments_Are_Invalid);
             }
 
             return response;

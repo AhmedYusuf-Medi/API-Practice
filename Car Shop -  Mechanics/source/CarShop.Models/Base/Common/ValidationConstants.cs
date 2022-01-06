@@ -13,8 +13,9 @@ namespace CarShop.Models.Base.Common
         //Issue
         public const byte Min_Issue_Description_Length = 5;
         //Vehicle
+        public const int Year_Of_First_Care = 1945;
         public const byte Max_Model_Length = 20;
-        public const byte Min_Model_Length = 5;
+        public const byte Min_Model_Length = 2;
         public const string Plate_Number_Regex = @"^[A-Z]{2}[0-9]{4}[A-Z]{2}";
         public const string Invalid_Plate_Number = "Must be a valid Plate number 2 Capital English letters, followed by 4 digits, followed by 2 Capital English letters";
         //User

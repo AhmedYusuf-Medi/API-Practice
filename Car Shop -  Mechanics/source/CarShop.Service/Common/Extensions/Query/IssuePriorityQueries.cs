@@ -12,7 +12,7 @@
     public static class IssuePriorityQueries
     {
         public static Func<IQueryable<IssuePriority>, IQueryable<IssuePriorityResponseModel>> GetAllIssuePriorityResponse
-      => (IQueryable<IssuePriority> issuePriorities) =>
+         => (IQueryable<IssuePriority> issuePriorities) =>
           issuePriorities.Select(issuePriority => new IssuePriorityResponseModel()
           {
               Id = issuePriority.Id,
@@ -23,19 +23,17 @@
           });
 
         public static async Task<IssuePriorityResponseModel> IssuePriorityByIdAsync(long issuePriorityId, CarShopDbContext db)
-        {
-            return await db.IssuePriorities
-                  .Where(issuePriority => issuePriority.Id == issuePriorityId)
-                  .Select(issuePriority => new IssuePriorityResponseModel()
-                  {
-                      Id = issuePriority.Id,
-                      PriorityName = issuePriority.Priority,
-                      Severity = issuePriority.Severity,
-                      UsedSince = issuePriority.CreatedOn.Date,
-                      IssuesCount = issuePriority.Issues.Count()
-                  })
-                  .FirstOrDefaultAsync();
-        }
+           => await db.IssuePriorities
+            .Where(issuePriority => issuePriority.Id == issuePriorityId)
+            .Select(issuePriority => new IssuePriorityResponseModel()
+            {
+                Id = issuePriority.Id,
+                PriorityName = issuePriority.Priority,
+                Severity = issuePriority.Severity,
+                UsedSince = issuePriority.CreatedOn.Date,
+                IssuesCount = issuePriority.Issues.Count()
+            })
+            .FirstOrDefaultAsync();
 
         public static IOrderedQueryable<IssuePriority> Sort(IssuePrioritySortRequestModel model, IQueryable<IssuePriority> query)
         {

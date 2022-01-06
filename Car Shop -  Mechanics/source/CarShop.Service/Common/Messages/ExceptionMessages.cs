@@ -31,6 +31,6 @@
         public const string User_Is_Not_Blocked = "Choosen user is not even blocked!";
 
         //Arguments invalid
-        public const string Argumenst_Are_Invalid = "Passed arguments were incorrect!";
+        public const string Arguments_Are_Invalid = "Passed arguments were incorrect!";
     }
 }

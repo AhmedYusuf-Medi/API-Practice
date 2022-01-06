@@ -1,18 +1,11 @@
-﻿namespace CarShop.Models.Base
+﻿namespace CarShop.Models.Request.Vehicle
 {
     using CarShop.Models.Base.Common;
-    using System;
-    using System.Collections.Generic;
+    using Microsoft.AspNetCore.Http;
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
 
-    public class Vehicle : DeletableEntity<long>
+    public class VehicleCreateRequestModel
     {
-        public Vehicle()
-        {
-            this.Issues = new HashSet<Issue>();
-        }
-
         [Required]
         [Range(ValidationConstants.Year_Of_First_Care, int.MaxValue)]
         public int Year { get; set; }
@@ -26,31 +19,18 @@
         public string PlateNumber { get; set; }
 
         [Required]
-        public string PicturePath { get; set; }
-
-        public string PictureId { get; set; }
+        public IFormFile VehiclePhoto { get; set; }
 
         [Required]
         [Range(1, long.MaxValue)]
         public long BrandId { get; set; }
 
-        [ForeignKey(nameof(BrandId))]
-        public VehicleBrand Brand { get; set; }
-
         [Required]
         [Range(1, long.MaxValue)]
         public long VehicleTypeId { get; set; }
 
-        [ForeignKey(nameof(VehicleTypeId))]
-        public VehicleType VehicleType { get; set; }
-
         [Required]
         [Range(1, long.MaxValue)]
         public long OwnerId { get; set; }
-
-        [ForeignKey(nameof(OwnerId))]
-        public User Owner { get; set; }
-
-        public ICollection<Issue> Issues { get; set; }
     }
 }

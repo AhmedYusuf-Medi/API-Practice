@@ -22,18 +22,17 @@
             });
 
         public static async Task<IssueStatusResponseModel> IssueStatusByIdAsync(long issueStatusId, CarShopDbContext db)
-        {
-            return await db.IssueStatuses
-                 .Where(issueStatus => issueStatus.Id == issueStatusId)
-                 .Select(issueStatus => new IssueStatusResponseModel()
-                 {
-                     Id = issueStatus.Id,
-                     StatusName = issueStatus.Status,
-                     UsedSince = issueStatus.CreatedOn.Date,
-                     IssuesCount = issueStatus.Issues.Count()
-                 })
-                 .FirstOrDefaultAsync();
-        }
+        => await db.IssueStatuses
+            .Where(issueStatus => issueStatus.Id == issueStatusId)
+            .Select(issueStatus => new IssueStatusResponseModel()
+            {
+                Id = issueStatus.Id,
+                StatusName = issueStatus.Status,
+                UsedSince = issueStatus.CreatedOn.Date,
+                IssuesCount = issueStatus.Issues.Count()
+            })
+            .FirstOrDefaultAsync();
+        
 
         public static IOrderedQueryable<IssueStatus> Sort(IssueStatusSortRequestModel model, IQueryable<IssueStatus> query)
         {
