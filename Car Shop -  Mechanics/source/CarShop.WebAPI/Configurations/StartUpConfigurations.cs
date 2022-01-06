@@ -27,6 +27,7 @@
     using Microsoft.Extensions.Configuration;
     using CarShop.Service.Data.VehicleType;
     using CarShop.Service.Data.IssueStatus;
+    using CarShop.Service.Data.IssuePriority;
 
     public static class StartUpConfigurations
     {
@@ -66,6 +67,7 @@
             services.AddScoped<IVehicleBrandService, VehicleBrandService>();
             services.AddScoped<IVehicleTypeService, VehicleTypeService>();
             services.AddScoped<IIssueStatusService, IssueStatusService>();
+            services.AddScoped<IIssuePriorityService, IssuePriorityService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICloudinaryService, CloudinaryService>();

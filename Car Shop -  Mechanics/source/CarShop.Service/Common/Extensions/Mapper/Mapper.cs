@@ -2,6 +2,7 @@
 {
     using CarShop.Models.Base;
     using CarShop.Models.Request.Exception;
+    using CarShop.Models.Request.IssuePriority;
     using CarShop.Models.Request.IssueStatus;
     using CarShop.Models.Request.User;
     using CarShop.Models.Request.VehicleBrand;
@@ -9,6 +10,15 @@
 
     public static class Mapper
     {
+        public static IssuePriority ToIssuePriority(IssuePriorityCreateRequestModel requestModel)
+        {
+            return new IssuePriority()
+            {
+                Priority = requestModel.PriorityName,
+                Severity = requestModel.Severity
+            };
+        }
+
         public static IssueStatus ToIssueStatus(IssueStatusCreateRequestModel requestModel)
         {
             return new IssueStatus()

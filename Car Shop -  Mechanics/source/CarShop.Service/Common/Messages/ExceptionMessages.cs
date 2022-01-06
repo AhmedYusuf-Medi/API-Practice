@@ -29,5 +29,8 @@
         public const string No_Roles = "User have no roles!";
         public const string Already_Blocked = "User is already blocked!";
         public const string User_Is_Not_Blocked = "Choosen user is not even blocked!";
+
+        //Arguments invalid
+        public const string Argumenst_Are_Invalid = "Passed arguments were incorrect!";
     }
 }

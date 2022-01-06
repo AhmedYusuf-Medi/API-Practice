@@ -26,21 +26,21 @@
 
         public async Task<Response<IssueStatusResponseModel>> GetByIdAsync(long id)
         {
-            var vehicleBrand = await IssueStatusQueries.IssueStatusByIdAsync(id, this.db);
+            var issueStatus = await IssueStatusQueries.IssueStatusByIdAsync(id, this.db);
 
             var response = new Response<IssueStatusResponseModel>();
-            response.Payload = vehicleBrand;
+            response.Payload = issueStatus;
 
-            EntityValidator.ValidateForNull(vehicleBrand, response, ResponseMessages.Entity_Get_Succeed, Constants.IssueStatus);
+            EntityValidator.ValidateForNull(issueStatus, response, ResponseMessages.Entity_Get_Succeed, Constants.IssueStatus);
 
             return response;
         }
 
         public async Task<Response<Paginate<IssueStatusResponseModel>>> GetAllAsync(PaginationRequestModel requestModel)
         {
-            var result = IssueStatusQueries.GetAllIssueStatusResponse(this.db.IssueStatuses);
+            var issueStatuses = IssueStatusQueries.GetAllIssueStatusResponse(this.db.IssueStatuses);
 
-            var payload = await Paginate<IssueStatusResponseModel>.ToPaginatedCollection(result, requestModel.Page, requestModel.PerPage);
+            var payload = await Paginate<IssueStatusResponseModel>.ToPaginatedCollection(issueStatuses, requestModel.Page, requestModel.PerPage);
 
             var response = new Response<Paginate<IssueStatusResponseModel>>();
             ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_GetAll_Succeed, Constants.IssueStatuses), payload);
@@ -50,8 +50,8 @@
 
         public async Task<InfoResponse> CreateAsync(IssueStatusCreateRequestModel requestModel)
         {
-            var issue = Mapper.ToIssueStatus(requestModel);
-            await this.db.IssueStatuses.AddAsync(issue);
+            var issueStatus = Mapper.ToIssueStatus(requestModel);
+            await this.db.IssueStatuses.AddAsync(issueStatus);
             await this.db.SaveChangesAsync();
 
             var response = new InfoResponse();
@@ -64,10 +64,10 @@
         {
             var response = new InfoResponse();
 
-            var issue = await this.db.IssueStatuses.Where(vb => vb.Id == id)
+            var issueStatus = await this.db.IssueStatuses.Where(issueStatus => issueStatus.Id == id)
                 .FirstOrDefaultAsync();
 
-            issue.Status = requestModel.StatusName;
+            issueStatus.Status = requestModel.StatusName;
             await this.db.SaveChangesAsync();
 
             ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_Edit_Succeed, Constants.IssueStatus));
@@ -79,14 +79,14 @@
         {
             var response = new InfoResponse();
 
-            var brand = await this.db.VehicleBrands.Where(vb => vb.Id == id)
+            var issueStatus = await this.db.VehicleBrands.Where(issueStatus => issueStatus.Id == id)
                 .FirstOrDefaultAsync();
 
-            EntityValidator.ValidateForNull(brand, response, ResponseMessages.Entity_Delete_Succeed, Constants.VehicleBrand);
+            EntityValidator.ValidateForNull(issueStatus, response, ResponseMessages.Entity_Delete_Succeed, Constants.VehicleBrand);
 
             if (response.IsSuccess)
             {
-                this.db.VehicleBrands.Remove(brand);
+                this.db.VehicleBrands.Remove(issueStatus);
                 await this.db.SaveChangesAsync();
             }
 

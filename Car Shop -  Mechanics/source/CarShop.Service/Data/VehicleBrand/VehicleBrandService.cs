@@ -39,9 +39,9 @@
 
         public async Task<Response<Paginate<VehicleBrandResponseModel>>> GetAllAsync(PaginationRequestModel requestModel)
         {
-            var result = VehicleBrandQueries.GetAllVehicleBrandResponse(this.db.VehicleBrands);
+            var vehicleBrands = VehicleBrandQueries.GetAllVehicleBrandResponse(this.db.VehicleBrands);
 
-            var payload = await Paginate<VehicleBrandResponseModel>.ToPaginatedCollection(result, requestModel.Page, requestModel.PerPage);
+            var payload = await Paginate<VehicleBrandResponseModel>.ToPaginatedCollection(vehicleBrands, requestModel.Page, requestModel.PerPage);
 
             var response = new Response<Paginate<VehicleBrandResponseModel>>();
             ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_GetAll_Succeed, Constants.VehicleBrands), payload);
@@ -51,8 +51,8 @@
 
         public async Task<InfoResponse> CreateAsync(VehicleBrandCreateRequestModel requestModel)
         {
-            var brand = Mapper.ToVehicleBrand(requestModel);
-            await this.db.VehicleBrands.AddAsync(brand);
+            var vehicleBrand = Mapper.ToVehicleBrand(requestModel);
+            await this.db.VehicleBrands.AddAsync(vehicleBrand);
             await this.db.SaveChangesAsync();
 
             var response = new InfoResponse();
@@ -65,10 +65,10 @@
         {
             var response = new InfoResponse();
 
-            var brand = await this.db.VehicleBrands.Where(vb => vb.Id == id)
+            var vehicleBrand = await this.db.VehicleBrands.Where(vehicleBrand => vehicleBrand.Id == id)
                 .FirstOrDefaultAsync();
 
-            brand.Brand = requestModel.BrandName;
+            vehicleBrand.Brand = requestModel.BrandName;
             await this.db.SaveChangesAsync();
 
             ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_Edit_Succeed, Constants.VehicleBrand));
@@ -80,14 +80,14 @@
         {
             var response = new InfoResponse();
 
-            var brand = await this.db.VehicleBrands.Where(vb => vb.Id == id)
+            var vehicleBrand = await this.db.VehicleBrands.Where(vehicleBrand => vehicleBrand.Id == id)
                 .FirstOrDefaultAsync();
 
-            EntityValidator.ValidateForNull(brand, response, ResponseMessages.Entity_Delete_Succeed, Constants.VehicleBrand);
+            EntityValidator.ValidateForNull(vehicleBrand, response, ResponseMessages.Entity_Delete_Succeed, Constants.VehicleBrand);
 
             if (response.IsSuccess)
             {
-                this.db.VehicleBrands.Remove(brand);
+                this.db.VehicleBrands.Remove(vehicleBrand);
                 await this.db.SaveChangesAsync();
             }
 

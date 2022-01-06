@@ -13,45 +13,45 @@
     {
         public static Func<IQueryable<IssueStatus>, IQueryable<IssueStatusResponseModel>> GetAllIssueStatusResponse
         => (IQueryable<IssueStatus> issueStatuses) =>
-            issueStatuses.Select(vb => new IssueStatusResponseModel()
+            issueStatuses.Select(issueStatus => new IssueStatusResponseModel()
             {
-                Id = vb.Id,
-                StatusName = vb.Status,
-                UsedSince = vb.CreatedOn.Date,
-                IssuesCount = vb.Issues.Count()
+                Id = issueStatus.Id,
+                StatusName = issueStatus.Status,
+                UsedSince = issueStatus.CreatedOn.Date,
+                IssuesCount = issueStatus.Issues.Count()
             });
 
         public static async Task<IssueStatusResponseModel> IssueStatusByIdAsync(long issueStatusId, CarShopDbContext db)
         {
             return await db.IssueStatuses
-                 .Where(vb => vb.Id == issueStatusId)
-                 .Select(vb => new IssueStatusResponseModel()
+                 .Where(issueStatus => issueStatus.Id == issueStatusId)
+                 .Select(issueStatus => new IssueStatusResponseModel()
                  {
-                     Id = vb.Id,
-                     StatusName = vb.Status,
-                     UsedSince = vb.CreatedOn.Date,
-                     IssuesCount = vb.Issues.Count()
+                     Id = issueStatus.Id,
+                     StatusName = issueStatus.Status,
+                     UsedSince = issueStatus.CreatedOn.Date,
+                     IssuesCount = issueStatus.Issues.Count()
                  })
                  .FirstOrDefaultAsync();
         }
 
         public static IOrderedQueryable<IssueStatus> Sort(IssueStatusSortRequestModel model, IQueryable<IssueStatus> query)
         {
-            var sortedQuery = query.OrderBy(u => 1);
+            var sortedQuery = query.OrderBy(issueStatus => 1);
 
             if (model.MostUsed)
             {
-                sortedQuery = sortedQuery.ThenByDescending(u => u.Issues.Count);
+                sortedQuery = sortedQuery.ThenByDescending(issueStatus => issueStatus.Issues.Count);
             }
 
             if (model.Recently)
             {
-                sortedQuery = sortedQuery.ThenByDescending(u => u.CreatedOn);
+                sortedQuery = sortedQuery.ThenByDescending(issueStatus => issueStatus.CreatedOn);
             }
 
             if (model.Oldest)
             {
-                sortedQuery = sortedQuery.ThenBy(u => u.CreatedOn);
+                sortedQuery = sortedQuery.ThenBy(issueStatus => issueStatus.CreatedOn);
             }
 
             return sortedQuery;

@@ -8,16 +8,16 @@
     {
         public void Configure(EntityTypeBuilder<UserRole> builder)
         {
-            builder.HasKey(ur => new { ur.UserId, ur.RoleId });
+            builder.HasKey(userRole => new { userRole.UserId, userRole.RoleId });
 
 
-            builder.HasOne(u => u.User)
-                   .WithMany(u => u.Roles)
-                   .HasForeignKey(u => u.UserId);
+            builder.HasOne(userRole => userRole.User)
+                   .WithMany(role => role.Roles)
+                   .HasForeignKey(userRole => userRole.UserId);
 
-            builder.HasOne(ur => ur.Role)
-                   .WithMany(ur => ur.Users)
-                   .HasForeignKey(ur => ur.RoleId);             
+            builder.HasOne(userRole => userRole.Role)
+                   .WithMany(role => role.Users)
+                   .HasForeignKey(userRole => userRole.RoleId);             
         }
     }
 }

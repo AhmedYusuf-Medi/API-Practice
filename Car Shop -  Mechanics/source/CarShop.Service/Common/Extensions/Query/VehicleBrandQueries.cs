@@ -13,24 +13,24 @@
     {
         public static Func<IQueryable<VehicleBrand>, IQueryable<VehicleBrandResponseModel>> GetAllVehicleBrandResponse
         => (IQueryable<VehicleBrand> vehicleBrands) =>
-            vehicleBrands.Select(vb => new VehicleBrandResponseModel()
+            vehicleBrands.Select(vehicleBrand => new VehicleBrandResponseModel()
             {
-                Id = vb.Id,
-                BrandName = vb.Brand,
-                RegisteredSince = vb.CreatedOn.Date,
-                RegisteredVehiclesAtShop = vb.Vehicles.Count()
+                Id = vehicleBrand.Id,
+                BrandName = vehicleBrand.Brand,
+                RegisteredSince = vehicleBrand.CreatedOn.Date,
+                RegisteredVehiclesAtShop = vehicleBrand.Vehicles.Count()
             });
 
         public static async Task<VehicleBrandResponseModel> VehicleBrandByIdAsync(long vehicleBrandId, CarShopDbContext db)
         {
             return await db.VehicleBrands
-                 .Where(vb => vb.Id == vehicleBrandId)
-                 .Select(vb => new VehicleBrandResponseModel()
+                 .Where(vehicleBrand => vehicleBrand.Id == vehicleBrandId)
+                 .Select(vehicleBrand => new VehicleBrandResponseModel()
                  {
-                     Id = vb.Id,
-                     BrandName = vb.Brand,
-                     RegisteredSince = vb.CreatedOn.Date,
-                     RegisteredVehiclesAtShop = vb.Vehicles.Count()
+                     Id = vehicleBrand.Id,
+                     BrandName = vehicleBrand.Brand,
+                     RegisteredSince = vehicleBrand.CreatedOn.Date,
+                     RegisteredVehiclesAtShop = vehicleBrand.Vehicles.Count()
                  })
                  .FirstOrDefaultAsync();
         }
@@ -41,17 +41,17 @@
 
             if (model.MostPopular)
             {
-                sortedQuery = sortedQuery.ThenByDescending(u => u.Vehicles.Count);
+                sortedQuery = sortedQuery.ThenByDescending(vehicleBrand => vehicleBrand.Vehicles.Count);
             }
 
             if (model.Recently)
             {
-                sortedQuery = sortedQuery.ThenByDescending(u => u.CreatedOn);
+                sortedQuery = sortedQuery.ThenByDescending(vehicleBrand => vehicleBrand.CreatedOn);
             }
 
             if (model.Oldest)
             {
-                sortedQuery = sortedQuery.ThenBy(u => u.CreatedOn);
+                sortedQuery = sortedQuery.ThenBy(vehicleBrand => vehicleBrand.CreatedOn);
             }
 
             return sortedQuery;

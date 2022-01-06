@@ -2,7 +2,6 @@
 {
     using CarShop.Data;
     using CarShop.Models.Base;
-    using CarShop.Models.Request.VehicleBrand;
     using CarShop.Models.Request.VehicleType;
     using CarShop.Models.Response.VehicleType;
     using Microsoft.EntityFrameworkCore;
@@ -14,45 +13,45 @@
     {
         public static Func<IQueryable<VehicleType>, IQueryable<VehicleTypeResponseModel>> GetAllVehicleTypeResponse
         => (IQueryable<VehicleType> vehicleTypes) =>
-            vehicleTypes.Select(vb => new VehicleTypeResponseModel()
+            vehicleTypes.Select(vehicleType => new VehicleTypeResponseModel()
             {
-                Id = vb.Id,
-                TypeName = vb.Type,
-                RegisteredSince = vb.CreatedOn.Date,
-                RegisteredVehiclesAtShop = vb.Vehicles.Count()
+                Id = vehicleType.Id,
+                TypeName = vehicleType.Type,
+                RegisteredSince = vehicleType.CreatedOn.Date,
+                RegisteredVehiclesAtShop = vehicleType.Vehicles.Count()
             });
 
         public static async Task<VehicleTypeResponseModel> VehicleTypeByIdAsync(long vehicleBrandId, CarShopDbContext db)
         {
             return await db.VehicleTypes
-                 .Where(vb => vb.Id == vehicleBrandId)
-                 .Select(vb => new VehicleTypeResponseModel()
+                 .Where(vehicleType => vehicleType.Id == vehicleBrandId)
+                 .Select(vehicleType => new VehicleTypeResponseModel()
                  {
-                     Id = vb.Id,
-                     TypeName = vb.Type,
-                     RegisteredSince = vb.CreatedOn.Date,
-                     RegisteredVehiclesAtShop = vb.Vehicles.Count()
+                     Id = vehicleType.Id,
+                     TypeName = vehicleType.Type,
+                     RegisteredSince = vehicleType.CreatedOn.Date,
+                     RegisteredVehiclesAtShop = vehicleType.Vehicles.Count()
                  })
                  .FirstOrDefaultAsync();
         }
 
         public static IOrderedQueryable<VehicleType> Sort(VehicleTypeSortRequestModel model, IQueryable<VehicleType> query)
         {
-            var sortedQuery = query.OrderBy(u => 1);
+            var sortedQuery = query.OrderBy(vehicleType => 1);
 
             if (model.MostPopular)
             {
-                sortedQuery = sortedQuery.ThenByDescending(u => u.Vehicles.Count);
+                sortedQuery = sortedQuery.ThenByDescending(vehicleType => vehicleType.Vehicles.Count);
             }
 
             if (model.Recently)
             {
-                sortedQuery = sortedQuery.ThenByDescending(u => u.CreatedOn);
+                sortedQuery = sortedQuery.ThenByDescending(vehicleType => vehicleType.CreatedOn);
             }
 
             if (model.Oldest)
             {
-                sortedQuery = sortedQuery.ThenBy(u => u.CreatedOn);
+                sortedQuery = sortedQuery.ThenBy(vehicleType => vehicleType.CreatedOn);
             }
 
             return sortedQuery;

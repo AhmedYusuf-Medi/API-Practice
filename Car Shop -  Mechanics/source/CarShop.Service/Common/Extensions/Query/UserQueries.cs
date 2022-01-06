@@ -14,30 +14,30 @@
     {
         public static Func<IQueryable<User>, IQueryable<UserResponseModel>> GetAllUserResponse
          => (IQueryable<User> users) =>
-             users.Select(u => new UserResponseModel()
+             users.Select(user => new UserResponseModel()
              {
-                 Id = u.Id,
-                 Username = u.Username,
-                 Email = u.Email,
-                 Roles = u.Roles.Select(r => r.Role.Type),
-                 Avatar = u.PicturePath,
-                 IssuesCount = u.Issues.Count,
-                 VehiclesCount = u.Vehicles.Count
+                 Id = user.Id,
+                 Username = user.Username,
+                 Email = user.Email,
+                 Roles = user.Roles.Select(role => role.Role.Type),
+                 Avatar = user.PicturePath,
+                 IssuesCount = user.Issues.Count,
+                 VehiclesCount = user.Vehicles.Count
              });
 
         public static async Task<UserResponseModel> UserByIdAsync(long userId, CarShopDbContext db)
         {
             return await db.Users
-                 .Where(u => u.Id == userId)
-                 .Select(u => new UserResponseModel()
+                 .Where(user => user.Id == userId)
+                 .Select(user => new UserResponseModel()
                  {
-                     Id = u.Id,
-                     Username = u.Username,
-                     Email = u.Email,
-                     Roles = u.Roles.Select(r => r.Role.Type),
-                     Avatar = u.PicturePath,
-                     IssuesCount = u.Issues.Count,
-                     VehiclesCount = u.Vehicles.Count
+                     Id = user.Id,
+                     Username = user.Username,
+                     Email = user.Email,
+                     Roles = user.Roles.Select(role => role.Role.Type),
+                     Avatar = user.PicturePath,
+                     IssuesCount = user.Issues.Count,
+                     VehiclesCount = user.Vehicles.Count
                  })
                  .FirstOrDefaultAsync();
         }
@@ -46,17 +46,17 @@
         {
             if (EntityValidator.IsStringPropertyValid(model.Username))
             {
-                query = query.Where(u => u.Username.Contains(model.Username));
+                query = query.Where(user => user.Username.Contains(model.Username));
             }
 
             if (EntityValidator.IsStringPropertyValid(model.Email))
             {
-                query = query.Where(u => u.Email.Contains(model.Email));
+                query = query.Where(user => user.Email.Contains(model.Email));
             }
 
             if (EntityValidator.IsStringPropertyValid(model.Role))
             {
-                query = query.Where(u => u.Roles.Any(r => r.Role.Type.ToLower().Contains(model.Role.ToLower())));
+                query = query.Where(user => user.Roles.Any(r => r.Role.Type.ToLower().Contains(model.Role.ToLower())));
             }
 
             return query;
@@ -68,12 +68,12 @@
 
             if (model.MostVehicles)
             {
-                sortedQuery = sortedQuery.ThenByDescending(u => u.Vehicles.Count);
+                sortedQuery = sortedQuery.ThenByDescending(user => user.Vehicles.Count);
             }
 
             if (model.MostActive)
             {
-                sortedQuery = sortedQuery.ThenByDescending(u => u.Issues.Count);
+                sortedQuery = sortedQuery.ThenByDescending(user => user.Issues.Count);
             }
 
             if (model.Recently)
@@ -83,7 +83,7 @@
 
             if (model.Oldest)
             {
-                sortedQuery = sortedQuery.ThenBy(u => u.CreatedOn);
+                sortedQuery = sortedQuery.ThenBy(user => user.CreatedOn);
             }
 
             return sortedQuery;

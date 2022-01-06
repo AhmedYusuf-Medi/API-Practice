@@ -39,9 +39,9 @@
 
         public async Task<Response<Paginate<VehicleTypeResponseModel>>> GetAllAsync(PaginationRequestModel requestModel)
         {
-            var result = VehicleTypeQueries.GetAllVehicleTypeResponse(this.db.VehicleTypes);
+            var vehicleTypes = VehicleTypeQueries.GetAllVehicleTypeResponse(this.db.VehicleTypes);
 
-            var payload = await Paginate<VehicleTypeResponseModel>.ToPaginatedCollection(result, requestModel.Page, requestModel.PerPage);
+            var payload = await Paginate<VehicleTypeResponseModel>.ToPaginatedCollection(vehicleTypes, requestModel.Page, requestModel.PerPage);
 
             var response = new Response<Paginate<VehicleTypeResponseModel>>();
             ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_GetAll_Succeed, Constants.VehicleTypes), payload);
@@ -66,7 +66,7 @@
             var response = new InfoResponse();
 
             var vehicleType = await this.db.VehicleTypes
-                .Where(vb => vb.Id == id)
+                .Where(vehicleType => vehicleType.Id == id)
                 .FirstOrDefaultAsync();
 
             vehicleType.Type = requestModel.TypeName;
@@ -81,7 +81,7 @@
         {
             var response = new InfoResponse();
 
-            var vehicleType = await this.db.VehicleTypes.Where(vb => vb.Id == id)
+            var vehicleType = await this.db.VehicleTypes.Where(vehicleType => vehicleType.Id == id)
                 .FirstOrDefaultAsync();
 
             EntityValidator.ValidateForNull(vehicleType, response, ResponseMessages.Entity_Delete_Succeed, Constants.VehicleType);

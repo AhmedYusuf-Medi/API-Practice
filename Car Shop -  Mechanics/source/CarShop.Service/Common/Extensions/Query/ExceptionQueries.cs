@@ -13,11 +13,11 @@
         {
             if (requestModel.MostRecently)
             {
-                result = result.OrderByDescending(e => e.CreatedOn);
+                result = result.OrderByDescending(exception => exception.CreatedOn);
             }
             else if (requestModel.Oldest)
             {
-                result = result.OrderBy(e => e.CreatedOn);
+                result = result.OrderBy(exception => exception.CreatedOn);
             }
 
             return result;
@@ -27,24 +27,24 @@
         {
             if (requestModel.Checked != null)
             {
-                result = result.Where(e => e.IsChecked == requestModel.Checked);
+                result = result.Where(exception => exception.IsChecked == requestModel.Checked);
             }
 
             if (requestModel.Date != null)
             {
-                result = result.Where(e => e.CreatedOn.Date == requestModel.Date);
+                result = result.Where(exception => exception.CreatedOn.Date == requestModel.Date);
             }
 
             if (EntityValidator.IsStringPropertyValid(requestModel.Month))
             {
                 int month = DateTime.ParseExact(requestModel.Month, "MMMM", CultureInfo.InvariantCulture).Month;
-                result = result.Where(e => e.CreatedOn.Date.Month == month);
+                result = result.Where(exception => exception.CreatedOn.Date.Month == month);
             }
 
             if (requestModel.Year != null)
             {
                 int year = (int)requestModel.Year;
-                result = result.Where(e => e.CreatedOn.Date.Year == year);
+                result = result.Where(exception => exception.CreatedOn.Date.Year == year);
             }
 
             return result;
