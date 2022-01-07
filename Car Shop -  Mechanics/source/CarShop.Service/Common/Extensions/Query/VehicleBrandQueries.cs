@@ -46,8 +46,7 @@
             {
                 sortedQuery = sortedQuery.ThenByDescending(vehicleBrand => vehicleBrand.CreatedOn);
             }
-
-            if (model.Oldest)
+            else if (model.Oldest)
             {
                 sortedQuery = sortedQuery.ThenBy(vehicleBrand => vehicleBrand.CreatedOn);
             }

@@ -149,7 +149,6 @@
                 {
                     throw new BadRequestException(ExceptionMessages.Arguments_Are_Invalid);
                 }
-
             }
 
             return response;

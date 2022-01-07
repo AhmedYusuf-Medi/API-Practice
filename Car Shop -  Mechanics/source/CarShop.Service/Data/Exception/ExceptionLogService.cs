@@ -9,6 +9,7 @@
     using CarShop.Service.Common.Base;
     using CarShop.Service.Common.Extensions.Pager;
     using CarShop.Service.Common.Extensions.Query;
+    using CarShop.Service.Common.Extensions.Reflection;
     using CarShop.Service.Common.Extensions.Validator;
     using CarShop.Service.Common.Mapper;
     using CarShop.Service.Common.Messages;
@@ -95,8 +96,11 @@
             var response = new Response<Paginate<ExceptionLog>>();
             ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_Filter_Succeed, Constants.Exceptions));
 
-            if (requestModel.MostRecently || requestModel.Oldest)
-            {
+
+            var IsSortingNeeded = ClassScanner.IsThereAnyTrueProperty(requestModel);
+
+            if (IsSortingNeeded)
+            { 
                 var sortByResponse = await this.SortByAsync(Mapper.ToRequest(requestModel), result);
 
                 var sb = new StringBuilder();

@@ -9,45 +9,45 @@
 
     public static class ExceptionQueries
     {
-        public static IQueryable<ExceptionLog> SortBy(ExceptionSortRequestModel requestModel, IQueryable<ExceptionLog> result)
+        public static IQueryable<ExceptionLog> SortBy(ExceptionSortRequestModel requestModel, IQueryable<ExceptionLog> query)
         {
             if (requestModel.MostRecently)
             {
-                result = result.OrderByDescending(exception => exception.CreatedOn);
+                query = query.OrderByDescending(exception => exception.CreatedOn);
             }
             else if (requestModel.Oldest)
             {
-                result = result.OrderBy(exception => exception.CreatedOn);
+                query = query.OrderBy(exception => exception.CreatedOn);
             }
 
-            return result;
+            return query;
         }
 
-        public static IQueryable<ExceptionLog> Filter(ExceptionSortAndFilterRequestModel requestModel, IQueryable<ExceptionLog> result)
+        public static IQueryable<ExceptionLog> Filter(ExceptionSortAndFilterRequestModel requestModel, IQueryable<ExceptionLog> query)
         {
-            if (requestModel.Checked != null)
+            if (requestModel.Checked)
             {
-                result = result.Where(exception => exception.IsChecked == requestModel.Checked);
+                query = query.Where(exception => exception.IsChecked == requestModel.Checked);
             }
 
             if (requestModel.Date != null)
             {
-                result = result.Where(exception => exception.CreatedOn.Date == requestModel.Date);
+                query = query.Where(exception => exception.CreatedOn.Date == requestModel.Date);
             }
 
             if (EntityValidator.IsStringPropertyValid(requestModel.Month))
             {
                 int month = DateTime.ParseExact(requestModel.Month, "MMMM", CultureInfo.InvariantCulture).Month;
-                result = result.Where(exception => exception.CreatedOn.Date.Month == month);
+                query = query.Where(exception => exception.CreatedOn.Date.Month == month);
             }
 
             if (requestModel.Year != null)
             {
                 int year = (int)requestModel.Year;
-                result = result.Where(exception => exception.CreatedOn.Date.Year == year);
+                query = query.Where(exception => exception.CreatedOn.Date.Year == year);
             }
 
-            return result;
+            return query;
         }
     }
 }

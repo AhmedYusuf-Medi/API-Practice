@@ -78,8 +78,7 @@
             {
                 sortedQuery = sortedQuery.ThenByDescending(u => u.CreatedOn);
             }
-
-            if (model.Oldest)
+            else if (model.Oldest)
             {
                 sortedQuery = sortedQuery.ThenBy(user => user.CreatedOn);
             }

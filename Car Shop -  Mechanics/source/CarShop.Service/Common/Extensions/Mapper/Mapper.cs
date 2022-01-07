@@ -80,6 +80,21 @@
             };
         }
 
+        public static VehicleSortRequestModel ToRequest(VehicleFilterRequestModel requestModel)
+        {
+            return new VehicleSortRequestModel
+            {
+                MostRecentlyRegistered = requestModel.MostRecentlyRegistered,
+                OldestRegistered = requestModel.OldestRegistered,
+                ByYearDesc = requestModel.ByYearDesc,
+                ByYearAsc = requestModel.ByYearAsc,
+                MostIssues = requestModel.MostIssues,
+                LessIssues = requestModel.LessIssues,
+                PerPage = requestModel.PerPage,
+                Page = requestModel.Page
+            };
+        }
+
         public static ExceptionSortRequestModel ToRequest(ExceptionSortAndFilterRequestModel requestModel)
         {
             return new ExceptionSortRequestModel

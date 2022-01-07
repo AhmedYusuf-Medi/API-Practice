@@ -53,8 +53,7 @@
             {
                 sortedQuery = sortedQuery.ThenByDescending(issuePriority => issuePriority.CreatedOn);
             }
-
-            if (model.Oldest)
+            else if (model.Oldest)
             {
                 sortedQuery = sortedQuery.ThenBy(issuePriority => issuePriority.CreatedOn);
             }

@@ -12,11 +12,11 @@
 
     [Route("api/[controller]")]
     [ApiController]
-    public class VehicleController : ControllerBase
+    public class VehiclesController : ControllerBase
     {
         private readonly IVehicleService vehicleService;
 
-        public VehicleController(IVehicleService vehicleService)
+        public VehiclesController(IVehicleService vehicleService)
         {
             this.vehicleService = vehicleService;
         }
@@ -106,6 +106,32 @@
             {
                 return this.NotFound(response);
             }
+
+            return this.Ok(response);
+        }
+
+        /// <summary>
+        /// Sorts all vehicles by selected criterias
+        /// </summary>
+        [HttpGet("filter")]
+        //[Authorize(Constants.Admin)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<VehicleResponseModel>>))]
+        public async Task<IActionResult> FilterAsync([FromQuery]VehicleFilterRequestModel requestModel)
+        {
+            var response = await this.vehicleService.FilterByAsync(requestModel);
+
+            return this.Ok(response);
+        }
+
+        /// <summary>
+        /// Sorts all vehicles by selected criterias
+        /// </summary>
+        [HttpGet("sortby")]
+        //[Authorize(Constants.Admin)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<VehicleResponseModel>>))]
+        public async Task<IActionResult> SortByAsync([FromQuery]VehicleSortRequestModel requestModel)
+        {
+            var response = await this.vehicleService.SortByAsync(requestModel);
 
             return this.Ok(response);
         }

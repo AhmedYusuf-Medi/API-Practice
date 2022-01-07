@@ -10,14 +10,18 @@
     using CarShop.Service.Common.Exceptions;
     using CarShop.Service.Common.Extensions.Pager;
     using CarShop.Service.Common.Extensions.Query;
+    using CarShop.Service.Common.Extensions.Reflection;
     using CarShop.Service.Common.Extensions.Validator;
     using CarShop.Service.Common.Mapper;
     using CarShop.Service.Common.Messages;
     using CarShop.Service.Common.Providers.Cloudinary;
     //Nuget packets
     using Microsoft.EntityFrameworkCore;
+    using System;
+    using System.Collections.Generic;
     //Local
     using System.Linq;
+    using System.Reflection;
     using System.Text;
     using System.Threading.Tasks;
 
@@ -65,9 +69,9 @@
             EntityValidator.CheckUser(response, requestModel.OwnerId, this.db,
                 string.Format(ExceptionMessages.DOESNT_EXIST, Constants.User));
             EntityValidator.CheckVehicleBrand(response, requestModel.BrandId, this.db,
-               string.Format(ExceptionMessages.DOESNT_EXIST, Constants.VehicleBrand));
+                string.Format(ExceptionMessages.DOESNT_EXIST, Constants.VehicleBrand));
             EntityValidator.CheckVehicleType(response, requestModel.VehicleTypeId, this.db,
-             string.Format(ExceptionMessages.DOESNT_EXIST, Constants.VehicleType));
+                string.Format(ExceptionMessages.DOESNT_EXIST, Constants.VehicleType));
 
             if (response.IsSuccess)
             {
@@ -115,7 +119,7 @@
                 if (requestModel.VehicleTypeId.HasValue && requestModel.VehicleTypeId != vehicle.VehicleTypeId)
                 {
                     EntityValidator.CheckVehicleType(response, (long)requestModel.VehicleTypeId, this.db,
-                      string.Format(ExceptionMessages.DOESNT_EXIST, Constants.VehicleType));
+                        string.Format(ExceptionMessages.DOESNT_EXIST, Constants.VehicleType));
 
                     if (response.IsSuccess)
                     {
@@ -127,7 +131,7 @@
                 if (requestModel.BrandId.HasValue && requestModel.BrandId != vehicle.BrandId)
                 {
                     EntityValidator.CheckVehicleBrand(response, (long)requestModel.BrandId, this.db,
-                      string.Format(ExceptionMessages.DOESNT_EXIST, Constants.VehicleBrand));
+                        string.Format(ExceptionMessages.DOESNT_EXIST, Constants.VehicleBrand));
 
                     if (response.IsSuccess)
                     {
@@ -139,7 +143,7 @@
                 if (requestModel.OwnerId.HasValue && requestModel.OwnerId != vehicle.OwnerId)
                 {
                     EntityValidator.CheckUser(response, (long)requestModel.OwnerId, this.db,
-                     string.Format(ExceptionMessages.DOESNT_EXIST, Constants.User));
+                        string.Format(ExceptionMessages.DOESNT_EXIST, Constants.User));
 
                     if (response.IsSuccess)
                     {
@@ -164,7 +168,7 @@
                 {
                     if (!await this.db.Vehicles.AnyAsync(vehicle => vehicle.PlateNumber == requestModel.PlateNumber))
                     {
-                        vehicle.Model = requestModel.Model;
+                        vehicle.PlateNumber = requestModel.PlateNumber;
                         isChangesDone = true;
                     }
                     else
@@ -210,7 +214,6 @@
                 {
                     throw new BadRequestException(ExceptionMessages.Arguments_Are_Invalid);
                 }
-
             }
 
             return response;
@@ -229,6 +232,67 @@
                 this.db.Vehicles.Remove(vehicle);
                 await this.db.SaveChangesAsync();
             }
+
+            return response;
+        }
+
+        public async Task<Response<Paginate<VehicleResponseModel>>> FilterByAsync(VehicleFilterRequestModel requestModel)
+        {
+            var IsSortingNeeded = ClassScanner.IsThereAnyTrueProperty(requestModel);
+
+            IQueryable<Models.Base.Vehicle> query = this.db.Vehicles.AsQueryable();
+
+            query = VehicleQueries.Filter(requestModel, query);
+
+            var response = new Response<Paginate<VehicleResponseModel>>();
+            ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_Filter_Succeed, Constants.Vehicles));
+
+            if (IsSortingNeeded)
+            {
+                var sortByResponse = await this.SortByAsync(Mapper.ToRequest(requestModel), query);
+
+                var sb = new StringBuilder();
+                sb.AppendLine(response.Message);
+                sb.AppendLine(sortByResponse.Message);
+
+                response.Message = sb.ToString();
+
+                response.Payload = sortByResponse.Payload;
+            }
+            else
+            {
+                var filtered = VehicleQueries.GetAllVehicleResponse(query);
+
+                var payload = await Paginate<VehicleResponseModel>.ToPaginatedCollection(filtered, requestModel.Page, requestModel.PerPage);
+
+                response.Payload = payload;
+            }
+
+            return response;
+        }
+
+        public async Task<Response<Paginate<VehicleResponseModel>>> SortByAsync(VehicleSortRequestModel requestModel, IQueryable<Models.Base.Vehicle> vehicles = null)
+        {
+            IQueryable<Models.Base.Vehicle> query;
+
+            if (vehicles != null)
+            {
+                query = vehicles;
+            }
+            else
+            {
+                query = this.db.Vehicles.AsQueryable();
+            }
+
+            query = VehicleQueries.SortBy(requestModel, query);
+
+            var responses = VehicleQueries.GetAllVehicleResponse(query);
+
+            var payload = await Paginate<VehicleResponseModel>.ToPaginatedCollection(responses, requestModel.Page, requestModel.PerPage);
+
+            var response = new Response<Paginate<VehicleResponseModel>>();
+            response.Payload = payload;
+            ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_Sort_Succeed, Constants.Vehicles));
 
             return response;
         }

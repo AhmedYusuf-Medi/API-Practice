@@ -57,7 +57,7 @@
             await this.db.SaveChangesAsync();
 
             var response = new InfoResponse();
-            ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_Create_Succeed, Constants.IssuePriorities));
+            ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_Create_Succeed, Constants.IssuePriority));
 
             return response;
         }

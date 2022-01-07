@@ -10,6 +10,7 @@
     using CarShop.Service.Common.Base;
     using CarShop.Service.Common.Extensions.Pager;
     using CarShop.Service.Common.Extensions.Query;
+    using CarShop.Service.Common.Extensions.Reflection;
     using CarShop.Service.Common.Extensions.Validator;
     using CarShop.Service.Common.Mapper;
     using CarShop.Service.Common.Messages;
@@ -222,8 +223,9 @@
             var response = new Response<Paginate<UserResponseModel>>();
             ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_GetAll_Succeed, Constants.Users));
 
-            if (requestModel.MostVehicles || requestModel.MostActive ||
-                requestModel.Recently || requestModel.Oldest)
+            var IsSortingNeeded = ClassScanner.IsThereAnyTrueProperty(requestModel);
+
+            if (IsSortingNeeded)
             {
                 var sortByResponse = await this.SortByAsync(Mapper.ToRequest(requestModel), query);
 

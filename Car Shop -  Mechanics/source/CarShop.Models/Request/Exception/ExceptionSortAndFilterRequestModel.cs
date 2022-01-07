@@ -10,6 +10,6 @@
 
         public int? Year { get; set; }
 
-        public bool? Checked { get; set; }
+        public bool Checked { get; set; }
     }
 }
