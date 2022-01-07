@@ -17,11 +17,8 @@
     using CarShop.Service.Common.Providers.Cloudinary;
     //Nuget packets
     using Microsoft.EntityFrameworkCore;
-    using System;
-    using System.Collections.Generic;
     //Local
     using System.Linq;
-    using System.Reflection;
     using System.Text;
     using System.Threading.Tasks;
 
@@ -66,12 +63,9 @@
             var response = new InfoResponse();
             response.IsSuccess = true;
 
-            EntityValidator.CheckUser(response, requestModel.OwnerId, this.db,
-                string.Format(ExceptionMessages.DOESNT_EXIST, Constants.User));
-            EntityValidator.CheckVehicleBrand(response, requestModel.BrandId, this.db,
-                string.Format(ExceptionMessages.DOESNT_EXIST, Constants.VehicleBrand));
-            EntityValidator.CheckVehicleType(response, requestModel.VehicleTypeId, this.db,
-                string.Format(ExceptionMessages.DOESNT_EXIST, Constants.VehicleType));
+            EntityValidator.CheckUser(response, requestModel.OwnerId, this.db, Constants.User);
+            EntityValidator.CheckVehicleBrand(response, requestModel.BrandId, this.db,  Constants.VehicleBrand);
+            EntityValidator.CheckVehicleType(response, requestModel.VehicleTypeId, this.db, Constants.VehicleType);
 
             if (response.IsSuccess)
             {
@@ -118,8 +112,7 @@
 
                 if (requestModel.VehicleTypeId.HasValue && requestModel.VehicleTypeId != vehicle.VehicleTypeId)
                 {
-                    EntityValidator.CheckVehicleType(response, (long)requestModel.VehicleTypeId, this.db,
-                        string.Format(ExceptionMessages.DOESNT_EXIST, Constants.VehicleType));
+                    EntityValidator.CheckVehicleType(response, (long)requestModel.VehicleTypeId, this.db, Constants.VehicleType);
 
                     if (response.IsSuccess)
                     {
@@ -130,8 +123,7 @@
 
                 if (requestModel.BrandId.HasValue && requestModel.BrandId != vehicle.BrandId)
                 {
-                    EntityValidator.CheckVehicleBrand(response, (long)requestModel.BrandId, this.db,
-                        string.Format(ExceptionMessages.DOESNT_EXIST, Constants.VehicleBrand));
+                    EntityValidator.CheckVehicleBrand(response, (long)requestModel.BrandId, this.db, Constants.VehicleBrand);
 
                     if (response.IsSuccess)
                     {
@@ -142,8 +134,7 @@
 
                 if (requestModel.OwnerId.HasValue && requestModel.OwnerId != vehicle.OwnerId)
                 {
-                    EntityValidator.CheckUser(response, (long)requestModel.OwnerId, this.db,
-                        string.Format(ExceptionMessages.DOESNT_EXIST, Constants.User));
+                    EntityValidator.CheckUser(response, (long)requestModel.OwnerId, this.db, Constants.User);
 
                     if (response.IsSuccess)
                     {
@@ -221,7 +212,7 @@
 
         public async Task<InfoResponse> DeleteAsync(long id)
         {
-            var vehicle = await this.db.Vehicles.FirstOrDefaultAsync(p => p.Id == id);
+            var vehicle = await this.db.Vehicles.FirstOrDefaultAsync(vehicle => vehicle.Id == id);
 
             var response = new InfoResponse();
 

@@ -5,7 +5,9 @@
     using CarShop.Models.Response;
     using CarShop.Models.Response.VehicleBrand;
     using CarShop.Service.Common.Extensions.Pager;
+    using CarShop.Service.Common.Messages;
     using CarShop.Service.Data.VehicleBrand;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using System.Threading.Tasks;
@@ -25,7 +27,6 @@
         /// Returns all vehicle brands
         /// </summary>
         [HttpGet]
-        //[Authorize(Constants.Admin)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<VehicleBrandResponseModel>>))]
         public async Task<IActionResult> GetAllAsync([FromQuery]PaginationRequestModel requestModel)
         {
@@ -38,7 +39,6 @@
         /// Returns vehicle type by given Id
         /// </summary>
         [HttpGet("{id}")]
-        //[Authorize(Constants.Admin)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<VehicleBrandResponseModel>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(Response<VehicleBrandResponseModel>))]
         public async Task<IActionResult> GetByIdAsync(long id)
@@ -58,7 +58,8 @@
         /// Creates new vehicle brand if the arguments are valid
         /// </summary>
         [HttpPost]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Roles = Constants.Admin)]
+        [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         public async Task<IActionResult> CreateAsync([FromBody]VehicleBrandCreateRequestModel requestModel)
         {
@@ -71,7 +72,8 @@
         /// Updates vehicle brand if the given Id exists
         /// </summary>
         [HttpPut("{id}")]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Constants.Admin)]
+        [Authorize(Constants.User)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(InfoResponse))]
         public async Task<IActionResult> UpdateAsync(long  id, [FromBody]VehicleBrandCreateRequestModel requestModel)
@@ -90,7 +92,7 @@
         /// Deletes vehicle brand if the given Id exists
         /// </summary>
         [HttpDelete("{id}")]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Constants.Admin)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(InfoResponse))]
         public async Task<IActionResult> DeleteAsync(long id)
@@ -109,7 +111,8 @@
         /// Sorts vehicle brands by selected criterias
         /// </summary>
         [HttpGet("sortby")]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Constants.Admin)]
+        [Authorize(Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<VehicleBrandResponseModel>>))]
         public async Task<IActionResult> SortByAsync([FromQuery]VehicleBrandSortRequestModel requestModel)
         {

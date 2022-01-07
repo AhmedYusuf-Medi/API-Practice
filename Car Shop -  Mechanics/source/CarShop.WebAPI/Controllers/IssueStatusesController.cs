@@ -5,7 +5,9 @@
     using CarShop.Models.Response;
     using CarShop.Models.Response.IssueStatus;
     using CarShop.Service.Common.Extensions.Pager;
+    using CarShop.Service.Common.Messages;
     using CarShop.Service.Data.IssueStatus;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using System.Threading.Tasks;
@@ -26,7 +28,8 @@
         /// Returns all issue statuses
         /// </summary>
         [HttpGet]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Roles = Constants.Admin)]
+        [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<IssueStatusResponseModel>>))]
         public async Task<IActionResult> GetAllAsync([FromQuery]PaginationRequestModel requestModel)
         {
@@ -39,7 +42,8 @@
         /// Returns issue status by given Id
         /// </summary>
         [HttpGet("{id}")]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Roles = Constants.Admin)]
+        [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<IssueStatusResponseModel>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(Response<IssueStatusResponseModel>))]
         public async Task<IActionResult> GetByIdAsync(long id)
@@ -59,7 +63,8 @@
         /// Creates new issue status if the arguments are valid
         /// </summary>
         [HttpPost]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Roles = Constants.Admin)]
+        [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         public async Task<IActionResult> CreateAsync([FromBody]IssueStatusCreateRequestModel requestModel)
         {
@@ -72,7 +77,8 @@
         /// Updates issue status if the given Id exists
         /// </summary>
         [HttpPut("{id}")]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Roles = Constants.Admin)]
+        [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(InfoResponse))]
         public async Task<IActionResult> UpdateAsync(long id, [FromBody]IssueStatusCreateRequestModel requestModel)
@@ -91,7 +97,8 @@
         /// Deletes issue status if the given Id exists
         /// </summary>
         [HttpDelete("{id}")]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Roles = Constants.Admin)]
+        [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(InfoResponse))]
         public async Task<IActionResult> DeleteAsync(long id)
@@ -110,7 +117,8 @@
         /// Sorts issue statuses by selected criterias
         /// </summary>
         [HttpGet("sortby")]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Roles = Constants.Admin)]
+        [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<IssueStatusResponseModel>>))]
         public async Task<IActionResult> SortByAsync([FromQuery]IssueStatusSortRequestModel requestModel)
         {

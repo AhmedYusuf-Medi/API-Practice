@@ -1,18 +1,18 @@
-﻿using CarShop.Models.Pagination;
-using CarShop.Models.Request.IssuePriority;
-using CarShop.Models.Response;
-using CarShop.Models.Response.IssuePriority;
-using CarShop.Service.Common.Extensions.Pager;
-using CarShop.Service.Data.IssuePriority;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace CarShop.WebAPI.Controllers
+﻿namespace CarShop.WebAPI.Controllers
 {
+    using CarShop.Models.Pagination;
+    using CarShop.Models.Request.IssuePriority;
+    using CarShop.Models.Response;
+    using CarShop.Models.Response.IssuePriority;
+    using CarShop.Service.Common.Extensions.Pager;
+    using CarShop.Service.Common.Messages;
+    using CarShop.Service.Data.IssuePriority;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    using System.Threading.Tasks;
+
+
     [Route("api/[controller]")]
     [ApiController]
     public class IssuePrioritiesController : ControllerBase
@@ -28,7 +28,8 @@ namespace CarShop.WebAPI.Controllers
         /// Returns all issue priorities
         /// </summary>
         [HttpGet]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Roles = Constants.Admin)]
+        [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<IssuePriorityResponseModel>>))]
         public async Task<IActionResult> GetAllAsync([FromQuery]PaginationRequestModel requestModel)
         {
@@ -41,7 +42,8 @@ namespace CarShop.WebAPI.Controllers
         /// Returns issue priority by given Id
         /// </summary>
         [HttpGet("{id}")]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Roles = Constants.Admin)]
+        [Authorize(Roles = Constants.Mechanic)]]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<IssuePriorityResponseModel>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(Response<IssuePriorityResponseModel>))]
         public async Task<IActionResult> GetByIdAsync(long id)
@@ -61,7 +63,8 @@ namespace CarShop.WebAPI.Controllers
         /// Creates new issue priority if the arguments are valid
         /// </summary>
         [HttpPost]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Roles = Constants.Admin)]
+        [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         public async Task<IActionResult> CreateAsync([FromBody]IssuePriorityCreateRequestModel requestModel)
         {
@@ -74,7 +77,8 @@ namespace CarShop.WebAPI.Controllers
         /// Updates issue priority if the given Id exists
         /// </summary>
         [HttpPut("{id}")]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Roles = Constants.Admin)]
+        [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(InfoResponse))]
         public async Task<IActionResult> UpdateAsync(long id, [FromBody]IssuePriorityUpdateRequestModel requestModel)
@@ -93,7 +97,8 @@ namespace CarShop.WebAPI.Controllers
         /// Deletes issue priority if the given Id exists
         /// </summary>
         [HttpDelete("{id}")]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Roles = Constants.Admin)]
+        [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(InfoResponse))]
         public async Task<IActionResult> DeleteAsync(long id)
@@ -112,7 +117,8 @@ namespace CarShop.WebAPI.Controllers
         /// Sorts issue priorities by selected criterias
         /// </summary>
         [HttpGet("sortby")]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Roles = Constants.Admin)]
+        [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<IssuePriorityResponseModel>>))]
         public async Task<IActionResult> SortByAsync([FromQuery]IssuePrioritySortRequestModel requestModel)
         {

@@ -7,6 +7,7 @@
         public const string Reports = "reports";
         public const string Users = "users";
         public const string Admin = "Admin";
+        public const string Mechanic = "Mechanic";
         public const string Pending = "Pending";
         public const string Blocked = "Blocked";
         public const string Role = "Role";

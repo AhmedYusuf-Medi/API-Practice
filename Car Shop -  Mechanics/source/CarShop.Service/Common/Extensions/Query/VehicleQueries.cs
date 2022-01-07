@@ -24,7 +24,8 @@
              Model = vehicle.Model,
              Year = vehicle.Year,
              PlateNumber = vehicle.PlateNumber,
-             IssueCount = vehicle.Issues.Count
+             IssueCount = vehicle.Issues.Count,
+             RegistrationDate = vehicle.CreatedOn.Date
          });
 
         public static async Task<VehicleResponseModel> VehicleByIdAsync(long vehicleId, CarShopDbContext db)
@@ -40,7 +41,8 @@
                 Model = vehicle.Model,
                 Year = vehicle.Year,
                 PlateNumber = vehicle.PlateNumber,
-                IssueCount = vehicle.Issues.Count
+                IssueCount = vehicle.Issues.Count,
+                RegistrationDate = vehicle.CreatedOn.Date
             })
             .FirstOrDefaultAsync();
 

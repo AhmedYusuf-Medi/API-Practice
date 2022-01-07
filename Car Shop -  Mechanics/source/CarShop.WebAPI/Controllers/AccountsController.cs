@@ -4,6 +4,7 @@
     using CarShop.Models.Request.User;
     using CarShop.Models.Response;
     using CarShop.Service.Account.Data;
+    using CarShop.Service.Common.Messages;
     //Public
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.Cookies;
@@ -78,7 +79,7 @@
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(InfoResponse))]
-        //[Authorize("User")]
+        [Authorize(Roles = Constants.User)]
         public async Task<IActionResult> EditAsync(long id, [FromForm] UserEditRequestModel user)
         {
             var result = await this.accountService.EditProfileAsync(id, user);

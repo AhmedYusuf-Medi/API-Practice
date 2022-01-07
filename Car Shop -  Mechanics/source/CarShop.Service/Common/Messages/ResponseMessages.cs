@@ -12,6 +12,7 @@
         public const string Entity_Filter_Succeed = "Successfully filtered {0}!";
         public const string Entity_Sort_Succeed = "Successfully sorted {0}!";
         public const string Entity_Property_Is_Taken = "{0}: {1} is already taken!";
+        public const string Entity_Partial_Update_Suceed = "{0} was successfully partial updated!";
 
         //User
         public const string User_Block_Succeed = "Successfully blocked {0}!";
@@ -19,7 +20,7 @@
         public const string Role_Register_Succeed = "Successfully assigned {0}!";
 
         //Auth
-        public const string Logout_Succeed = "Succsessfully logout";
+        public const string Logout_Succeed = "Succsessfully logout!";
         public const string Login_Succeed = "Successfully loged in!";
         public const string Check_Email_For_Verification = "Please check your email for verification link.";
         public const string Email_Verification_Succeed = "{0} was verified!";

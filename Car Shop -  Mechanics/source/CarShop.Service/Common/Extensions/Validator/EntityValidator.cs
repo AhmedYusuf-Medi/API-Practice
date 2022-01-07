@@ -4,10 +4,8 @@
     using CarShop.Models.Response;
     using CarShop.Service.Common.Base;
     using CarShop.Service.Common.Messages;
-    using System.Data.Entity;
     using System.Linq;
     using System.Text;
-    using System.Threading.Tasks;
 
     public static class EntityValidator
     {
@@ -59,36 +57,74 @@
                 && !currentProperty.Equals(property);
         }
 
-        public static void CheckUser(InfoResponse response, long userId, CarShopDbContext db, string message)
+        public static void CheckUser(InfoResponse response, long userId, CarShopDbContext db, string entityType)
         {
             if (!db.Users.Any(user => user.Id == userId))
             {
                 sb = new StringBuilder(response.Message);
-                sb.AppendLine(message);
+                sb.AppendLine(string.Format(ExceptionMessages.DOESNT_EXIST, entityType));
 
                 response.Message = sb.ToString();
                 response.IsSuccess = false;
             }
         }
 
-        public static void CheckVehicleBrand(InfoResponse response, long vehicleBrandId, CarShopDbContext db, string message)
+        public static void CheckVehicle(InfoResponse response, long vehicleId, CarShopDbContext db, string entityType)
+        {
+            if (!db.Vehicles.Any(vehicle => vehicle.Id == vehicleId))
+            {
+                sb = new StringBuilder(response.Message);
+                sb.AppendLine(string.Format(ExceptionMessages.DOESNT_EXIST, entityType));
+
+                response.Message = sb.ToString();
+                response.IsSuccess = false;
+            }
+        }
+
+        public static void CheckIssueStatus(InfoResponse response, long statusId, CarShopDbContext db, string entityType)
+        {
+
+            if (!db.IssueStatuses.Any(status => status.Id == statusId))
+            {
+                sb = new StringBuilder(response.Message);
+                sb.AppendLine(string.Format(ExceptionMessages.DOESNT_EXIST, entityType));
+
+                response.Message = sb.ToString();
+                response.IsSuccess = false;
+            }
+        }
+
+        public static void CheckIssuePriority(InfoResponse response, long priorityId, CarShopDbContext db, string entityType)
+
+        {
+            if (!db.IssuePriorities.Any(priority => priority.Id == priorityId))
+            {
+                sb = new StringBuilder(response.Message);
+                sb.AppendLine(string.Format(ExceptionMessages.DOESNT_EXIST, entityType));
+
+                response.Message = sb.ToString();
+                response.IsSuccess = false;
+            }
+        }
+
+        public static void CheckVehicleBrand(InfoResponse response, long vehicleBrandId, CarShopDbContext db, string entityType)
         {
             if (!db.VehicleBrands.Any(vehicleBrand => vehicleBrand.Id == vehicleBrandId))
             {
                 sb = new StringBuilder(response.Message);
-                sb.AppendLine(message);
+                sb.AppendLine(string.Format(ExceptionMessages.DOESNT_EXIST, entityType));
 
                 response.Message = sb.ToString();
                 response.IsSuccess = false;
             }
         }
 
-        public static void CheckVehicleType(InfoResponse response, long vehicleTypeId, CarShopDbContext db, string message)
+        public static void CheckVehicleType(InfoResponse response, long vehicleTypeId, CarShopDbContext db, string entityType)
         {
             if (!db.VehicleTypes.Any(vehicleType => vehicleType.Id == vehicleTypeId))
             {
                 sb = new StringBuilder(response.Message);
-                sb.AppendLine(message);
+                sb.AppendLine(string.Format(ExceptionMessages.DOESNT_EXIST, entityType));
 
                 response.Message = sb.ToString();
                 response.IsSuccess = false;

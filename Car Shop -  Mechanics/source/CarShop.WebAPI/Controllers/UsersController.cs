@@ -29,7 +29,8 @@
         /// Returns user by given Id
         /// </summary>
         [HttpGet("{id}")]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Roles = Constants.Admin)]
+        [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<UserResponseModel>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Response<UserResponseModel>))]
         public async Task<IActionResult> GetByIdAsync(long id)
@@ -48,7 +49,8 @@
         /// Returns all users
         /// </summary>
         [HttpGet("")]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Roles = Constants.Admin)]
+        [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<UserResponseModel>>))]
         public async Task<IActionResult> GetAllAsync([FromQuery]PaginationRequestModel requestModel)
         {
@@ -61,7 +63,8 @@
         /// Deletes user by Id
         /// </summary>
         [HttpDelete("{id}")]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Roles = Constants.Admin)]
+        [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(InfoResponse))]
         public async Task<IActionResult> DeleteAsync(long id)
@@ -99,7 +102,7 @@
         /// Unblock user
         /// </summary>
         [HttpPatch("unblock/{id}")]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Roles = Constants.Admin)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(InfoResponse))]
         public async Task<IActionResult> UnBlockAsync(long id)
@@ -118,7 +121,8 @@
         /// Search by given parameters
         /// </summary>
         [HttpGet("searchby")]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Roles = Constants.Admin)]
+        [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<UserResponseModel>>))]
         public async Task<IActionResult> SearchByAsync([FromQuery]UserSearchAndSortRequestModel requestModel)
         {
@@ -131,7 +135,8 @@
         /// Filters and sorts by choosen criterias
         /// </summary>
         [HttpGet("sortby")]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Roles = Constants.Admin)]
+        [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<UserResponseModel>>))]
         public async Task<IActionResult> SortByAsync([FromQuery]UserSortRequestModel requestModel)
         {
@@ -144,7 +149,8 @@
         /// Removes selected role from user
         /// </summary>
         [HttpDelete("role")]
-        //[Authorize(Roles = Constants.Admin)]
+        [Authorize(Roles = Constants.Admin)]
+        [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(InfoResponse))]
         public async Task<IActionResult> RemoveRoleAsync([FromForm] long userId, long roleId)
@@ -163,7 +169,7 @@
         /// Adds selected role to user
         /// </summary>
         [HttpPatch("role")]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Roles = Constants.Admin)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(InfoResponse))]
         public async Task<IActionResult> RegisterRoleAsync([FromForm] long userId, long roleId)

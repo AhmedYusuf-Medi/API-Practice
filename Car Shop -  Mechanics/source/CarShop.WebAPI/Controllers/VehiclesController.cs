@@ -5,7 +5,9 @@
     using CarShop.Models.Response;
     using CarShop.Models.Response.Vehicle;
     using CarShop.Service.Common.Extensions.Pager;
+    using CarShop.Service.Common.Messages;
     using CarShop.Service.Data.Vehicle;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using System.Threading.Tasks;
@@ -25,7 +27,7 @@
         /// Returns all vehicles
         /// </summary>
         [HttpGet]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<VehicleResponseModel>>))]
         public async Task<IActionResult> GetAllAsync([FromQuery] PaginationRequestModel requestModel)
         {
@@ -38,7 +40,7 @@
         /// Returns vehicle by given Id
         /// </summary>
         [HttpGet("{id}")]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<VehicleResponseModel>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(Response<VehicleResponseModel>))]
         public async Task<IActionResult> GetByIdAsync(long id)
@@ -58,7 +60,7 @@
         /// Creates new vehicles if the arguments are valid
         /// </summary>
         [HttpPost]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Roles = Constants.User)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         public async Task<IActionResult> CreateAsync([FromForm]VehicleCreateRequestModel requestModel)
         {
@@ -73,10 +75,10 @@
         }
 
         /// <summary>
-        /// Updates vehicle type if the given Id exists
+        /// Updates vehicle if the given Id exists
         /// </summary>
         [HttpPatch("{id}")]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(InfoResponse))]
         public async Task<IActionResult> UpdateAsync(long id, [FromForm]VehicleUpdateRequestModel requestModel)
@@ -95,7 +97,7 @@
         /// Deletes vehicle if the given Id exists
         /// </summary>
         [HttpDelete("{id}")]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(InfoResponse))]
         public async Task<IActionResult> DeleteAsync(long id)
@@ -111,10 +113,10 @@
         }
 
         /// <summary>
-        /// Sorts all vehicles by selected criterias
+        /// Filters and sorts all vehicles by selected criterias
         /// </summary>
         [HttpGet("filter")]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<VehicleResponseModel>>))]
         public async Task<IActionResult> FilterAsync([FromQuery]VehicleFilterRequestModel requestModel)
         {
@@ -127,7 +129,7 @@
         /// Sorts all vehicles by selected criterias
         /// </summary>
         [HttpGet("sortby")]
-        //[Authorize(Constants.Admin)]
+        [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<VehicleResponseModel>>))]
         public async Task<IActionResult> SortByAsync([FromQuery]VehicleSortRequestModel requestModel)
         {

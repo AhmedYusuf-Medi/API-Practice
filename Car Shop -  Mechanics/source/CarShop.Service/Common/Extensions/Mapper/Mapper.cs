@@ -2,6 +2,7 @@
 {
     using CarShop.Models.Base;
     using CarShop.Models.Request.Exception;
+    using CarShop.Models.Request.Issue;
     using CarShop.Models.Request.IssuePriority;
     using CarShop.Models.Request.IssueStatus;
     using CarShop.Models.Request.User;
@@ -11,6 +12,17 @@
 
     public static class Mapper
     {
+        public static Issue ToIssue(IssueCreateRequestModel requestModel)
+        {
+            return new Issue()
+            {
+                Description = requestModel.Description,
+                VehicleId = requestModel.VehicleId,
+                StatusId = requestModel.StatusId,
+                PriorityId = requestModel.PriorityId
+            };
+        }
+
         public static Vehicle ToVehicle(VehicleCreateRequestModel requestModel)
         {
             return new Vehicle()
@@ -100,6 +112,18 @@
             return new ExceptionSortRequestModel
             {
                 MostRecently = requestModel.MostRecently,
+                Oldest = requestModel.Oldest,
+                PerPage = requestModel.PerPage,
+                Page = requestModel.Page
+            };
+        }
+
+        public static IssueSortRequestModel ToRequest(IssueFilterRequestModel requestModel)
+        {
+            return new IssueSortRequestModel
+            {
+                Recently = requestModel.Recently,
+                BySeverity = requestModel.BySeverity,
                 Oldest = requestModel.Oldest,
                 PerPage = requestModel.PerPage,
                 Page = requestModel.Page

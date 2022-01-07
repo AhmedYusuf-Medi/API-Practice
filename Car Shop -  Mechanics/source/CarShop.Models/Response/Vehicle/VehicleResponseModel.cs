@@ -1,8 +1,12 @@
 ﻿namespace CarShop.Models.Response.Vehicle
 {
+    using System;
+
     public class VehicleResponseModel
     {
         public long Id { get; set; }
+
+        public DateTime RegistrationDate { get; set; }
 
         public string Owner { get; set; }
 
