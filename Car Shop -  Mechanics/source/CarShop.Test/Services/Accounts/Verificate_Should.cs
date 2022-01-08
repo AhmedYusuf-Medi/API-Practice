@@ -1,14 +1,14 @@
-﻿using CarShop.Data;
-using CarShop.Models.Response;
-using CarShop.Service.Account.Data;
-using CarShop.Service.Common.Messages;
-using CarShop.Test.Services.Base;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Threading.Tasks;
-
-namespace CarShop.Test.Services.Accounts
+﻿namespace CarShop.Test.Services.Accounts
 {
+    using CarShop.Data;
+    using CarShop.Models.Response;
+    using CarShop.Service.Account.Data;
+    using CarShop.Service.Common.Messages;
+    using CarShop.Test.Services.Base;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using System;
+    using System.Threading.Tasks;
+
     [TestClass]
     public class Verificate_Should : BaseTest
     {
