@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarShop.Models", "CarShop.M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarShop.Service", "CarShop.Service\CarShop.Service.csproj", "{293EA0F7-406F-49B5-9A42-1A5C8941F1DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarShop.WebAPI", "CarShop.WebAPI\CarShop.WebAPI.csproj", "{6AF4C73A-E6E9-4D26-A628-A94D68A31D77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarShop.WebAPI", "CarShop.WebAPI\CarShop.WebAPI.csproj", "{6AF4C73A-E6E9-4D26-A628-A94D68A31D77}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarShop.Test", "CarShop.Test\CarShop.Test.csproj", "{EFA74B2D-8959-40EF-96ED-2A1CED9E24B7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{6AF4C73A-E6E9-4D26-A628-A94D68A31D77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6AF4C73A-E6E9-4D26-A628-A94D68A31D77}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6AF4C73A-E6E9-4D26-A628-A94D68A31D77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFA74B2D-8959-40EF-96ED-2A1CED9E24B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFA74B2D-8959-40EF-96ED-2A1CED9E24B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFA74B2D-8959-40EF-96ED-2A1CED9E24B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFA74B2D-8959-40EF-96ED-2A1CED9E24B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

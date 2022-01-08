@@ -43,7 +43,7 @@
         /// </summary>
         [HttpGet("{id}")]
         [Authorize(Roles = Constants.Admin)]
-        [Authorize(Roles = Constants.Mechanic)]]
+        [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<IssuePriorityResponseModel>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(Response<IssuePriorityResponseModel>))]
         public async Task<IActionResult> GetByIdAsync(long id)
