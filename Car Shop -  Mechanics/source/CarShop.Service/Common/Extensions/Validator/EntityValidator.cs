@@ -36,7 +36,7 @@
         {
             if (entity == null)
             {
-                ResponseSetter.SetResponse(responseModel, true, string.Format(ExceptionMessages.DOESNT_EXIST, entityType));
+                ResponseSetter.SetResponse(responseModel, false, string.Format(ExceptionMessages.DOESNT_EXIST, entityType));
             }
             else
             {

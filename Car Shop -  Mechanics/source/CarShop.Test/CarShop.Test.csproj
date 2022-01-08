@@ -22,7 +22,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Services\Accounts\" />
 		<Folder Include="Services\Issues\" />
 		<Folder Include="Services\IssuePriorities\" />
 		<Folder Include="Services\IssueStatuses\" />

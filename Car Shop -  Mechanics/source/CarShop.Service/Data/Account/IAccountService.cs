@@ -11,6 +11,6 @@
         public Task<InfoResponse> EditProfileAsync(long id, UserEditRequestModel user);
         public Task<Response<UserResponseModel>> LoginAsync(UserLoginRequestModel userLogin);
         public Task<InfoResponse> RegisterUserAsync(UserRegisterRequestModel user);
-        public Task<InfoResponse> VerificationAsync(string email, Guid code);
+        public Task<InfoResponse> VerificateAsync(string email, Guid code);
     }
 }

@@ -22,17 +22,18 @@
             await dbContext.IssueStatuses.AddRangeAsync(SeedIssueStatuses());
             await dbContext.IssuePriorities.AddRangeAsync(SeedIssuePriorties());
             await dbContext.Issues.AddRangeAsync(SeedIssues());
+            await dbContext.ExceptionLogs.AddRangeAsync(SeedExceptionLogs());
         }
 
         private static IEnumerable<Role> SeedRoles()
         {
-            var roleNames = new List<string>() { "Admin", "User", "Mechanic", "Blocked", "Pending" };
+            var roleParameters = new List<string>() { "Admin", "User", "Mechanic", "Blocked", "Pending" };
 
             var roles = new HashSet<Role>();
 
             id = 0;
 
-            foreach (var role in roleNames)
+            foreach (var role in roleParameters)
             {
                 roles.Add(new Role() { Id = ++id, Type = role });
             }
@@ -47,18 +48,18 @@
             var defaultAvatar = "https://res.cloudinary.com/diihcd5cx/image/upload/v1640880258/Default_Avatar_e2kmn5.png";
             var hasher = new PasswordHasher<User>();
 
-            var usersParamters = new List<(string email, string password,
+            var usersParameters = new List<(string email, string password,
                 string username, string picturePath)>
             {
                 ("ahhasmed.usuf@gmail.com", hasher.HashPassword(demoUser, "passwordQ1!"), "amedy", defaultAvatar),
                 ("muthasdkabarona@gmail.com", hasher.HashPassword(demoUser, "passwordQ1!"), "medysun", defaultAvatar)
-            };
+           };
 
             var users = new HashSet<User>();
 
             id = 0;
 
-            foreach (var user in usersParamters)
+            foreach (var user in usersParameters)
             {
                 users.Add(new User
                 {
@@ -71,21 +72,33 @@
                 });
             }
 
+            //register unverified user
+            users.Add(new User
+            {
+                Id = ++id,
+                Email = "verificationTest@gmail.com",
+                Password = hasher.HashPassword(demoUser, "passwordQ1!"),
+                Username = "steven_verification",
+                Code = new Guid("5C60F693-BEF5-E011-A485-80EE7300C695"),
+                PicturePath = defaultAvatar
+            });
+
             return users;
         }
 
         private static IEnumerable<UserRole> SeedUserRoles()
         {
-            var userRolesParamters = new List<(long userId, long roleId)>
+            var userRolesParameters = new List<(long userId, long roleId)>
             {
                 (1, 2),
                 (2, 1),
-                (2, 3)
+                (2, 3),
+                (3, 5)
             };
 
             var roles = new HashSet<UserRole>();
 
-            foreach (var role in userRolesParamters)
+            foreach (var role in userRolesParameters)
             {
                 roles.Add(new UserRole()
                 {
@@ -99,7 +112,7 @@
 
         private static IEnumerable<VehicleBrand> SeedVehicleBrands()
         {
-            var brandParamters = new List<string>
+            var brandParameters = new List<string>
             {
                "BMW",
                "Mercedes",
@@ -112,7 +125,7 @@
 
             var brands = new HashSet<VehicleBrand>();
 
-            foreach (var brand in brandParamters)
+            foreach (var brand in brandParameters)
             {
                 brands.Add(new VehicleBrand
                 {
@@ -159,7 +172,6 @@
                new Vehicle{Id = ++id, Year = 2005, Model = "Astra", PlateNumber = "AC1234AC", BrandId = 4, VehicleTypeId = 1, OwnerId = 1, PicturePath = "" }
             };
 
-
             var vehicles = new HashSet<Vehicle>();
 
             foreach (var vehicle in vehicleParamters)
@@ -174,7 +186,7 @@
         {
             id = 0;
 
-            var statusParamters = new List<string>
+            var statusParameters = new List<string>
             {
                "Done",
                "Repairing",
@@ -184,7 +196,7 @@
 
             var statuses = new HashSet<IssueStatus>();
 
-            foreach (var status in statusParamters)
+            foreach (var status in statusParameters)
             {
                 statuses.Add(new IssueStatus
                 {
@@ -200,7 +212,7 @@
         {
             id = 0;
 
-            var prioritiesParamters = new List<(string priority, byte severity)>
+            var prioritiesParameters = new List<(string priority, byte severity)>
             {
                ("Small", 1),
                ("Medium", 2),
@@ -209,7 +221,7 @@
 
             var priorities = new HashSet<IssuePriority>();
 
-            foreach (var priority in prioritiesParamters)
+            foreach (var priority in prioritiesParameters)
             {
                 priorities.Add(new IssuePriority
                 {
@@ -224,18 +236,15 @@
 
         private static IEnumerable<Issue> SeedIssues()
         {
-            id = 0;
-
-            var issueParamters = new List<(long vehicleId, long statusId, string description, long priorityId)>
+            var issueParameters = new List<(long vehicleId, long statusId, string description, long priorityId)>
             {
                (1, 3, "Sounds like a trash metal!",2),
                (2, 2, "The wheels are not symetric!",3)
             };
 
-
             var issues = new HashSet<Issue>();
 
-            foreach (var issue in issueParamters)
+            foreach (var issue in issueParameters)
             {
                 issues.Add(new Issue
                 {
@@ -248,6 +257,33 @@
             }
 
             return issues;
+        }
+
+        private static IEnumerable<ExceptionLog> SeedExceptionLogs()
+        {
+            var exceptionParameters = new List<(Guid id, string message, string innerEx, string stackTrc, bool IsChecked)>
+            {
+               (new Guid("b526ce37-8b35-475d-9c18-f2740a935b34"), "Exception msg", "Inner ex random generated text", "Server explode", false),
+               (new Guid("b526ce37-8b35-475d-9c18-f2740a935b35"), "Exception msg", "Inner ex random generated text", "Server explode", true),
+               (new Guid("b526ce37-8b35-475d-9c18-f2740a935b36"), "Exception msg", "Inner ex random generated text", "Server explode", false),
+               (new Guid("b526ce37-8b35-475d-9c18-f2740a935b37"), "Exception msg", "Inner ex random generated text", "Server explode", false),
+            };
+
+            var exceptionLogs = new HashSet<ExceptionLog>();
+
+            foreach (var exceptionLog in exceptionParameters)
+            {
+                exceptionLogs.Add(new ExceptionLog
+                {
+                    Id = exceptionLog.id,
+                    ExceptionMessage = exceptionLog.message,
+                    InnerException = exceptionLog.innerEx,
+                    StackTrace = exceptionLog.stackTrc,
+                    IsChecked = exceptionLog.IsChecked
+                });
+            }
+
+            return exceptionLogs;
         }
     }
 }

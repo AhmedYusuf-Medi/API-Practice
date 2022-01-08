@@ -65,16 +65,10 @@
                 }
             }
 
-            var userPayload = await this.db.Users
-                .Where(u => u.Email == userLogin.Email)
-                .Select(u => new User()
-                {
-                    Email = u.Email,
-                    Password = u.Password
-                })
-                .FirstOrDefaultAsync();
-
-            response.Payload = await UserQueries.UserByIdAsync(user.Id, this.db);
+            if (response.IsSuccess)
+            {
+                response.Payload = await UserQueries.UserByIdAsync(user.Id, this.db);
+            }
 
             return response;
         }
@@ -82,10 +76,11 @@
         public async Task<InfoResponse> EditProfileAsync(long id, UserEditRequestModel requestModel)
         {
             var response = new InfoResponse();
+            response.IsSuccess = true;
 
             var user = await this.db.Users.FirstOrDefaultAsync(u => u.Id == id);
 
-            EntityValidator.ValidateForNull(user, response, ResponseMessages.Entity_Edit_Succeed, Constants.User);
+            EntityValidator.ValidateForNull(user, response, Constants.User);
 
             if (response.IsSuccess)
             {
@@ -110,19 +105,19 @@
                         isChangesDone = true;
                     }
                     else
-                    {
+                    { 
                         sb = new StringBuilder(response.Message);
                         sb.AppendLine(string.Format(ResponseMessages.Entity_Property_Is_Taken, nameof(requestModel.Username), requestModel.Username));
                         response.Message = sb.ToString();
                     }
                 }
 
-                if (EntityValidator.IsStringPropertyValid(user.Password, user.Password))
+                if (EntityValidator.IsStringPropertyValid(requestModel.Password, user.Password))
                 {
                     user.Password = user.Password;
                 }
 
-                if (EntityValidator.IsStringPropertyValid(user.Email, user.Email))
+                if (EntityValidator.IsStringPropertyValid(requestModel.Email, user.Email))
                 {
                     if (!await this.db.Users.AnyAsync(user => user.Email == requestModel.Email))
                     {
@@ -143,7 +138,30 @@
                     sb = new StringBuilder(response.Message);
                     sb.AppendLine(string.Format(ResponseMessages.Entity_Partial_Edit_Succeed, Constants.User));
 
+                    //remove empty lines
+                    string[] result = sb.ToString().Split("\r\n")
+                                     .Where(x => !string.IsNullOrEmpty(x))
+                                     .ToArray();
+
+                    string message = string.Join("\n", result);
+
+                    response.Message = message;
+
                     await this.db.SaveChangesAsync();
+                }
+                else if (EntityValidator.IsStringPropertyValid(response.Message))
+                {
+                    response.IsSuccess = false;
+                    sb = new StringBuilder(response.Message);
+
+                    //remove empty lines
+                    string[] result = sb.ToString().Split("\r\n")
+                                     .Where(x => !string.IsNullOrEmpty(x))
+                                     .ToArray();
+
+                    string message = string.Join("\n", result);
+
+                    response.Message = message;
                 }
                 else
                 {
@@ -178,15 +196,15 @@
             var code = new Guid();
             code = Guid.NewGuid();
 
-            if (doesUserExist != null)
+            if (doesUserExist != null && doesUserExist.Roles.Any(r => r.RoleId == Constants.Pending_Id))
+            {
+                await this.SendVerificationMail(user.Email, code);
+                ResponseSetter.SetResponse(response, true, ResponseMessages.Check_Email_For_Verification);
+            }
+            else if(doesUserExist != null)
             {
                 ResponseSetter.SetResponse(response, false, string.Format(ExceptionMessages.Already_Exist, Constants.User));
                 return response;
-            }
-            else if (doesUserExist != null && doesUserExist.Roles.Any(r => r.Role.Id == Constants.Pending_Id))
-            {
-                response = await this.SendVerificationMail(user.Email, code);
-                ResponseSetter.SetResponse(response, true, ResponseMessages.Check_Email_For_Verification);
             }
 
             if (!response.IsSuccess)
@@ -207,13 +225,16 @@
                 await this.db.UserRoles.AddAsync(userRole);
                 await this.db.SaveChangesAsync();
 
-                response = await SendVerificationMail(user.Email, code);
+                await SendVerificationMail(user.Email, code);
+
+                response.Message = ResponseMessages.Check_Email_For_Verification;
+                response.IsSuccess = true;
             }
 
             return response;
         }
 
-        public async Task<InfoResponse> VerificationAsync(string email, Guid code)
+        public async Task<InfoResponse> VerificateAsync(string email, Guid code)
         {
             var user = await this.db.Users
                             .Where(u => u.Email == email && u.Code == code)

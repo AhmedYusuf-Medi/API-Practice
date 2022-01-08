@@ -99,7 +99,7 @@
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         public async Task<IActionResult> VerificateAsync([FromQuery]string email, Guid code)
         {
-            var response = await this.accountService.VerificationAsync(email, code);
+            var response = await this.accountService.VerificateAsync(email, code);
 
             if (!response.IsSuccess)
             {

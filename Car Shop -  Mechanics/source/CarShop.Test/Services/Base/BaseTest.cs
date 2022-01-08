@@ -1,11 +1,13 @@
 ﻿namespace CarShop.Test.Services.Base
 {
     using CarShop.Data;
+    using CarShop.Models.Base;
     using CarShop.Models.Response;
     using CarShop.Service.Common.Providers.Cloudinary;
     using CarShop.Service.Common.Providers.Mail.SendGrid;
     using CarShop.Test.Storage;
     using CloudinaryDotNet;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.Data.Sqlite;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -17,6 +19,8 @@
         protected DbContextOptions<CarShopDbContext> Options { get; set; }
 
         protected ICloudinaryService CloudinaryService { get; set; }
+
+        protected PasswordHasher<User> PasswordHasher => new PasswordHasher<User>();
 
         protected IMailSender<InfoResponse> MailService { get; set; }
 
