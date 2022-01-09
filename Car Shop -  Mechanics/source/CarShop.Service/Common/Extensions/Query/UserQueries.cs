@@ -40,7 +40,7 @@
             })
             .FirstOrDefaultAsync();
 
-        public static IQueryable<User> Filter(UserSearchAndSortRequestModel model, IQueryable<User> query)
+        public static IQueryable<User> Filter(UserFilterAndSortRequestModel model, IQueryable<User> query)
         {
             if (EntityValidator.IsStringPropertyValid(model.Username))
             {

@@ -79,7 +79,7 @@
             };
         }
 
-        public static UserSortRequestModel ToRequest(UserSearchAndSortRequestModel requestModel)
+        public static UserSortRequestModel ToRequest(UserFilterAndSortRequestModel requestModel)
         {
             return new UserSortRequestModel
             {

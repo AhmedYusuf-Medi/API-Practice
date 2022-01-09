@@ -9,34 +9,34 @@
     using System.Threading.Tasks;
 
     [TestClass]
-    public class Block_Should : BaseTest
+    public class RegisterRole_Should : BaseTest
     {
         [TestMethod]
-        [DataRow(1)]
-        [DataRow(2)]
-        public async Task Block_Should_ReturnSucceeedReponse(long userId)
+        [DataRow(1, 1)]
+        [DataRow(1, 3)]
+        public async Task RegisterRole_ShouldReturnSucceedResponse(long userId, long roleId)
         {
             using (var assertContext = new CarShopDbContext(this.Options))
             {
                 var sut = new UserService(assertContext);
-                var actual = await sut.BlockAsync(userId);
+                var actual = await sut.RegisterRoleAsync(userId, roleId);
 
                 Assert.IsNotNull(actual);
                 Assert.IsTrue(actual.IsSuccess);
-                Assert.AreEqual(actual.Message, string.Format(ResponseMessages.User_Block_Succeed, Constants.User));
+                Assert.AreEqual(actual.Message, ResponseMessages.Role_Register_Succeed);
                 Assert.IsInstanceOfType(actual, typeof(InfoResponse));
             }
         }
 
         [TestMethod]
-        [DataRow(0)]
-        [DataRow(long.MaxValue)]
-        public async Task Block_Should_ReturnNotSucceeedReponse_WhenUserDoesntExist(long userId)
+        [DataRow(0, 1)]
+        [DataRow(long.MaxValue, 3)]
+        public async Task RegisterRole_ShouldReturnNotSucceedResponse_WhenGivenUserIdDoesntExist(long userId, long roleId)
         {
             using (var assertContext = new CarShopDbContext(this.Options))
             {
                 var sut = new UserService(assertContext);
-                var actual = await sut.BlockAsync(userId);
+                var actual = await sut.RegisterRoleAsync(userId, roleId);
 
                 Assert.IsNotNull(actual);
                 Assert.IsFalse(actual.IsSuccess);
@@ -46,51 +46,36 @@
         }
 
         [TestMethod]
-        [DataRow(3)]
-        public async Task Block_Should_ReturnNotSucceeedReponse_WhenUserHaveNoRoles(long userId)
+        [DataRow(2, long.MaxValue)]
+        [DataRow(1, 0)]
+        public async Task RegisterRole_ShouldReturnNotSucceedResponse_WhenGivenRoleIdDoesntExist(long userId, long roleId)
         {
             using (var assertContext = new CarShopDbContext(this.Options))
             {
                 var sut = new UserService(assertContext);
-                var actual = await sut.BlockAsync(userId);
+                var actual = await sut.RegisterRoleAsync(userId, roleId);
 
                 Assert.IsNotNull(actual);
                 Assert.IsFalse(actual.IsSuccess);
-                Assert.AreEqual(actual.Message, ExceptionMessages.No_Roles);
+                Assert.AreEqual(actual.Message, string.Format(ExceptionMessages.DOESNT_EXIST, Constants.Role));
                 Assert.IsInstanceOfType(actual, typeof(InfoResponse));
             }
         }
 
         [TestMethod]
-        [DataRow(4)]
-        public async Task Block_Should_ReturnNotSucceeedReponse_WhenUserIsAlreadyBlocked(long userId)
+        [DataRow(2, 1)]
+        public async Task RegisterRole_ShouldReturnSucceedResponse_ButInsteadOfCreatingNewRoe_ShouldRevive(long userId, long roleId)
         {
             using (var assertContext = new CarShopDbContext(this.Options))
             {
                 var sut = new UserService(assertContext);
-                var actual = await sut.BlockAsync(userId);
 
-                Assert.IsNotNull(actual);
-                Assert.IsFalse(actual.IsSuccess);
-                Assert.AreEqual(actual.Message, ExceptionMessages.Already_Blocked);
-                Assert.IsInstanceOfType(actual, typeof(InfoResponse));
-            }
-        }
-
-        [TestMethod]
-        [DataRow(2)]
-        public async Task Block_Should_ReturnSucceeedReponse_ButReviveDeletedRole(long userId)
-        {
-            using (var assertContext = new CarShopDbContext(this.Options))
-            {
-                var sut = new UserService(assertContext);
-                await sut.BlockAsync(userId);
-                await sut.UnblockAsync(userId);
-                var actual = await sut.BlockAsync(userId);
+                await sut.RemoveRoleAsync(userId, roleId);
+                var actual = await sut.RegisterRoleAsync(userId, roleId);
 
                 Assert.IsNotNull(actual);
                 Assert.IsTrue(actual.IsSuccess);
-                Assert.AreEqual(actual.Message, string.Format(ResponseMessages.User_Block_Succeed, Constants.User));
+                Assert.AreEqual(actual.Message, ResponseMessages.Role_Register_Succeed);
                 Assert.IsInstanceOfType(actual, typeof(InfoResponse));
             }
         }

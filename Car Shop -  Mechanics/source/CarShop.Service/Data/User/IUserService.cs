@@ -16,9 +16,9 @@
         public Task<Response<UserResponseModel>> GetByIdAsync(long id);
         public Task<long> GetCountAsync();
         public Task<InfoResponse> RegisterRoleAsync(long userId, long roleId);
-        public Task<InfoResponse> RemoveRole(long userId, long roleId);
-        public Task<Response<Paginate<UserResponseModel>>> SearchByAsync(UserSearchAndSortRequestModel requestModel);
+        public Task<InfoResponse> RemoveRoleAsync(long userId, long roleId);
+        public Task<Response<Paginate<UserResponseModel>>> FilterByAsync(UserFilterAndSortRequestModel requestModel);
         public Task<Response<Paginate<UserResponseModel>>> SortByAsync(UserSortRequestModel requestModel, IQueryable<CarShop.Models.Base.User> query = null);
-        public Task<InfoResponse> UnBlockAsync(long userId);
+        public Task<InfoResponse> UnblockAsync(long userId);
     }
 }

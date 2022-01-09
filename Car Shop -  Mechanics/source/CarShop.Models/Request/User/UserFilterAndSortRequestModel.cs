@@ -1,6 +1,6 @@
 ﻿namespace CarShop.Models.Request.User
 {
-    public class UserSearchAndSortRequestModel : UserSortRequestModel
+    public class UserFilterAndSortRequestModel : UserSortRequestModel
     {
         public string Username { get; set; }
 
