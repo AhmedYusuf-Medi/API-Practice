@@ -52,7 +52,9 @@
                 string username, string picturePath)>
             {
                 ("ahhasmed.usuf@gmail.com", hasher.HashPassword(demoUser, "passwordQ1!"), "amedy", defaultAvatar),
-                ("muthasdkabarona@gmail.com", hasher.HashPassword(demoUser, "passwordQ1!"), "medysun", defaultAvatar)
+                ("muthasdkabarona@gmail.com", hasher.HashPassword(demoUser, "passwordQ1!"), "medysun", defaultAvatar),
+                ("norolesuser@gmail.com", hasher.HashPassword(demoUser, "passwordQ1!"), "norolesname", defaultAvatar),
+                ("blockedUser@gmail.com", hasher.HashPassword(demoUser, "passwordQ1!"), "blockedUser", defaultAvatar)
            };
 
             var users = new HashSet<User>();
@@ -93,7 +95,8 @@
                 (1, 2),
                 (2, 1),
                 (2, 3),
-                (3, 5)
+                (4, 4),
+                (5, 5)
             };
 
             var roles = new HashSet<UserRole>();

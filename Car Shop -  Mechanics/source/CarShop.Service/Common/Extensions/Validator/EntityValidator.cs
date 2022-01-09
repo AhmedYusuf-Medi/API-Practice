@@ -30,6 +30,10 @@
                 responseModel.Message = string.Format(ExceptionMessages.DOESNT_EXIST, entityType);
                 responseModel.IsSuccess = false;
             }
+            else
+            {
+                responseModel.IsSuccess = true;
+            }
         }
 
         public static void ValidateForNull<T>(T entity, InfoResponse responseModel, string succeedMessage, string entityType)

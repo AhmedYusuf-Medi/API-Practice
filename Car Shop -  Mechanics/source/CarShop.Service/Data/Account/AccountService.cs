@@ -76,7 +76,6 @@
         public async Task<InfoResponse> EditProfileAsync(long id, UserEditRequestModel requestModel)
         {
             var response = new InfoResponse();
-            response.IsSuccess = true;
 
             var user = await this.db.Users.FirstOrDefaultAsync(u => u.Id == id);
 
