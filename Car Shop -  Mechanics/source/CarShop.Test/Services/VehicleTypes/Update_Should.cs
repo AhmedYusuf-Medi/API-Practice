@@ -37,7 +37,7 @@
         [TestMethod]
         [DataRow(0, "newType")]
         [DataRow(long.MaxValue, "anotherNewType")]
-        public async Task Update_Should_ReturnNotSucceedResponse_WhenVehicleBrandDoesntExist(long vehicleTypeId, string typeName)
+        public async Task Update_Should_ReturnNotSucceedResponse_WhenVehicleTypeDoesntExist(long vehicleTypeId, string typeName)
         {
             var requestModel = new VehicleTypeCreateRequestModel
             {

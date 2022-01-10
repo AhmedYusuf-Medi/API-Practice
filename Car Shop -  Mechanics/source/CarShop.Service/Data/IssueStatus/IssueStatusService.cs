@@ -67,10 +67,13 @@
             var issueStatus = await this.db.IssueStatuses.Where(issueStatus => issueStatus.Id == id)
                 .FirstOrDefaultAsync();
 
-            issueStatus.Status = requestModel.StatusName;
-            await this.db.SaveChangesAsync();
+            EntityValidator.ValidateForNull(issueStatus, response, ResponseMessages.Entity_Edit_Succeed, Constants.IssueStatus);
 
-            ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_Edit_Succeed, Constants.IssueStatus));
+            if (response.IsSuccess)
+            {
+                issueStatus.Status = requestModel.StatusName;
+                await this.db.SaveChangesAsync();
+            }
 
             return response;
         }
@@ -82,7 +85,7 @@
             var issueStatus = await this.db.VehicleBrands.Where(issueStatus => issueStatus.Id == id)
                 .FirstOrDefaultAsync();
 
-            EntityValidator.ValidateForNull(issueStatus, response, ResponseMessages.Entity_Delete_Succeed, Constants.VehicleBrand);
+            EntityValidator.ValidateForNull(issueStatus, response, ResponseMessages.Entity_Delete_Succeed, Constants.IssueStatus);
 
             if (response.IsSuccess)
             {
@@ -102,7 +105,7 @@
             var payload = await Paginate<IssueStatusResponseModel>.ToPaginatedCollection(responses, requestModel.Page, requestModel.PerPage);
 
             var response = new Response<Paginate<IssueStatusResponseModel>>();
-            ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_Sort_Succeed, Constants.VehicleBrands), payload);
+            ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_Sort_Succeed, Constants.IssueStatuses), payload);
 
             return response;
         }

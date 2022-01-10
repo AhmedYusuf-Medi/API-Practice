@@ -24,7 +24,6 @@
 	<ItemGroup>
 		<Folder Include="Services\Issues\" />
 		<Folder Include="Services\IssuePriorities\" />
-		<Folder Include="Services\IssueStatuses\" />
 		<Folder Include="Services\ExceptionLogs\" />
 		<Folder Include="Services\Vehicles\" />
 	</ItemGroup>
