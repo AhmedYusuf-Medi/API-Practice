@@ -70,28 +70,33 @@
                 .Where(issuePriority => issuePriority.Id == id)
                 .FirstOrDefaultAsync();
 
-            bool isChangesMade = false;
+            EntityValidator.ValidateForNull(issuePriority, response, ResponseMessages.Entity_Edit_Succeed, Constants.IssuePriority);
 
-            if (EntityValidator.IsStringPropertyValid(requestModel.PriorityName))
+            if (response.IsSuccess)
             {
-                issuePriority.Priority = requestModel.PriorityName;
-                isChangesMade = true;
-            }
+                bool isChangesMade = false;
 
-            if (requestModel.Severity != null)
-            {
-                issuePriority.Severity = (byte)requestModel.Severity;
-                isChangesMade = true;
-            }
+                if (EntityValidator.IsStringPropertyValid(requestModel.PriorityName))
+                {
+                    issuePriority.Priority = requestModel.PriorityName;
+                    isChangesMade = true;
+                }
 
-            if (isChangesMade)
-            {
-                await this.db.SaveChangesAsync();
-                ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_Edit_Succeed, Constants.IssuePriority));
-            }
-            else
-            {
-                throw new BadRequestException(ExceptionMessages.Arguments_Are_Invalid);
+                if (requestModel.Severity != null)
+                {
+                    issuePriority.Severity = (byte)requestModel.Severity;
+                    isChangesMade = true;
+                }
+
+                if (isChangesMade)
+                {
+                    await this.db.SaveChangesAsync();
+                    ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_Edit_Succeed, Constants.IssuePriority));
+                }
+                else
+                {
+                    throw new BadRequestException(ExceptionMessages.Arguments_Are_Invalid);
+                }
             }
 
             return response;
@@ -124,7 +129,7 @@
             var payload = await Paginate<IssuePriorityResponseModel>.ToPaginatedCollection(responses, requestModel.Page, requestModel.PerPage);
 
             var response = new Response<Paginate<IssuePriorityResponseModel>>();
-            ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_Sort_Succeed, Constants.VehicleBrands), payload);
+            ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_Sort_Succeed, Constants.IssuePriorities), payload);
 
             return response;
         }
