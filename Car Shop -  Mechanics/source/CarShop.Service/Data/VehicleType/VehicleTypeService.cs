@@ -69,10 +69,13 @@
                 .Where(vehicleType => vehicleType.Id == id)
                 .FirstOrDefaultAsync();
 
-            vehicleType.Type = requestModel.TypeName;
-            await this.db.SaveChangesAsync();
+            EntityValidator.ValidateForNull(vehicleType, response, ResponseMessages.Entity_Edit_Succeed, Constants.VehicleType);
 
-            ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_Edit_Succeed, Constants.VehicleType));
+            if (response.IsSuccess)
+            {
+                vehicleType.Type = requestModel.TypeName;
+                await this.db.SaveChangesAsync();
+            }
 
             return response;
         }
