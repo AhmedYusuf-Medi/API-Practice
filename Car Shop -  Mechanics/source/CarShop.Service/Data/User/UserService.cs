@@ -275,7 +275,7 @@
             query = UserQueries.Filter(requestModel, query);
 
             var response = new Response<Paginate<UserResponseModel>>();
-            ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_GetAll_Succeed, Constants.Users));
+            ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_Filter_Succeed, Constants.Users));
 
             var IsSortingNeeded = ClassScanner.IsThereAnyTrueProperty(requestModel);
 
@@ -318,7 +318,7 @@
 
             var response = new Response<Paginate<UserResponseModel>>();
             response.Payload = payload;
-            ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_GetAll_Succeed, Constants.Users));
+            ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_Sort_Succeed, Constants.Users));
 
             return response;
         }

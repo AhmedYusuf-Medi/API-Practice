@@ -1,13 +1,13 @@
-﻿using CarShop.Data;
-using CarShop.Models.Response;
-using CarShop.Service.Common.Messages;
-using CarShop.Service.Data.User;
-using CarShop.Test.Services.Base;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Threading.Tasks;
-
-namespace CarShop.Test.Services.Users
+﻿namespace CarShop.Test.Services.Users
 {
+    using CarShop.Data;
+    using CarShop.Models.Response;
+    using CarShop.Service.Common.Messages;
+    using CarShop.Service.Data.User;
+    using CarShop.Test.Services.Base;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using System.Threading.Tasks;
+
     [TestClass]
     public class Unblock_Should : BaseTest
     {

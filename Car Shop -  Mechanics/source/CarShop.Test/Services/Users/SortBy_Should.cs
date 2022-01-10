@@ -40,7 +40,7 @@
 
                 Assert.IsNotNull(actual);
                 Assert.IsTrue(actual.IsSuccess);
-                Assert.AreEqual(actual.Message, string.Format(ResponseMessages.Entity_GetAll_Succeed, Constants.Users));
+                Assert.AreEqual(actual.Message, string.Format(ResponseMessages.Entity_Sort_Succeed, Constants.Users));
                 Assert.IsInstanceOfType(actual, typeof(Response<Paginate<UserResponseModel>>));
                 Assert.AreEqual(perPage, actual.Payload.Entities.Count());
             }

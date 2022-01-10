@@ -68,10 +68,13 @@
             var vehicleBrand = await this.db.VehicleBrands.Where(vehicleBrand => vehicleBrand.Id == id)
                 .FirstOrDefaultAsync();
 
-            vehicleBrand.Brand = requestModel.BrandName;
-            await this.db.SaveChangesAsync();
+            EntityValidator.ValidateForNull(vehicleBrand, response, ResponseMessages.Entity_Edit_Succeed, Constants.VehicleBrand);
 
-            ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_Edit_Succeed, Constants.VehicleBrand));
+            if (response.IsSuccess)
+            {
+                vehicleBrand.Brand = requestModel.BrandName;
+                await this.db.SaveChangesAsync();
+            }
 
             return response;
         }
