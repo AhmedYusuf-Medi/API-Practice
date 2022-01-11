@@ -136,31 +136,16 @@
                     response.IsSuccess = true;
                     sb = new StringBuilder(response.Message);
                     sb.AppendLine(string.Format(ResponseMessages.Entity_Partial_Edit_Succeed, Constants.User));
+                    response.Message = sb.ToString();
 
-                    //remove empty lines
-                    string[] result = sb.ToString().Split("\r\n")
-                                     .Where(x => !string.IsNullOrEmpty(x))
-                                     .ToArray();
-
-                    string message = string.Join("\n", result);
-
-                    response.Message = message;
+                    ResponseSetter.ReworkMessageResult(response);
 
                     await this.db.SaveChangesAsync();
                 }
                 else if (EntityValidator.IsStringPropertyValid(response.Message))
                 {
                     response.IsSuccess = false;
-                    sb = new StringBuilder(response.Message);
-
-                    //remove empty lines
-                    string[] result = sb.ToString().Split("\r\n")
-                                     .Where(x => !string.IsNullOrEmpty(x))
-                                     .ToArray();
-
-                    string message = string.Join("\n", result);
-
-                    response.Message = message;
+                    ResponseSetter.ReworkMessageResult(response);
                 }
                 else
                 {

@@ -18,7 +18,7 @@
         [RegularExpression(ValidationConstants.Plate_Number_Regex, ErrorMessage = ValidationConstants.Invalid_Plate_Number)]
         public string PlateNumber { get; set; }
 
-        [Required]
+        //[Required]
         public IFormFile VehiclePhoto { get; set; }
 
         [Required]

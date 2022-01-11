@@ -172,7 +172,9 @@
             var vehicleParamters = new List<Vehicle>
             {
                new Vehicle{Id = ++id, Year = 2005, Model = "A4", PlateNumber = "AB1234AB", BrandId = 3, VehicleTypeId = 1, OwnerId = 1, PicturePath = "" },
-               new Vehicle{Id = ++id, Year = 2005, Model = "Astra", PlateNumber = "AC1234AC", BrandId = 4, VehicleTypeId = 1, OwnerId = 1, PicturePath = "" }
+               new Vehicle{Id = ++id, Year = 2005, Model = "Astra", PlateNumber = "AC1234AC", BrandId = 4, VehicleTypeId = 1, OwnerId = 1, PicturePath = "" },
+               new Vehicle{Id = ++id, Year = 2002, Model = "Astra", PlateNumber = "AD1234AC", BrandId = 4, VehicleTypeId = 1, OwnerId = 2, PicturePath = "" },
+               new Vehicle{Id = ++id, Year = 2001, Model = "A4", PlateNumber = "AD1234AB", BrandId = 3, VehicleTypeId = 1, OwnerId = 2, PicturePath = "" }
             };
 
             var vehicles = new HashSet<Vehicle>();

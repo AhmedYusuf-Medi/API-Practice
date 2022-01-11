@@ -1,6 +1,8 @@
 ﻿namespace CarShop.Service.Common.Base
 {
     using CarShop.Models.Response;
+    using System.Linq;
+    using System.Text;
 
     public static class ResponseSetter
     {
@@ -16,5 +18,17 @@
             response.IsSuccess = isSuccess;
             response.Message = message;
         }
+
+        public static void ReworkMessageResult(InfoResponse response)
+        {
+            var sb = new StringBuilder(response.Message);
+            string[] result = sb.ToString().Split("\r\n")
+                               .Where(x => !string.IsNullOrEmpty(x))
+                               .ToArray();
+
+            string message = string.Join("\n", result);
+            response.Message = message;
+        }
+
     }
 }

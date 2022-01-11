@@ -67,6 +67,17 @@
             EntityValidator.CheckVehicleBrand(response, requestModel.BrandId, this.db,  Constants.VehicleBrand);
             EntityValidator.CheckVehicleType(response, requestModel.VehicleTypeId, this.db, Constants.VehicleType);
 
+            bool IsPlateNumberTaken = await this.db.Vehicles.AnyAsync(vehicle => vehicle.PlateNumber == requestModel.PlateNumber);
+
+            if (IsPlateNumberTaken)
+            {
+                var sb = new StringBuilder(response.Message);
+                sb.AppendLine(string.Format(ExceptionMessages.Already_Exist, nameof(requestModel.PlateNumber)));
+
+                response.Message = sb.ToString();
+                response.IsSuccess = false;
+            }
+
             if (response.IsSuccess)
             {
                 var vehicle = Mapper.ToVehicle(requestModel);
@@ -92,6 +103,10 @@
                 await this.db.SaveChangesAsync();
 
                 ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_Create_Succeed, Constants.Vehicle));
+            }
+            else
+            {
+                ResponseSetter.ReworkMessageResult(response);
             }
 
             return response;
