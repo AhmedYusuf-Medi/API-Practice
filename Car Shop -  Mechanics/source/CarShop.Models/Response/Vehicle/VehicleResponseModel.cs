@@ -10,6 +10,8 @@
 
         public string Owner { get; set; }
 
+        public string OwnerMail { get; set; }
+
         public string PicturePath { get; set; }
 
         public string VehicleType { get; set; }

@@ -92,7 +92,7 @@
             };
         }
 
-        public static VehicleSortRequestModel ToRequest(VehicleFilterRequestModel requestModel)
+        public static VehicleSortRequestModel ToRequest(VehicleFilterAndSortRequestModel requestModel)
         {
             return new VehicleSortRequestModel
             {

@@ -17,10 +17,13 @@
 
         public IFormFile VehiclePhoto { get; set; }
 
+        [Range(1, long.MaxValue)]
         public long? BrandId { get; set; }
 
+        [Range(1, long.MaxValue)]
         public long? VehicleTypeId { get; set; }
 
+        [Range(1, long.MaxValue)]
         public long? OwnerId { get; set; }
     }
 }

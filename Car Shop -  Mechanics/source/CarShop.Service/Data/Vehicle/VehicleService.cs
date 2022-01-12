@@ -121,9 +121,11 @@
 
             EntityValidator.ValidateForNull(vehicle, response, Constants.Vehicle);
 
+            var isChangesDone = false;
+
             if (response.IsSuccess)
             {
-                var isChangesDone = false;
+                var sb = new StringBuilder();
 
                 if (requestModel.VehicleTypeId.HasValue && requestModel.VehicleTypeId != vehicle.VehicleTypeId)
                 {
@@ -179,7 +181,7 @@
                     }
                     else
                     {
-                        var sb = new StringBuilder(response.Message);
+                        sb = new StringBuilder(response.Message);
                         sb.AppendLine(string.Format(ResponseMessages.Entity_Property_Is_Taken, nameof(requestModel.PlateNumber), requestModel.PlateNumber));
                         response.Message = sb.ToString();
                     }
@@ -210,9 +212,11 @@
                 if (isChangesDone)
                 {
                     response.IsSuccess = true;
-                    var sb = new StringBuilder(response.Message);
+                    sb = new StringBuilder(response.Message);
                     sb.AppendLine(string.Format(ResponseMessages.Entity_Partial_Edit_Succeed, Constants.Vehicle));
                     response.Message = sb.ToString();
+
+                    ResponseSetter.ReworkMessageResult(response);
 
                     await this.db.SaveChangesAsync();
                 }
@@ -242,7 +246,7 @@
             return response;
         }
 
-        public async Task<Response<Paginate<VehicleResponseModel>>> FilterByAsync(VehicleFilterRequestModel requestModel)
+        public async Task<Response<Paginate<VehicleResponseModel>>> FilterByAsync(VehicleFilterAndSortRequestModel requestModel)
         {
             var IsSortingNeeded = ClassScanner.IsThereAnyTrueProperty(requestModel);
 
@@ -260,9 +264,9 @@
                 var sb = new StringBuilder();
                 sb.AppendLine(response.Message);
                 sb.AppendLine(sortByResponse.Message);
-
                 response.Message = sb.ToString();
 
+                ResponseSetter.ReworkMessageResult(response);
                 response.Payload = sortByResponse.Payload;
             }
             else

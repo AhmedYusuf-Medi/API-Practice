@@ -1,6 +1,6 @@
 ﻿namespace CarShop.Models.Request.Vehicle
 {
-    public class VehicleFilterRequestModel : VehicleSortRequestModel
+    public class VehicleFilterAndSortRequestModel : VehicleSortRequestModel
     {
         public string OwnerName { get; set; }
         public string OwnerEmail { get; set; }

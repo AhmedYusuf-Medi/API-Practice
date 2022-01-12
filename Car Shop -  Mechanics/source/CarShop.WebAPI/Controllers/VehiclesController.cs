@@ -118,7 +118,7 @@
         [HttpGet("filter")]
         [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<VehicleResponseModel>>))]
-        public async Task<IActionResult> FilterAsync([FromQuery]VehicleFilterRequestModel requestModel)
+        public async Task<IActionResult> FilterAsync([FromQuery]VehicleFilterAndSortRequestModel requestModel)
         {
             var response = await this.vehicleService.FilterByAsync(requestModel);
 

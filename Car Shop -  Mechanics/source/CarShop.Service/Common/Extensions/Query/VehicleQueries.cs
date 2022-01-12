@@ -18,6 +18,7 @@
          {
              Id = vehicle.Id,
              Owner = vehicle.Owner.Username,
+             OwnerMail = vehicle.Owner.Email,
              PicturePath = vehicle.PicturePath,
              VehicleType = vehicle.VehicleType.Type,
              Brand = vehicle.Brand.Brand,
@@ -46,7 +47,7 @@
             })
             .FirstOrDefaultAsync();
 
-        public static IQueryable<Vehicle> Filter(VehicleFilterRequestModel requestModel, IQueryable<Vehicle> query)
+        public static IQueryable<Vehicle> Filter(VehicleFilterAndSortRequestModel requestModel, IQueryable<Vehicle> query)
         {
             if (EntityValidator.IsStringPropertyValid(requestModel.OwnerEmail))
             {
