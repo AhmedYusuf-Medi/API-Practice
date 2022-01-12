@@ -1,10 +1,10 @@
-﻿using CarShop.Models.Pagination;
-
-namespace CarShop.Models.Request.Vehicle
+﻿namespace CarShop.Models.Request.Vehicle
 {
+    using CarShop.Models.Pagination;
+
     public class VehicleSortRequestModel : PaginationRequestModel
     {
-        public bool MostRecentlyRegistered { get; set; }
+        public bool RecentlyRegistered { get; set; }
         public bool OldestRegistered { get; set; }
         public bool ByYearDesc { get; set; }
         public bool ByYearAsc { get; set; }

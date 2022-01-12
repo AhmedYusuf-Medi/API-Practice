@@ -284,7 +284,8 @@
                     ExceptionMessage = exceptionLog.message,
                     InnerException = exceptionLog.innerEx,
                     StackTrace = exceptionLog.stackTrc,
-                    IsChecked = exceptionLog.IsChecked
+                    IsChecked = exceptionLog.IsChecked,
+                    CreatedOn = DateTime.Parse("11-01-2022")
                 });
             }
 

@@ -30,7 +30,7 @@
             {
                 Page = page,
                 PerPage = perPage,
-                MostRecentlyRegistered = recently,
+                RecentlyRegistered = recently,
                 OldestRegistered = oldest,
                 ByYearAsc = yearAsc,
                 ByYearDesc = yearDes,

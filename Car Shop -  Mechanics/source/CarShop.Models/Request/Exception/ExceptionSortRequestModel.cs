@@ -1,10 +1,10 @@
-﻿using CarShop.Models.Pagination;
-
-namespace CarShop.Models.Request.Exception
+﻿namespace CarShop.Models.Request.Exception
 {
+    using CarShop.Models.Pagination;
+
     public class ExceptionSortRequestModel : PaginationRequestModel
     {
-        public bool MostRecently { get; set; }
+        public bool Recently { get; set; }
 
         public bool Oldest { get; set; }
     }

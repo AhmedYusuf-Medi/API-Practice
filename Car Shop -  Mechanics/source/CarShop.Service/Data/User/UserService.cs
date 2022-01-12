@@ -283,6 +283,12 @@
             {
                 var sortByResponse = await this.SortByAsync(Mapper.ToRequest(requestModel), query);
 
+                var sb = new StringBuilder();
+                sb.AppendLine(response.Message);
+                sb.AppendLine(sortByResponse.Message);
+                response.Message = sb.ToString();
+
+                ResponseSetter.ReworkMessageResult(response);
                 response.Payload = sortByResponse.Payload;
             }
             else

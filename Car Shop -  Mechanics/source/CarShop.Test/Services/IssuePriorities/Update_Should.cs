@@ -3,6 +3,7 @@
     using CarShop.Data;
     using CarShop.Models.Request.IssuePriority;
     using CarShop.Models.Response;
+    using CarShop.Service.Common.Exceptions;
     using CarShop.Service.Common.Messages;
     using CarShop.Service.Data.IssuePriority;
     using CarShop.Test.Services.Base;
@@ -55,6 +56,27 @@
                 Assert.IsFalse(actual.IsSuccess);
                 Assert.AreEqual(actual.Message, string.Format(ExceptionMessages.DOESNT_EXIST, Constants.IssuePriority));
                 Assert.IsInstanceOfType(actual, typeof(InfoResponse));
+            }
+        }
+
+        [TestMethod]
+        [DataRow(1)]
+        [DataRow(2)]
+        public async Task Update_Should_ThrowExceptionWhen_GivenArgumentsAreInvalid(long issuePriorityId)
+        {
+            var requestModel = new IssuePriorityUpdateRequestModel
+            {
+            };
+
+            using (var assertContext = new CarShopDbContext(this.Options))
+            {
+                var sut = new IssuePriorityService(assertContext);
+
+                var exception = await Assert.ThrowsExceptionAsync<BadRequestException>(() => sut.UpdateAsync(issuePriorityId, requestModel));
+
+                Assert.IsNotNull(exception);
+                Assert.AreEqual(exception.Message, ExceptionMessages.Arguments_Are_Invalid);
+                Assert.IsInstanceOfType(exception, typeof(BadRequestException));
             }
         }
     }

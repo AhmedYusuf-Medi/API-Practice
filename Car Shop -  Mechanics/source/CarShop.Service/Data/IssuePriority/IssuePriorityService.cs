@@ -82,7 +82,7 @@
                     isChangesMade = true;
                 }
 
-                if (requestModel.Severity != null)
+                if (requestModel.Severity.HasValue)
                 {
                     issuePriority.Severity = (byte)requestModel.Severity;
                     isChangesMade = true;

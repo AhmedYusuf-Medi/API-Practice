@@ -80,8 +80,11 @@
 
             if (response.IsSuccess)
             {
-                exception.IsChecked = true;
-                await this.db.SaveChangesAsync();
+                if (!exception.IsChecked)
+                {
+                    exception.IsChecked = true;
+                    await this.db.SaveChangesAsync();
+                }
             }
 
             return response;
@@ -109,6 +112,7 @@
 
                 response.Message = sb.ToString();
 
+                ResponseSetter.ReworkMessageResult(response);
                 response.Payload = sortByResponse.Payload;
             }
             else

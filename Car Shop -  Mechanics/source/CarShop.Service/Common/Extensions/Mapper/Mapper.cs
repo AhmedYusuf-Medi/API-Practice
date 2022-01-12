@@ -96,7 +96,7 @@
         {
             return new VehicleSortRequestModel
             {
-                MostRecentlyRegistered = requestModel.MostRecentlyRegistered,
+                RecentlyRegistered = requestModel.RecentlyRegistered,
                 OldestRegistered = requestModel.OldestRegistered,
                 ByYearDesc = requestModel.ByYearDesc,
                 ByYearAsc = requestModel.ByYearAsc,
@@ -111,7 +111,7 @@
         {
             return new ExceptionSortRequestModel
             {
-                MostRecently = requestModel.MostRecently,
+                Recently = requestModel.Recently,
                 Oldest = requestModel.Oldest,
                 PerPage = requestModel.PerPage,
                 Page = requestModel.Page

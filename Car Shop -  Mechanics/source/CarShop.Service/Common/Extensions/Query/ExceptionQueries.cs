@@ -11,7 +11,7 @@
     {
         public static IQueryable<ExceptionLog> SortBy(ExceptionSortRequestModel requestModel, IQueryable<ExceptionLog> query)
         {
-            if (requestModel.MostRecently)
+            if (requestModel.Recently)
             {
                 query = query.OrderByDescending(exception => exception.CreatedOn);
             }

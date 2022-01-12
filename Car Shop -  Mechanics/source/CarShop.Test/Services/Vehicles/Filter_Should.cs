@@ -39,7 +39,7 @@
                 OwnerId = ownerId,
                 IssueCount = issueCount,
                 Year = year,
-                MostRecentlyRegistered = recently,
+                RecentlyRegistered = recently,
                 OldestRegistered = oldest,
                 ByYearAsc = yearAsc,
                 ByYearDesc = yearDes,

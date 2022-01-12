@@ -1,7 +1,7 @@
-﻿using CarShop.Models.Pagination;
-
-namespace CarShop.Models.Request.User
+﻿namespace CarShop.Models.Request.User
 {
+    using CarShop.Models.Pagination;
+
     public class UserSortRequestModel : PaginationRequestModel
     {
         public bool Recently { get; set; }
