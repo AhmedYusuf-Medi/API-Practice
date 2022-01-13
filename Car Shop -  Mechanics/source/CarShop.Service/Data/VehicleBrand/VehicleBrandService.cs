@@ -83,7 +83,8 @@
         {
             var response = new InfoResponse();
 
-            var vehicleBrand = await this.db.VehicleBrands.Where(vehicleBrand => vehicleBrand.Id == id)
+            var vehicleBrand = await this.db.VehicleBrands
+                .Where(vehicleBrand => vehicleBrand.Id == id)
                 .FirstOrDefaultAsync();
 
             EntityValidator.ValidateForNull(vehicleBrand, response, ResponseMessages.Entity_Delete_Succeed, Constants.VehicleBrand);

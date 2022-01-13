@@ -21,8 +21,4 @@
 		<ProjectReference Include="..\CarShop.WebAPI\CarShop.WebAPI.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<Folder Include="Services\Issues\" />
-	</ItemGroup>
-
 </Project>

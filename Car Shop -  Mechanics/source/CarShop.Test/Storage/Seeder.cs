@@ -241,6 +241,8 @@
 
         private static IEnumerable<Issue> SeedIssues()
         {
+            id = 0;
+
             var issueParameters = new List<(long vehicleId, long statusId, string description, long priorityId)>
             {
                (1, 3, "Sounds like a trash metal!",2),

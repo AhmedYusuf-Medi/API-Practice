@@ -13,7 +13,7 @@
     using CarShop.Service.Common.Extensions.Validator;
     using CarShop.Service.Common.Mapper;
     using CarShop.Service.Common.Messages;
-    using System.Data.Entity;
+    using Microsoft.EntityFrameworkCore;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -77,10 +77,11 @@
         {
             var response = new InfoResponse();
             response.IsSuccess = true;
+
             var issue = await this.db.Issues.FirstOrDefaultAsync(issue => issue.Id == issueId);
 
             EntityValidator.ValidateForNull(issue, response, Constants.Issue);
-            EntityValidator.CheckIssueStatus(response, statusId, this.db, Constants.IssuePriority);
+            EntityValidator.CheckIssueStatus(response, statusId, this.db, Constants.IssueStatus);
 
             if (response.IsSuccess)
             {
@@ -90,6 +91,7 @@
                 ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_Partial_Update_Suceed, Constants.Issue));
             }
 
+            ResponseSetter.ReworkMessageResult(response);
             return response;
         }
 
@@ -168,9 +170,11 @@
 
         public async Task<InfoResponse> DeleteAsync(long id)
         {
-            var issue = await this.db.Issues.FirstOrDefaultAsync(issue => issue.Id == id);
-
             var response = new InfoResponse();
+
+            var issue = await this.db.Issues
+                .Where(issue => issue.Id == id)
+                .FirstOrDefaultAsync();
 
             EntityValidator.ValidateForNull(issue, response, ResponseMessages.Entity_Delete_Succeed, Constants.Issue);
 

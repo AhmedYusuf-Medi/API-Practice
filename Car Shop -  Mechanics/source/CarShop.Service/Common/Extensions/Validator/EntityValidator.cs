@@ -65,7 +65,8 @@
         {
             if (!db.Users.Any(user => user.Id == userId))
             {
-                sb = new StringBuilder(response.Message);
+                sb = new StringBuilder();
+                sb.AppendLine(response.Message);
                 sb.AppendLine(string.Format(ExceptionMessages.DOESNT_EXIST, entityType));
 
                 response.Message = sb.ToString();
@@ -77,7 +78,8 @@
         {
             if (!db.Vehicles.Any(vehicle => vehicle.Id == vehicleId))
             {
-                sb = new StringBuilder(response.Message);
+                sb = new StringBuilder();
+                sb.AppendLine(response.Message);
                 sb.AppendLine(string.Format(ExceptionMessages.DOESNT_EXIST, entityType));
 
                 response.Message = sb.ToString();
@@ -87,10 +89,10 @@
 
         public static void CheckIssueStatus(InfoResponse response, long statusId, CarShopDbContext db, string entityType)
         {
-
             if (!db.IssueStatuses.Any(status => status.Id == statusId))
             {
-                sb = new StringBuilder(response.Message);
+                sb = new StringBuilder();
+                sb.AppendLine(response.Message);
                 sb.AppendLine(string.Format(ExceptionMessages.DOESNT_EXIST, entityType));
 
                 response.Message = sb.ToString();
@@ -103,7 +105,8 @@
         {
             if (!db.IssuePriorities.Any(priority => priority.Id == priorityId))
             {
-                sb = new StringBuilder(response.Message);
+                sb = new StringBuilder();
+                sb.AppendLine(response.Message);
                 sb.AppendLine(string.Format(ExceptionMessages.DOESNT_EXIST, entityType));
 
                 response.Message = sb.ToString();
@@ -115,7 +118,8 @@
         {
             if (!db.VehicleBrands.Any(vehicleBrand => vehicleBrand.Id == vehicleBrandId))
             {
-                sb = new StringBuilder(response.Message);
+                sb = new StringBuilder();
+                sb.AppendLine(response.Message);
                 sb.AppendLine(string.Format(ExceptionMessages.DOESNT_EXIST, entityType));
 
                 response.Message = sb.ToString();
@@ -127,7 +131,8 @@
         {
             if (!db.VehicleTypes.Any(vehicleType => vehicleType.Id == vehicleTypeId))
             {
-                sb = new StringBuilder(response.Message);
+                sb = new StringBuilder();
+                sb.AppendLine(response.Message);
                 sb.AppendLine(string.Format(ExceptionMessages.DOESNT_EXIST, entityType));
 
                 response.Message = sb.ToString();
