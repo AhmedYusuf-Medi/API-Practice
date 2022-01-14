@@ -49,7 +49,7 @@ Vehicle type(Car, Airplane..), Vehicle brand(Audi, Renault), Model(A3, Duster...
 > GET: "/api/Vehicles/sortby" => Orders vehicles by selected criterias.
 ```
 
-> ### Issues(used to work with issues)
+> ### Issues (used to work with issues)
 ```sh
 > GET: "/api/Issues" => Returns all issues.
 > GET: "/api/Issues" => Returns issue selected by id if it exists.
@@ -61,7 +61,7 @@ Vehicle type(Car, Airplane..), Vehicle brand(Audi, Renault), Model(A3, Duster...
 > GET: "/api/Issues/sortby" => Orders issues by selected criterias.
 ```
 
-> ### VehicleBrands(used to work with vehicle brands)
+> ### Vehicle Brand s(used to work with vehicle brands)
 ```sh
 > GET: "/api/VehicleBrands" => Returns all vehicle brands.
 > POST: "/api/VehicleBrands" => Creates new vehicle brand if the arguments are valid.
@@ -70,7 +70,7 @@ Vehicle type(Car, Airplane..), Vehicle brand(Audi, Renault), Model(A3, Duster...
 > GET: "/api/VehicleBrands/sortby" => Orders vehicle brands by selected criterias.
 ```
 
-> ### VehicleTypes(used to work with vehicle types)
+> ### Vehicle Types (used to work with vehicle types)
 ```sh
 > GET: "/api/VehicleTypes" => Returns all vehicle types.
 > POST: "/api/VehicleTypes" => Creates new vehicle type if the arguments are valid.
@@ -79,7 +79,7 @@ Vehicle type(Car, Airplane..), Vehicle brand(Audi, Renault), Model(A3, Duster...
 > GET: "/api/VehicleTypes/sortby" => Orders vehicle types by selected criterias.
 ```
 
-> ### IssueStatuses(used to work with issue statuses)
+> ### Issue Statuses (used to work with issue statuses)
 ```sh
 > GET: "/api/IssueStatuses" => Returns all issue statuses.
 > POST: "/api/IssueStatuses" => Creates new issue status if the arguments are valid.
@@ -87,7 +87,7 @@ Vehicle type(Car, Airplane..), Vehicle brand(Audi, Renault), Model(A3, Duster...
 > DELETE: "/api/IssueStatuses/{id}" => Deletes issue status if the given id exists.
 > GET: "/api/IssueStatuses/sortby" => Orders issue statuses by selected criterias.
 ```
-> ### IssuePriorities(used to work with issue priorities)
+> ### Issue Priorities (used to work with issue priorities)
 ```sh
 > GET: "/api/IssuePriorities" => Returns all issue priorities.
 > POST: "/api/IssuePriorities" => Creates new issue priority if the arguments are valid.
@@ -96,7 +96,7 @@ Vehicle type(Car, Airplane..), Vehicle brand(Audi, Renault), Model(A3, Duster...
 > GET: "/api/IssuePriorities/sortby" => Orders issue priorities by selected criterias.
 ```
 
-> ### Exception Logs(used to register server exceptions and work with them)
+> ### Exception Logs (used to register server exceptions and work with them)
 ```sh
 > GET: "/api/ExceptionLogs" => Returns all non-deleted/removed exceptions.
 > DELETE: "/api/ExceptionLogs/{id}" => Deletes exception selected by id.
@@ -113,6 +113,10 @@ Vehicle type(Car, Airplane..), Vehicle brand(Audi, Renault), Model(A3, Duster...
 > Update database
 > Run the application. The database will be automatically seed demo data
 ```
+
+## TO DO
+> Extend API to be shop too and implement reports because it is not possible to block user without reason.
+
 ## Technologies used: 
  - ASP.NET Core
  - Microsoft Entity Framework Core
