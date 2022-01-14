@@ -1,5 +1,5 @@
 <p align="center">
-    #** Car shop - Mechanic**
+#** Car shop - Mechanic **
 </p>
 
 ## Project Description
