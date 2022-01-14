@@ -1,6 +1,4 @@
-<p align="center">
 # **Car shop - Mechanic**
-</p>
 
 ## Project Description
 >### Car shop where you can register yourself and your vehicles :tractor: so you can depend on mechanics to find solutions :bulb: for your problem!
