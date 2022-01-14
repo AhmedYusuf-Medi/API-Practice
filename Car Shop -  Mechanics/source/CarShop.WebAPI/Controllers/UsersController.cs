@@ -26,7 +26,7 @@
         }
 
         /// <summary>
-        /// Returns user by given Id
+        /// Returns user by selected by id if it exists
         /// </summary>
         [HttpGet("{id}")]
         [Authorize(Roles = Constants.Admin)]
@@ -60,7 +60,7 @@
         }
 
         /// <summary>
-        /// Deletes user by Id
+        /// Deletes user by id
         /// </summary>
         [HttpDelete("{id}")]
         [Authorize(Roles = Constants.Admin)]
@@ -118,9 +118,9 @@
         }
 
         /// <summary>
-        /// Search by given parameters
+        /// Filters users by selected criterias
         /// </summary>
-        [HttpGet("searchby")]
+        [HttpGet("filter")]
         [Authorize(Roles = Constants.Admin)]
         [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<UserResponseModel>>))]
@@ -153,7 +153,7 @@
         [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(InfoResponse))]
-        public async Task<IActionResult> RemoveRoleAsync([FromForm] long userId, long roleId)
+        public async Task<IActionResult> RemoveRoleAsync([FromForm]long userId, [FromForm]long roleId)
         {
             var response = await this.userService.RemoveRoleAsync(userId, roleId);
 

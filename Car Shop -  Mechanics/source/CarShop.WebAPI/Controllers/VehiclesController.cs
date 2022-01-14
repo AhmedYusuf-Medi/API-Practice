@@ -37,7 +37,7 @@
         }
 
         /// <summary>
-        /// Returns vehicle by given Id
+        /// Returns vehicle selected by id if it exists
         /// </summary>
         [HttpGet("{id}")]
         [Authorize(Roles = Constants.Mechanic)]
@@ -57,7 +57,7 @@
 
 
         /// <summary>
-        /// Creates new vehicles if the arguments are valid
+        /// Creates new vehicle if the arguments are valid
         /// </summary>
         [HttpPost]
         [Authorize(Roles = Constants.User)]
@@ -75,7 +75,7 @@
         }
 
         /// <summary>
-        /// Updates vehicle if the given Id exists
+        /// Updates vehicle if given arguments are valid
         /// </summary>
         [HttpPatch("{id}")]
         [Authorize(Roles = Constants.Mechanic)]
@@ -94,7 +94,7 @@
         }
 
         /// <summary>
-        /// Deletes vehicle if the given Id exists
+        /// Deletes vehicle if the given id exists
         /// </summary>
         [HttpDelete("{id}")]
         [Authorize(Roles = Constants.Mechanic)]

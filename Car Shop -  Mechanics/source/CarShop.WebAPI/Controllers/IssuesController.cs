@@ -38,7 +38,7 @@
         }
 
         /// <summary>
-        /// Returns issue by given Id
+        /// Returns issue selected by id if it exists
         /// </summary>
         [HttpGet("{id}")]
         [Authorize(Roles = Constants.Admin)]
@@ -59,7 +59,7 @@
 
 
         /// <summary>
-        /// Creates new issue if the arguments are valid
+        /// Creates new issue if passed argumenst are valid
         /// </summary>
         [HttpPost]
         [Authorize(Roles = Constants.Admin)]
@@ -78,16 +78,16 @@
         }
 
         /// <summary>
-        /// Changes issue status if passed argumenst are valid
+        /// Changes issue status if given arguments are valid
         /// </summary>
-        [HttpPatch()]
+        [HttpPatch("{id}")]
         [Authorize(Roles = Constants.Admin)]
         [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(InfoResponse))]
-        public async Task<IActionResult> ChangeStatusAsync([FromForm]long issueId, long statusId)
+        public async Task<IActionResult> ChangeStatusAsync([FromForm]long statusId,[FromQuery] long id)
         {
-            var response = await this.issueService.ChangeStatusAsync(issueId, statusId);
+            var response = await this.issueService.ChangeStatusAsync(id, statusId);
 
             if (!response.IsSuccess)
             {
@@ -98,9 +98,9 @@
         }
 
         /// <summary>
-        /// Updates issue if the given Id exists
+        /// Updates issue if given arguments are valid.
         /// </summary>
-        [HttpPatch("{id}")]
+        [HttpPut("{id}")]
         [Authorize(Roles = Constants.Admin)]
         [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(InfoResponse))]
@@ -118,7 +118,7 @@
         }
 
         /// <summary>
-        /// Deletes issue if the given Id exists
+        /// Deletes issue if given id exists
         /// </summary>
         [HttpDelete("{id}")]
         [Authorize(Roles = Constants.Admin)]
