@@ -245,8 +245,9 @@
 
             var issueParameters = new List<(long vehicleId, long statusId, string description, long priorityId)>
             {
-               (1, 3, "Sounds like a trash metal!",2),
-               (2, 2, "The wheels are not symetric!",3)
+               (1, 3, "Sounds like a trash metal!", 2),
+               (2, 2, "The wheels are not symetric!", 3),
+               (1, 2, "The wheels are not symetric!", 2)
             };
 
             var issues = new HashSet<Issue>();

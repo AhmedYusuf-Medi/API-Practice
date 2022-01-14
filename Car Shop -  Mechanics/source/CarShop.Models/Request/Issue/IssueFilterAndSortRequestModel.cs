@@ -1,6 +1,6 @@
 ﻿namespace CarShop.Models.Request.Issue
 {
-    public class IssueFilterRequestModel : IssueSortRequestModel
+    public class IssueFilterAndSortRequestModel : IssueSortRequestModel
     {
         public string Status { get; set; }
         public string Priority { get; set; }

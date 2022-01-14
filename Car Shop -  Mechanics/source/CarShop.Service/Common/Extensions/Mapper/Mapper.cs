@@ -118,7 +118,7 @@
             };
         }
 
-        public static IssueSortRequestModel ToRequest(IssueFilterRequestModel requestModel)
+        public static IssueSortRequestModel ToRequest(IssueFilterAndSortRequestModel requestModel)
         {
             return new IssueSortRequestModel
             {

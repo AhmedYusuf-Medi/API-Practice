@@ -51,17 +51,17 @@
         {
             if (EntityValidator.IsStringPropertyValid(requestModel.OwnerEmail))
             {
-                query = query.Where(vehicle => vehicle.Owner.Email.Contains(requestModel.OwnerName));
+                query = query.Where(vehicle => vehicle.Owner.Email.ToLower().Contains(requestModel.OwnerName.ToLower()));
             }
 
             if (EntityValidator.IsStringPropertyValid(requestModel.OwnerName))
             {
-                query = query.Where(vehicle => vehicle.Owner.Username.Contains(requestModel.OwnerName));
+                query = query.Where(vehicle => vehicle.Owner.Username.ToLower().Contains(requestModel.OwnerName.ToLower()));
             }
 
             if (EntityValidator.IsStringPropertyValid(requestModel.Model))
             {
-                query = query.Where(vehicle => vehicle.Model.Contains(requestModel.Model));
+                query = query.Where(vehicle => vehicle.Model.ToLower().Contains(requestModel.Model.ToLower()));
             }
 
             if (EntityValidator.IsStringPropertyValid(requestModel.PlateNumber))

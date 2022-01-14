@@ -6,6 +6,7 @@
         public string Description { get; set; }
         public long VehicleId { get; set; }
         public string VehicleOwner { get; set; }
+        public long VehicleOwnerId { get; set; }
         public string VehiclePlateNumber { get; set; }
         public string Status { get; set; }
         public string Priority { get; set; }

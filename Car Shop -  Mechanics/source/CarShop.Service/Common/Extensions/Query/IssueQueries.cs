@@ -1,17 +1,15 @@
-﻿using CarShop.Data;
-using CarShop.Models.Base;
-using CarShop.Models.Request.Issue;
-using CarShop.Models.Response.Issue;
-using CarShop.Service.Common.Extensions.Validator;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CarShop.Service.Common.Extensions.Query
+﻿namespace CarShop.Service.Common.Extensions.Query
 {
+    using CarShop.Data;
+    using CarShop.Models.Base;
+    using CarShop.Models.Request.Issue;
+    using CarShop.Models.Response.Issue;
+    using CarShop.Service.Common.Extensions.Validator;
+    using Microsoft.EntityFrameworkCore;
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
+
     public static class IssueQueries
     {
         public static Func<IQueryable<Issue>, IQueryable<IssueResponseModel>> GetAllIssueResponse
@@ -20,6 +18,7 @@ namespace CarShop.Service.Common.Extensions.Query
          {
              Id = issue.Id,
              VehicleOwner = issue.Vehicle.Owner.Username,
+             VehicleOwnerId = issue.Vehicle.Owner.Id,
              VehicleId = issue.Vehicle.Id,
              VehiclePlateNumber = issue.Vehicle.PlateNumber,
              Description = issue.Description,
@@ -35,6 +34,7 @@ namespace CarShop.Service.Common.Extensions.Query
             {
                 Id = issue.Id,
                 VehicleOwner = issue.Vehicle.Owner.Username,
+                VehicleOwnerId = issue.Vehicle.Owner.Id,
                 VehicleId = issue.Vehicle.Id,
                 VehiclePlateNumber = issue.Vehicle.PlateNumber,
                 Description = issue.Description,
@@ -44,21 +44,21 @@ namespace CarShop.Service.Common.Extensions.Query
             })
             .FirstOrDefaultAsync();
 
-        public static IQueryable<Issue> Filter(IssueFilterRequestModel requestModel, IQueryable<Issue> query)
+        public static IQueryable<Issue> Filter(IssueFilterAndSortRequestModel requestModel, IQueryable<Issue> query)
         {
             if (EntityValidator.IsStringPropertyValid(requestModel.OwnerName))
             {
-                query = query.Where(issue => issue.Vehicle.Owner.Email.Contains(requestModel.OwnerName));
+                query = query.Where(issue => issue.Vehicle.Owner.Username.ToLower().Contains(requestModel.OwnerName.ToLower()));
             }
 
             if (EntityValidator.IsStringPropertyValid(requestModel.Priority))
             {
-                query = query.Where(issue => issue.Priority.Priority.Contains(requestModel.Priority));
+                query = query.Where(issue => issue.Priority.Priority.ToLower().Contains(requestModel.Priority.ToLower()));
             }
 
             if (EntityValidator.IsStringPropertyValid(requestModel.Status))
             {
-                query = query.Where(issue => issue.Status.Status.Contains(requestModel.Status));
+                query = query.Where(issue => issue.Status.Status.ToLower().Contains(requestModel.Status.ToLower()));
             }
 
             if (requestModel.VehicleId.HasValue)

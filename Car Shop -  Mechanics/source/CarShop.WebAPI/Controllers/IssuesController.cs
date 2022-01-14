@@ -144,7 +144,7 @@
         [Authorize(Roles = Constants.Admin)]
         [Authorize(Roles = Constants.Mechanic)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Response<Paginate<IssueResponseModel>>))]
-        public async Task<IActionResult> FilterAsync([FromQuery]IssueFilterRequestModel requestModel)
+        public async Task<IActionResult> FilterAsync([FromQuery]IssueFilterAndSortRequestModel requestModel)
         {
             var response = await this.issueService.FilterByAsync(requestModel);
 

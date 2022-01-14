@@ -57,8 +57,8 @@
             response.IsSuccess = true;
 
             EntityValidator.CheckVehicle(response, requestModel.VehicleId, this.db, Constants.Vehicle);
-            EntityValidator.CheckIssueStatus(response, requestModel.VehicleId, this.db, Constants.IssueStatus);
-            EntityValidator.CheckIssuePriority(response, requestModel.VehicleId, this.db, Constants.IssuePriority);
+            EntityValidator.CheckIssueStatus(response, requestModel.StatusId, this.db, Constants.IssueStatus);
+            EntityValidator.CheckIssuePriority(response, requestModel.PriorityId, this.db, Constants.IssuePriority);
 
             if (response.IsSuccess)
             {
@@ -70,6 +70,7 @@
                 ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_Create_Succeed, Constants.Issue));
             }
 
+            ResponseSetter.ReworkMessageResult(response);
             return response;
         }
 
@@ -102,7 +103,7 @@
 
             var issue = await this.db.Issues.FirstOrDefaultAsync(issue => issue.Id == id);
 
-            EntityValidator.ValidateForNull(issue, response, Constants.Vehicle);
+            EntityValidator.ValidateForNull(issue, response, Constants.Issue);
 
             if (response.IsSuccess)
             {
@@ -110,8 +111,7 @@
 
                 if (requestModel.VehicleId.HasValue && requestModel.VehicleId != issue.VehicleId)
                 {
-                    EntityValidator.CheckVehicle(response, (long)requestModel.VehicleId, this.db,
-                        string.Format(ExceptionMessages.DOESNT_EXIST, Constants.Vehicle));
+                    EntityValidator.CheckVehicle(response, (long)requestModel.VehicleId, this.db, Constants.Vehicle);
 
                     if (response.IsSuccess)
                     {
@@ -122,8 +122,7 @@
 
                 if (requestModel.StatusId.HasValue && requestModel.StatusId != issue.StatusId)
                 {
-                    EntityValidator.CheckIssueStatus(response, (long)requestModel.StatusId, this.db,
-                        string.Format(ExceptionMessages.DOESNT_EXIST, Constants.IssueStatus));
+                    EntityValidator.CheckIssueStatus(response, (long)requestModel.StatusId, this.db, Constants.IssueStatus);
 
                     if (response.IsSuccess)
                     {
@@ -134,8 +133,7 @@
 
                 if (requestModel.PriorityId.HasValue && requestModel.PriorityId != issue.PriorityId)
                 {
-                    EntityValidator.CheckIssuePriority(response, (long)requestModel.PriorityId, this.db,
-                        string.Format(ExceptionMessages.DOESNT_EXIST, Constants.IssuePriority));
+                    EntityValidator.CheckIssuePriority(response, (long)requestModel.PriorityId, this.db, Constants.IssuePriority);
 
                     if (response.IsSuccess)
                     {
@@ -165,6 +163,7 @@
                 }
             }
 
+            ResponseSetter.ReworkMessageResult(response);
             return response;
         }
 
@@ -187,7 +186,7 @@
             return response;
         }
 
-        public async Task<Response<Paginate<IssueResponseModel>>> FilterByAsync(IssueFilterRequestModel requestModel)
+        public async Task<Response<Paginate<IssueResponseModel>>> FilterByAsync(IssueFilterAndSortRequestModel requestModel)
         {
             var IsSortingNeeded = ClassScanner.IsThereAnyTrueProperty(requestModel);
 
@@ -219,6 +218,7 @@
                 response.Payload = payload;
             }
 
+            ResponseSetter.ReworkMessageResult(response);
             return response;
         }
 

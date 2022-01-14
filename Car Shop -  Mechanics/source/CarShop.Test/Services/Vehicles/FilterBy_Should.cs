@@ -20,7 +20,7 @@
         [DataRow(1, 3, "d", "", "", "", null, null, null, null, null,  false, true, false, false, false, true)]
         [DataRow(1, 2, "", "", "A4", "", null, null, null, null, null,  false, true, false, false, false, true)]
         [DataRow(1, 1, "", "", "", "AB1234AB", null, null, null, null, null,  false, true, false, true, false, true)]
-        [DataRow(1, 2, "", "", "", "", null, null, null, (long)1, null,  false, true, false, true, false, true)]
+        [DataRow(1, 1, "", "", "", "", null, null, null, (long)1, null,  false, true, false, true, false, true)]
         [DataRow(1, 2, "", "", "", "", null, null, null, null, 2005,  false, true, false, true, false, true)]
         public async Task FilterBy_ShouldReturn_CorrectReponseModels(int page, int perPage, string username, string email,
             string model, string plateNumber, long? brandId, long? vehicleTypeId, long? ownerId, long? issueCount, int? year,
@@ -56,7 +56,7 @@
                 {
                     foreach (var vehicle in actual.Payload.Entities)
                     {
-                        Assert.IsTrue(vehicle.OwnerMail.Contains(email));
+                        Assert.IsTrue(vehicle.OwnerMail.ToLower().Contains(email.ToLower()));
                     }
                 }
 
@@ -64,7 +64,7 @@
                 {
                     foreach (var vehicle in actual.Payload.Entities)
                     {
-                        Assert.IsTrue(vehicle.Owner.Contains(username));
+                        Assert.IsTrue(vehicle.Owner.ToLower().Contains(username.ToLower()));
                     }
                 }
 
@@ -80,7 +80,7 @@
                 {
                     foreach (var vehicle in actual.Payload.Entities)
                     {
-                        Assert.IsTrue(vehicle.Model.Contains(model));
+                        Assert.IsTrue(vehicle.Model.ToLower().Contains(model.ToLower()));
                     }
                 }
 
