@@ -61,7 +61,7 @@ Vehicle type(Car, Airplane..), Vehicle brand(Audi, Renault), Model(A3, Duster...
 > GET: "/api/Issues/sortby" => Orders issues by selected criterias.
 ```
 
-> ### Vehicle Brand s(used to work with vehicle brands)
+> ### Vehicle Brands (used to work with vehicle brands)
 ```sh
 > GET: "/api/VehicleBrands" => Returns all vehicle brands.
 > POST: "/api/VehicleBrands" => Creates new vehicle brand if the arguments are valid.
@@ -113,7 +113,7 @@ Vehicle type(Car, Airplane..), Vehicle brand(Audi, Renault), Model(A3, Duster...
 > Update database
 > Run the application. The database will be automatically seed demo data
 ```
-<<<<<<< HEAD:Car Shop -  Mechanics/README.md
+
 ### Database Diagram
 ---
 ![N|Solid](https://res.cloudinary.com/diihcd5cx/image/upload/v1642256886/Read-Me/Car-Shop-Mechanic-DB_gkfpky.png)
