@@ -121,7 +121,6 @@ Vehicle type(Car, Airplane..), Vehicle brand(Audi, Renault), Model(A3, Duster...
 
 ## TO DO
 > Extend API to be shop too and implement reports because it is not possible to block user without reason.
->>>>>>> 1f7e77f7d7fe244fe0734217517f14ff1e5c089c:Car Shop -  Mechanics/Carshop-README.md
 
 ## Technologies used: 
  - ASP.NET Core
