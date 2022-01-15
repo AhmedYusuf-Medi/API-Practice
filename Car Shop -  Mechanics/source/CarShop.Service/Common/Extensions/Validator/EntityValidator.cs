@@ -87,6 +87,19 @@
             }
         }
 
+        public static void CheckReportType(InfoResponse response, long reportTypeId, CarShopDbContext db, string entityType)
+        {
+            if (!db.ReportTypes.Any(reportType => reportType.Id == reportTypeId))
+            {
+                sb = new StringBuilder();
+                sb.AppendLine(response.Message);
+                sb.AppendLine(string.Format(ExceptionMessages.DOESNT_EXIST, entityType));
+
+                response.Message = sb.ToString();
+                response.IsSuccess = false;
+            }
+        }
+
         public static void CheckIssueStatus(InfoResponse response, long statusId, CarShopDbContext db, string entityType)
         {
             if (!db.IssueStatuses.Any(status => status.Id == statusId))

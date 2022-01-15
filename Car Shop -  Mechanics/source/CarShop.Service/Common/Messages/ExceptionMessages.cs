@@ -2,6 +2,10 @@
 {
     public static class ExceptionMessages
     {
+        //Report
+        public const string Cannot_Report_Twice = "Cannot report more than once!";
+        public const string Cannot_Report_Yourself = "Cannot report your self!";
+
         //Send grid
         public const string Invalid_Email_Arguments = "Subject and message should be provided.";
         public const string Invalid_Operation_SendGrid = "Mail sender failed twice!";
@@ -17,7 +21,6 @@
 
         //Exception messages that works with User/Authentication
         public const string Unauthorized = "Invalid authentication credentials for the requested!";
-        public const string Cannot_Report_YourSelf = "It is not possible to report your self!";
         public const string User_Not_Found = "Not exist such user!";
         public const string Invalid_Email = "Use correct e-mail for login!";
         public const string Already_Exist = "{0} already exist";

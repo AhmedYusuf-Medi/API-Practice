@@ -101,11 +101,11 @@
         {
             var dummyQuery = query.OrderByDescending(x => 1);
 
-            if (requestModel.RecentlyRegistered)
+            if (requestModel.Recently)
             {
                 dummyQuery = dummyQuery.ThenByDescending(vehicle => vehicle.CreatedOn);
             }
-            else if (requestModel.OldestRegistered)
+            else if (requestModel.Oldest)
             {
                 dummyQuery = dummyQuery.ThenBy(vehicle => vehicle.CreatedOn);
             }

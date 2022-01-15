@@ -1,13 +1,9 @@
 ﻿namespace CarShop.Models.Request.VehicleBrand
 {
-    using CarShop.Models.Pagination;
+    using CarShop.Models.Request.Contracts;
 
-    public class VehicleBrandSortRequestModel : PaginationRequestModel
+    public class VehicleBrandSortRequestModel : SortRequestModel
     {
-        public bool Recently { get; set; }
-
-        public bool Oldest { get; set; }
-
         public bool MostPopular { get; set; }
     }
 }

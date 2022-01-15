@@ -5,6 +5,7 @@
     using CarShop.Models.Request.Issue;
     using CarShop.Models.Request.IssuePriority;
     using CarShop.Models.Request.IssueStatus;
+    using CarShop.Models.Request.Report;
     using CarShop.Models.Request.User;
     using CarShop.Models.Request.Vehicle;
     using CarShop.Models.Request.VehicleBrand;
@@ -12,6 +13,17 @@
 
     public static class Mapper
     {
+        public static Report ToReport(ReportCreateRequestModel requestModel)
+        {
+            return new Report()
+            {
+                Description = requestModel.Description,
+                SenderId = requestModel.SenderId,
+                ReceiverId = requestModel.ReceiverId,
+                ReportTypeId = requestModel.ReportTypeId
+            };
+        }
+
         public static Issue ToIssue(IssueCreateRequestModel requestModel)
         {
             return new Issue()
@@ -96,8 +108,8 @@
         {
             return new VehicleSortRequestModel
             {
-                RecentlyRegistered = requestModel.RecentlyRegistered,
-                OldestRegistered = requestModel.OldestRegistered,
+                Recently = requestModel.Recently,
+                Oldest= requestModel.Oldest,
                 ByYearDesc = requestModel.ByYearDesc,
                 ByYearAsc = requestModel.ByYearAsc,
                 MostIssues = requestModel.MostIssues,
@@ -124,6 +136,17 @@
             {
                 Recently = requestModel.Recently,
                 BySeverity = requestModel.BySeverity,
+                Oldest = requestModel.Oldest,
+                PerPage = requestModel.PerPage,
+                Page = requestModel.Page
+            };
+        }
+
+        public static ReportSortRequestModel ToRequest(ReportFilterAndSortRequestModel requestModel)
+        {
+            return new ReportSortRequestModel
+            {
+                Recently = requestModel.Recently,
                 Oldest = requestModel.Oldest,
                 PerPage = requestModel.PerPage,
                 Page = requestModel.Page

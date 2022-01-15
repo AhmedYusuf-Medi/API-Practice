@@ -1,11 +1,8 @@
 ﻿namespace CarShop.Models.Request.Exception
 {
-    using CarShop.Models.Pagination;
+    using CarShop.Models.Request.Contracts;
 
-    public class ExceptionSortRequestModel : PaginationRequestModel
+    public class ExceptionSortRequestModel : SortRequestModel
     {
-        public bool Recently { get; set; }
-
-        public bool Oldest { get; set; }
     }
 }

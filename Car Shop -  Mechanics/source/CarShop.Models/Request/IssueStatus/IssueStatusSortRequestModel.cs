@@ -1,13 +1,9 @@
 ﻿namespace CarShop.Models.Request.IssueStatus
 {
-    using CarShop.Models.Pagination;
+    using CarShop.Models.Request.Contracts;
 
-    public class IssueStatusSortRequestModel : PaginationRequestModel
+    public class IssueStatusSortRequestModel : SortRequestModel
     {
-        public bool Recently { get; set; }
-
-        public bool Oldest { get; set; }
-
         public bool MostUsed { get; set; }
     }
 }

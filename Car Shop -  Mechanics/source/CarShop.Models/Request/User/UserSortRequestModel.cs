@@ -1,12 +1,9 @@
 ﻿namespace CarShop.Models.Request.User
 {
-    using CarShop.Models.Pagination;
+    using CarShop.Models.Request.Contracts;
 
-    public class UserSortRequestModel : PaginationRequestModel
-    {
-        public bool Recently { get; set; }
-
-        public bool Oldest { get; set; }
+    public class UserSortRequestModel : SortRequestModel
+    { 
 
         public bool MostActive { get; set; }
 

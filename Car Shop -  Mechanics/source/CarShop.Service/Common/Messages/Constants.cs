@@ -5,6 +5,8 @@
         public const string User = "User";
         public const string Report = "Report";
         public const string Reports = "reports";
+        public const string Report_Type = "Report Type";
+        public const string Report_Types = "report types";
         public const string Users = "users";
         public const string Admin = "Admin";
         public const string Mechanic = "Mechanic";
