@@ -12,6 +12,8 @@
             this.Roles = new HashSet<UserRole>();
             this.Issues = new HashSet<Issue>();
             this.Vehicles = new HashSet<Vehicle>();
+            this.SentReports = new HashSet<Report>();
+            this.ReceivedReports = new HashSet<Report>();
         }
 
         [Required]
@@ -37,5 +39,9 @@
         public ICollection<Issue> Issues { get; set; }
 
         public ICollection<Vehicle> Vehicles { get; set; }
+
+        public ICollection<Report> ReceivedReports { get; set; }
+
+        public ICollection<Report> SentReports { get; set; }
     }
 }

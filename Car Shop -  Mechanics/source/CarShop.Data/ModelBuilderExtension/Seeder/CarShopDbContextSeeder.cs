@@ -23,7 +23,9 @@
                             new VehicleSeeder(),
                             new IssueStatusSeeder(),
                             new IssuePrioritySeeder(),
-                            new IssueSeeder()
+                            new IssueSeeder(),
+                            new ReportTypeSeeder(),
+                            new ReportSeeder()
                           };
 
             foreach (var seeder in seeders)

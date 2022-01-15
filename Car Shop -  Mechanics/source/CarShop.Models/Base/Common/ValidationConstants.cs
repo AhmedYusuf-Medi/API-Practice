@@ -10,8 +10,15 @@ namespace CarShop.Models.Base.Common
         public const string Issue_Status = "Issue_Statuses";
         public const string Vehicle_Brand = "Vehicle_Brands";
         public const string Vehicle_Type = "Vehicle_Types";
+        public const string Report_Type = "Report_Types";
         //Issue
         public const byte Min_Issue_Description_Length = 5;
+        //Report
+        public const byte Min_Report_Description_Length = 5;
+        public const int Max_Report_Description_Length = 300;
+        //Repor Type
+        public const byte Min_ReportType_Length = 2;
+        public const byte Max_ReportType_Length = 40;
         //Vehicle
         public const int Year_Of_First_Care = 1945;
         public const byte Max_Model_Length = 20;

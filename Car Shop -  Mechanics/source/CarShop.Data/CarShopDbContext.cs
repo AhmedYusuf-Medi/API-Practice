@@ -24,6 +24,8 @@
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<Issue> Issues { get; set; }
         public DbSet<ExceptionLog> ExceptionLogs { get; set; }
+        public DbSet<Report> Reports { get; set; }
+        public DbSet<ReportType> ReportTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

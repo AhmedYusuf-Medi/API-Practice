@@ -164,6 +164,79 @@ namespace CarShop.Data.Migrations
                     b.ToTable("Issue_Statuses");
                 });
 
+            modelBuilder.Entity("CarShop.Models.Base.Report", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("ReceiverId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("ReportTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<long>("SenderId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceiverId");
+
+                    b.HasIndex("ReportTypeId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Reports");
+                });
+
+            modelBuilder.Entity("CarShop.Models.Base.ReportType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Report_Types");
+                });
+
             modelBuilder.Entity("CarShop.Models.Base.Role", b =>
                 {
                     b.Property<long>("Id")
@@ -306,7 +379,6 @@ namespace CarShop.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PicturePath")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PlateNumber")
@@ -422,6 +494,33 @@ namespace CarShop.Data.Migrations
                     b.Navigation("Vehicle");
                 });
 
+            modelBuilder.Entity("CarShop.Models.Base.Report", b =>
+                {
+                    b.HasOne("CarShop.Models.Base.User", "Receiver")
+                        .WithMany("ReceivedReports")
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CarShop.Models.Base.ReportType", "ReportType")
+                        .WithMany("Reports")
+                        .HasForeignKey("ReportTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CarShop.Models.Base.User", "Sender")
+                        .WithMany("SentReports")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Receiver");
+
+                    b.Navigation("ReportType");
+
+                    b.Navigation("Sender");
+                });
+
             modelBuilder.Entity("CarShop.Models.Base.UserRole", b =>
                 {
                     b.HasOne("CarShop.Models.Base.Role", "Role")
@@ -478,6 +577,11 @@ namespace CarShop.Data.Migrations
                     b.Navigation("Issues");
                 });
 
+            modelBuilder.Entity("CarShop.Models.Base.ReportType", b =>
+                {
+                    b.Navigation("Reports");
+                });
+
             modelBuilder.Entity("CarShop.Models.Base.Role", b =>
                 {
                     b.Navigation("Users");
@@ -487,7 +591,11 @@ namespace CarShop.Data.Migrations
                 {
                     b.Navigation("Issues");
 
+                    b.Navigation("ReceivedReports");
+
                     b.Navigation("Roles");
+
+                    b.Navigation("SentReports");
 
                     b.Navigation("Vehicles");
                 });

@@ -32,6 +32,8 @@
             modelBuilder.Entity<IssuePriority>().HasQueryFilter(x => !x.IsDeleted);
             modelBuilder.Entity<IssueStatus>().HasQueryFilter(x => !x.IsDeleted);
             modelBuilder.Entity<ExceptionLog>().HasQueryFilter(x => !x.IsDeleted);
+            modelBuilder.Entity<Report>().HasQueryFilter(x => !x.IsDeleted);
+            modelBuilder.Entity<ReportType>().HasQueryFilter(x => !x.IsDeleted);
         }
 
         internal const string Invalid_Seeder_Injection = "On {0} seeder were invalid database injection!";

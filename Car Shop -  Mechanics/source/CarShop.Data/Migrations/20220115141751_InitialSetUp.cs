@@ -62,6 +62,23 @@ namespace CarShop.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Report_Types",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Type = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Report_Types", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
@@ -135,6 +152,44 @@ namespace CarShop.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Reports",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    SenderId = table.Column<long>(type: "bigint", nullable: false),
+                    ReceiverId = table.Column<long>(type: "bigint", nullable: false),
+                    ReportTypeId = table.Column<int>(type: "int", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reports", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reports_Report_Types_ReportTypeId",
+                        column: x => x.ReportTypeId,
+                        principalTable: "Report_Types",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Reports_Users_ReceiverId",
+                        column: x => x.ReceiverId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Reports_Users_SenderId",
+                        column: x => x.SenderId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "User_Roles",
                 columns: table => new
                 {
@@ -171,7 +226,7 @@ namespace CarShop.Data.Migrations
                     Year = table.Column<int>(type: "int", nullable: false),
                     Model = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     PlateNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    PicturePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PicturePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PictureId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BrandId = table.Column<long>(type: "bigint", nullable: false),
                     VehicleTypeId = table.Column<long>(type: "bigint", nullable: false),
@@ -270,6 +325,21 @@ namespace CarShop.Data.Migrations
                 column: "VehicleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Reports_ReceiverId",
+                table: "Reports",
+                column: "ReceiverId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reports_ReportTypeId",
+                table: "Reports",
+                column: "ReportTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reports_SenderId",
+                table: "Reports",
+                column: "SenderId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_User_Roles_RoleId",
                 table: "User_Roles",
                 column: "RoleId");
@@ -317,6 +387,9 @@ namespace CarShop.Data.Migrations
                 name: "Issues");
 
             migrationBuilder.DropTable(
+                name: "Reports");
+
+            migrationBuilder.DropTable(
                 name: "User_Roles");
 
             migrationBuilder.DropTable(
@@ -327,6 +400,9 @@ namespace CarShop.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Vehicles");
+
+            migrationBuilder.DropTable(
+                name: "Report_Types");
 
             migrationBuilder.DropTable(
                 name: "Roles");
