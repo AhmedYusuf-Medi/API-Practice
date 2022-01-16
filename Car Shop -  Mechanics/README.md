@@ -95,6 +95,22 @@ Vehicle type(Car, Airplane..), Vehicle brand(Audi, Renault), Model(A3, Duster...
 > DELETE: "/api/IssuePriorities/{id}" => Deletes issue priority if the given id exists.
 > GET: "/api/IssuePriorities/sortby" => Orders issue priorities by selected criterias.
 ```
+> ### Reports (used to work with reports)
+```sh
+> GET: "/api/Reports" => Returns all reports.
+> POST: "/api/Reports" => Creates new report if the arguments are valid.
+> DELETE: "/api/Reports/{id}" => Deletes report if the given id exists.
+> GET: "/api/Reports/filter" => Filter reports by selected criterias.
+> GET: "/api/Reports/sortby" => Orders reports by selected criterias.
+```
+> ### Report Types (used to work with report types)
+```sh
+> GET: "/api/ReportTypes" => Returns all report types.
+> POST: "/api/ReportTypes" => Creates new report type if the arguments are valid.
+> PUT: "/api/ReportTypes/{id}" => Updates report type if given arguments are valid.
+> DELETE: "/api/ReportTypes/{id}" => Deletes report type if the given id exists.
+> GET: "/api/ReportTypes/sortby" => Orders report types by selected criterias.
+```
 
 > ### Exception Logs (used to register server exceptions and work with them)
 ```sh
@@ -120,7 +136,7 @@ Vehicle type(Car, Airplane..), Vehicle brand(Audi, Renault), Model(A3, Duster...
 =======
 
 ## TO DO
-> Extend API to be shop too and implement reports because it is not possible to block user without reason.
+> Extend API to be shop too.
 
 ## Technologies used: 
  - ASP.NET Core
