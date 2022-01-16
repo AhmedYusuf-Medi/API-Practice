@@ -6,6 +6,7 @@
     using CarShop.Models.Request.IssuePriority;
     using CarShop.Models.Request.IssueStatus;
     using CarShop.Models.Request.Report;
+    using CarShop.Models.Request.ReportType;
     using CarShop.Models.Request.User;
     using CarShop.Models.Request.Vehicle;
     using CarShop.Models.Request.VehicleBrand;
@@ -13,6 +14,14 @@
 
     public static class Mapper
     {
+        public static ReportType ToReportType(ReportTypeCreateRequestModel requestModel)
+        {
+            return new ReportType()
+            {
+                Type = requestModel.ReportType
+            };
+        }
+
         public static Report ToReport(ReportCreateRequestModel requestModel)
         {
             return new Report()
@@ -109,7 +118,7 @@
             return new VehicleSortRequestModel
             {
                 Recently = requestModel.Recently,
-                Oldest= requestModel.Oldest,
+                Oldest = requestModel.Oldest,
                 ByYearDesc = requestModel.ByYearDesc,
                 ByYearAsc = requestModel.ByYearAsc,
                 MostIssues = requestModel.MostIssues,

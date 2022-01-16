@@ -13,7 +13,8 @@
             this.Reports = new HashSet<Report>();
         }
 
-        [Required, StringLength(ValidationConstants.Max_ReportType_Length, MinimumLength = ValidationConstants.Max_ReportType_Length)]
+        [Required]
+        [StringLength(ValidationConstants.Max_ReportType_Length, MinimumLength = ValidationConstants.Max_ReportType_Length)]
         public string Type { get; set; }
 
         public ICollection<Report> Reports { get; set; }

@@ -2,7 +2,9 @@
 {
     using CarShop.Models.Pagination;
     using CarShop.Models.Request.Report;
+    using CarShop.Service.Common.Messages;
     using CarShop.Service.Data.Report;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System.Threading.Tasks;
 
@@ -18,6 +20,7 @@
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = Constants.Admin)]
         public async Task<IActionResult> GetByIdAsync(long id)
         {
             var result = await this.reportService.GetByIdAsync(id);
@@ -31,6 +34,7 @@
         }
 
         [HttpGet()]
+        [Authorize(Roles = Constants.Admin)]
         public async Task<IActionResult> GetAllAsync([FromQuery]PaginationRequestModel requestModel)
         {
             var result = await this.reportService.GetAllAsync(requestModel);
@@ -39,6 +43,7 @@
         }
 
         [HttpPost()]
+        [Authorize(Roles = Constants.Admin)]
         public async Task<IActionResult> CreateAsync([FromBody]ReportCreateRequestModel requestModel)
         {
             var result = await this.reportService.CreateAsync(requestModel);
@@ -52,6 +57,7 @@
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = Constants.Admin)]
         public async Task<IActionResult> DeleteAsync(long id)
         {
             var result = await this.reportService.DeleteAsync(id);
@@ -65,6 +71,7 @@
         }
 
         [HttpGet("filter")]
+        [Authorize(Roles = Constants.Admin)]
         public async Task<IActionResult> FilterAsync([FromQuery] ReportFilterAndSortRequestModel requestModel)
         {
             var result = await this.reportService.FilterByAsync(requestModel);
@@ -73,6 +80,7 @@
         }
 
         [HttpGet("sortby")]
+        [Authorize(Roles = Constants.Admin)]
         public async Task<IActionResult> SortByAsync([FromQuery]ReportSortRequestModel requestModel)
         {
             var result = await this.reportService.SortByAsync(requestModel);

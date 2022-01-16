@@ -12,6 +12,13 @@
     using CarShop.Service.Data.User;
     using CarShop.Service.Common.Providers.Cloudinary;
     using CarShop.Data;
+    using CarShop.Service.Data.VehicleType;
+    using CarShop.Service.Data.IssueStatus;
+    using CarShop.Service.Data.IssuePriority;
+    using CarShop.Service.Data.Vehicle;
+    using CarShop.Service.Data.Issue;
+    using CarShop.Service.Data.Report;
+    using CarShop.Service.Data.ReportType;
     //Nuget packets
     using CloudinaryDotNet;
     using SendGrid;
@@ -25,12 +32,6 @@
     using System;
     using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.Extensions.Configuration;
-    using CarShop.Service.Data.VehicleType;
-    using CarShop.Service.Data.IssueStatus;
-    using CarShop.Service.Data.IssuePriority;
-    using CarShop.Service.Data.Vehicle;
-    using CarShop.Service.Data.Issue;
-    using CarShop.Service.Data.Report;
 
     public static class StartUpConfigurations
     {
@@ -76,6 +77,7 @@
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IReportService, ReportService>();
+            services.AddScoped<IReportTypeService, ReportTypeService>();
             services.AddScoped<ICloudinaryService, CloudinaryService>();
         }
 
