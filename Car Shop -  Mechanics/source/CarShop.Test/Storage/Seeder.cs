@@ -23,6 +23,8 @@
             await dbContext.IssuePriorities.AddRangeAsync(SeedIssuePriorties());
             await dbContext.Issues.AddRangeAsync(SeedIssues());
             await dbContext.ExceptionLogs.AddRangeAsync(SeedExceptionLogs());
+            await dbContext.ReportTypes.AddRangeAsync(SeedReportTypes());
+            await dbContext.Reports.AddRangeAsync(SeedReports());
         }
 
         private static IEnumerable<Role> SeedRoles()
@@ -293,6 +295,59 @@
             }
 
             return exceptionLogs;
+        }
+
+        private static IEnumerable<ReportType> SeedReportTypes()
+        {
+            int id = 0;
+
+            var reportTypeParameters = new HashSet<string>
+            {
+                "Negative Attitude",
+                "Verbal Abuse",
+                "Hate Speech",
+                "Offensive"
+            };
+
+            var reportTypes = new HashSet<ReportType>();
+
+            foreach (var reportType in reportTypeParameters)
+            {
+                reportTypes.Add(new ReportType
+                {
+                    Id = ++id,
+                    Type = reportType
+                });
+            }
+
+            return reportTypes;
+        }
+
+        private static IEnumerable<Report> SeedReports()
+        {
+            id = 0;
+
+            var reportParameters = new HashSet<(int reportTypeId, long senderId, long receiverId, string description)>
+            {
+                (1, 1, 2, "He did not paid at time once again!"),
+                (2, 2, 1, "He is blaming me for something that did not happend!"),
+            };
+
+            var reports = new HashSet<Report>();
+
+            foreach (var report in reportParameters)
+            {
+                reports.Add(new Report
+                {
+                    Id = ++id,
+                    ReportTypeId = report.reportTypeId,
+                    ReceiverId = report.receiverId,
+                    SenderId = report.senderId,
+                    Description = report.description
+                });
+            }
+
+            return reports;
         }
     }
 }
