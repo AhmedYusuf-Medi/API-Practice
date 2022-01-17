@@ -67,26 +67,31 @@
                 response.Message = sb.ToString();
             }
 
-            if (requestModel.ReceiverId == requestModel.SenderId)
+            if (response.IsSuccess)
             {
-                sb = new StringBuilder();
-                sb.AppendLine(ExceptionMessages.Cannot_Report_Yourself);
-                response.IsSuccess = false;
-                response.Message = sb.ToString();
+                EntityValidator.CheckUser(response, requestModel.SenderId, this.db, Constants.User);
+                EntityValidator.CheckUser(response, requestModel.ReceiverId, this.db, Constants.User);
+                EntityValidator.CheckReportType(response, requestModel.ReportTypeId, this.db, Constants.Report_Type);
             }
-
-            EntityValidator.CheckUser(response, requestModel.SenderId, this.db, Constants.User);
-            EntityValidator.CheckUser(response, requestModel.ReceiverId, this.db, Constants.User);
-            EntityValidator.CheckReportType(response, requestModel.ReportTypeId, this.db, Constants.Report_Type);
 
             if (response.IsSuccess)
             {
-                var report = Mapper.ToReport(requestModel);
+                if (requestModel.ReceiverId == requestModel.SenderId)
+                {
+                    sb = new StringBuilder();
+                    sb.AppendLine(ExceptionMessages.Cannot_Report_Yourself);
+                    response.IsSuccess = false;
+                    response.Message = sb.ToString();
+                }
+                else
+                {
+                    var report = Mapper.ToReport(requestModel);
 
-                await this.db.Reports.AddAsync(report);
-                await this.db.SaveChangesAsync();
+                    await this.db.Reports.AddAsync(report);
+                    await this.db.SaveChangesAsync();
 
-                ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_Create_Succeed, Constants.Issue));
+                    ResponseSetter.SetResponse(response, true, string.Format(ResponseMessages.Entity_Create_Succeed, Constants.Report));
+                }
             }
 
             ResponseSetter.ReworkMessageResult(response);
