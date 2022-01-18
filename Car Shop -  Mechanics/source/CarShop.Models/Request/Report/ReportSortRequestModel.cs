@@ -1,7 +1,7 @@
-﻿using CarShop.Models.Request.Contracts;
-
-namespace CarShop.Models.Request.Report
+﻿namespace CarShop.Models.Request.Report
 {
+    using CarShop.Models.Request.Contracts;
+
     public class ReportSortRequestModel : SortRequestModel
     {
     }
