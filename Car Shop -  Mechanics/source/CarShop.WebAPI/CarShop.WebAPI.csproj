@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>D:\C#\My Dungeon\my-.net-dungeon\.NET\SoftUni Bootcamp\Car Shop\source\CarShop\CarShop.WebAPI\CarShop.WebAPI.xml</DocumentationFile>
+    <DocumentationFile>C:\Users\Medi\Documents\GitHub\API-Practice\Car Shop -  Mechanics\source\CarShop.WebAPI\CarShop.WebAPI.xml</DocumentationFile>
     <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
 

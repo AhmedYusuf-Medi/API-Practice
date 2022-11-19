@@ -4,9 +4,325 @@
         <name>CarShop.WebAPI</name>
     </assembly>
     <members>
-        <member name="M:CarShop.WebAPI.Controllers.AccountsController.Verification(System.String,System.Guid)">
+        <member name="M:CarShop.WebAPI.Controllers.AccountsController.LoginAsync(CarShop.Models.Request.User.UserLoginRequestModel)">
+            <summary>
+            Logins/Authenticates user by taking information from body and settings identity
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.AccountsController.RegisterAsync(CarShop.Models.Request.User.UserRegisterRequestModel)">
+            <summary>
+            Registers user by taking information from body
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.AccountsController.EditAsync(System.Int64,CarShop.Models.Request.User.UserEditRequestModel)">
+            <summary>
+            Edit user profile information by selected arguments
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.AccountsController.VerificateAsync(System.String,System.Guid)">
             <summary>
             Takes the verification url that we send to the user so he can verificates his self
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.AccountsController.LogoutAsync">
+            <summary>
+            Logouts user
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.ExceptionLogsController.GetAllAsync(CarShop.Models.Pagination.PaginationRequestModel)">
+            <summary>
+            Returns all non deleted/removed exceptions
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.ExceptionLogsController.DeleteAsync(System.Guid)">
+            <summary>
+            Deletes choosen by Id exception
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.ExceptionLogsController.MarkAsCheckedAsync(System.Guid)">
+            <summary>
+            Changes exception stataus from non-checked to checked
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.ExceptionLogsController.FilterAsync(CarShop.Models.Request.Exception.ExceptionSortAndFilterRequestModel)">
+            <summary>
+            Filters and sorts exceptions by selected criterias
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.ExceptionLogsController.SortByAsync(CarShop.Models.Request.Exception.ExceptionSortRequestModel)">
+            <summary>
+            Sorts exceptions by selected criterias
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.IssuePrioritiesController.GetAllAsync(CarShop.Models.Pagination.PaginationRequestModel)">
+            <summary>
+            Returns all issue priorities
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.IssuePrioritiesController.GetByIdAsync(System.Int64)">
+            <summary>
+            Returns issue priority by given Id
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.IssuePrioritiesController.CreateAsync(CarShop.Models.Request.IssuePriority.IssuePriorityCreateRequestModel)">
+            <summary>
+            Creates new issue priority if the arguments are valid
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.IssuePrioritiesController.UpdateAsync(System.Int64,CarShop.Models.Request.IssuePriority.IssuePriorityUpdateRequestModel)">
+            <summary>
+            Updates issue priority if the given Id exists
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.IssuePrioritiesController.DeleteAsync(System.Int64)">
+            <summary>
+            Deletes issue priority if the given Id exists
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.IssuePrioritiesController.SortByAsync(CarShop.Models.Request.IssuePriority.IssuePrioritySortRequestModel)">
+            <summary>
+            Sorts issue priorities by selected criterias
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.IssuesController.GetAllAsync(CarShop.Models.Pagination.PaginationRequestModel)">
+            <summary>
+            Returns all issues
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.IssuesController.GetByIdAsync(System.Int64)">
+            <summary>
+            Returns issue selected by id if it exists
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.IssuesController.CreateAsync(CarShop.Models.Request.Issue.IssueCreateRequestModel)">
+            <summary>
+            Creates new issue if passed argumenst are valid
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.IssuesController.ChangeStatusAsync(System.Int64,System.Int64)">
+            <summary>
+            Changes issue status if given arguments are valid
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.IssuesController.UpdateAsync(System.Int64,CarShop.Models.Request.Issue.IssueUpdateRequestModel)">
+            <summary>
+            Updates issue if given arguments are valid.
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.IssuesController.DeleteAsync(System.Int64)">
+            <summary>
+            Deletes issue if given id exists
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.IssuesController.FilterAsync(CarShop.Models.Request.Issue.IssueFilterAndSortRequestModel)">
+            <summary>
+            Sorts all issues by selected criterias
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.IssuesController.SortByAsync(CarShop.Models.Request.Issue.IssueSortRequestModel)">
+            <summary>
+            Sorts all issues by selected criterias
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.IssueStatusesController.GetAllAsync(CarShop.Models.Pagination.PaginationRequestModel)">
+            <summary>
+            Returns all issue statuses
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.IssueStatusesController.GetByIdAsync(System.Int64)">
+            <summary>
+            Returns issue status by given Id
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.IssueStatusesController.CreateAsync(CarShop.Models.Request.IssueStatus.IssueStatusCreateRequestModel)">
+            <summary>
+            Creates new issue status if the arguments are valid
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.IssueStatusesController.UpdateAsync(System.Int64,CarShop.Models.Request.IssueStatus.IssueStatusCreateRequestModel)">
+            <summary>
+            Updates issue status if the given Id exists
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.IssueStatusesController.DeleteAsync(System.Int64)">
+            <summary>
+            Deletes issue status if the given Id exists
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.IssueStatusesController.SortByAsync(CarShop.Models.Request.IssueStatus.IssueStatusSortRequestModel)">
+            <summary>
+            Sorts issue statuses by selected criterias
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.ReportTypesController.GetAllAsync(CarShop.Models.Pagination.PaginationRequestModel)">
+            <summary>
+            Returns all report types
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.ReportTypesController.GetByIdAsync(System.Int64)">
+            <summary>
+            Returns report type by given Id
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.ReportTypesController.CreateAsync(CarShop.Models.Request.ReportType.ReportTypeCreateRequestModel)">
+            <summary>
+            Creates new report type if the arguments are valid
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.ReportTypesController.UpdateAsync(System.Int64,CarShop.Models.Request.ReportType.ReportTypeUpdateRequestModel)">
+            <summary>
+            Updates report type if the given Id exists
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.ReportTypesController.DeleteAsync(System.Int64)">
+            <summary>
+            Deletes report type if the given Id exists
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.ReportTypesController.SortByAsync(CarShop.Models.Request.ReportType.ReportTypeSortRequestModel)">
+            <summary>
+            Sorts report types by selected criterias
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.UsersController.GetByIdAsync(System.Int64)">
+            <summary>
+            Returns user by selected by id if it exists
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.UsersController.GetAllAsync(CarShop.Models.Pagination.PaginationRequestModel)">
+            <summary>
+            Returns all users
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.UsersController.DeleteAsync(System.Int64)">
+            <summary>
+            Deletes user by id
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.UsersController.BlockAsync(System.Int64)">
+            <summary>
+            Block user
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.UsersController.UnBlockAsync(System.Int64)">
+            <summary>
+            Unblock user
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.UsersController.SearchByAsync(CarShop.Models.Request.User.UserFilterAndSortRequestModel)">
+            <summary>
+            Filters users by selected criterias
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.UsersController.SortByAsync(CarShop.Models.Request.User.UserSortRequestModel)">
+            <summary>
+            Filters and sorts by choosen criterias
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.UsersController.RemoveRoleAsync(System.Int64,System.Int64)">
+            <summary>
+            Removes selected role from user
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.UsersController.RegisterRoleAsync(System.Int64,System.Int64)">
+            <summary>
+            Adds selected role to user
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.VehicleBrandsController.GetAllAsync(CarShop.Models.Pagination.PaginationRequestModel)">
+            <summary>
+            Returns all vehicle brands
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.VehicleBrandsController.GetByIdAsync(System.Int64)">
+            <summary>
+            Returns vehicle type by given Id
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.VehicleBrandsController.CreateAsync(CarShop.Models.Request.VehicleBrand.VehicleBrandCreateRequestModel)">
+            <summary>
+            Creates new vehicle brand if the arguments are valid
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.VehicleBrandsController.UpdateAsync(System.Int64,CarShop.Models.Request.VehicleBrand.VehicleBrandCreateRequestModel)">
+            <summary>
+            Updates vehicle brand if the given Id exists
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.VehicleBrandsController.DeleteAsync(System.Int64)">
+            <summary>
+            Deletes vehicle brand if the given Id exists
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.VehicleBrandsController.SortByAsync(CarShop.Models.Request.VehicleBrand.VehicleBrandSortRequestModel)">
+            <summary>
+            Sorts vehicle brands by selected criterias
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.VehiclesController.GetAllAsync(CarShop.Models.Pagination.PaginationRequestModel)">
+            <summary>
+            Returns all vehicles
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.VehiclesController.GetByIdAsync(System.Int64)">
+            <summary>
+            Returns vehicle selected by id if it exists
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.VehiclesController.CreateAsync(CarShop.Models.Request.Vehicle.VehicleCreateRequestModel)">
+            <summary>
+            Creates new vehicle if the arguments are valid
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.VehiclesController.UpdateAsync(System.Int64,CarShop.Models.Request.Vehicle.VehicleUpdateRequestModel)">
+            <summary>
+            Updates vehicle if given arguments are valid
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.VehiclesController.DeleteAsync(System.Int64)">
+            <summary>
+            Deletes vehicle if the given id exists
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.VehiclesController.FilterAsync(CarShop.Models.Request.Vehicle.VehicleFilterAndSortRequestModel)">
+            <summary>
+            Filters and sorts all vehicles by selected criterias
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.VehiclesController.SortByAsync(CarShop.Models.Request.Vehicle.VehicleSortRequestModel)">
+            <summary>
+            Sorts all vehicles by selected criterias
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.VehicleTypesController.GetAllAsync(CarShop.Models.Pagination.PaginationRequestModel)">
+            <summary>
+            Returns all vehicle types
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.VehicleTypesController.GetByIdAsync(System.Int64)">
+            <summary>
+            Returns vehicle type by given Id
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.VehicleTypesController.CreateAsync(CarShop.Models.Request.VehicleType.VehicleTypeCreateRequestModel)">
+            <summary>
+            Creates new vehicle type if the arguments are valid
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.VehicleTypesController.UpdateAsync(System.Int64,CarShop.Models.Request.VehicleType.VehicleTypeCreateRequestModel)">
+            <summary>
+            Updates vehicle type if the given Id exists
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.VehicleTypesController.DeleteAsync(System.Int64)">
+            <summary>
+            Deletes vehicle type if the given Id exists
+            </summary>
+        </member>
+        <member name="M:CarShop.WebAPI.Controllers.VehicleTypesController.SortByAsync(CarShop.Models.Request.VehicleType.VehicleTypeSortRequestModel)">
+            <summary>
+            Sorts vehicle types by selected criterias
             </summary>
         </member>
     </members>
