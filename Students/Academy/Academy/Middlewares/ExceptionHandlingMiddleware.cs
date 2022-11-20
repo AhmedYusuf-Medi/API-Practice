@@ -10,18 +10,16 @@ namespace Academy.Middlewares
 {
     public class ExceptionHandlingMiddleware
     {
-        private readonly RequestDelegate next;
+        private readonly RequestDelegate requestDelegate;
 
-        public ExceptionHandlingMiddleware(RequestDelegate next)
-        {
-            this.next = next;
-        }
+        public ExceptionHandlingMiddleware(RequestDelegate next) =>
+            requestDelegate = next;
 
         public async Task Invoke(HttpContext context)
         {
             try
             {
-                await this.next.Invoke(context);
+                await requestDelegate.Invoke(context);
             }
             catch (Exception error)
             {
@@ -39,7 +37,7 @@ namespace Academy.Middlewares
                 }
                 
 
-                var result = new Result<Exception> { Message = error?.Message, ExceptionSource = error.Source};
+                var result = new InfoResult { Message = error?.Message, ExceptionSource = error.Source};
                 await context.Response.WriteAsJsonAsync(result);
             }
         }

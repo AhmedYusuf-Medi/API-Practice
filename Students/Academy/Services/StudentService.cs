@@ -4,7 +4,6 @@ using Data.Models;
 using Database.Context;
 using Microsoft.EntityFrameworkCore;
 using Services.Contracts;
-using Services.Common;
 
 namespace Services
 {
@@ -19,7 +18,7 @@ namespace Services
             new Result<List<StudentResponseModel>?>
             {
                 IsSuccess = true,
-                Message = "Successfully retrieved students!",
+                Message = string.Format("Successfully retrieved {0}!", nameof(dbContext.Students)),
                 Payload = await AllAsNoTracking().Select(x => new StudentResponseModel
                 {
                     Id = x.Id,

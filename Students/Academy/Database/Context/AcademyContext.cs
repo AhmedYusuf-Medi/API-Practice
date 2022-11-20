@@ -1,5 +1,5 @@
-﻿using Data.Models;
-using Data.Base.Contracts;
+﻿using Data.Base.Contracts;
+using Data.Models;
 using Database.Context.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -47,6 +47,14 @@ namespace Database.Context
                 var method = SetIsDeletedQueryFilterMethod.MakeGenericMethod(deletableEntityType.ClrType);
                 method.Invoke(null, new object[] { builder });
             }
+
+            // Disable cascade delete for soft deletable entities, if you want to disable it for all just change deletableEntityTypes with entityTypes
+            var foreignKeys = deletableEntityTypes
+                .SelectMany(e => e.GetForeignKeys().Where(f => f.DeleteBehavior == DeleteBehavior.Cascade));
+            foreach (var foreignKey in foreignKeys)
+            {
+                foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
+            }
         }
 
         public override int SaveChanges() => this.SaveChanges(true);
@@ -87,7 +95,7 @@ namespace Database.Context
                 {
                     entity.CreatedOn = now;
                 }
-                else
+                else if(entry.State == EntityState.Modified)
                 {
                     entity.ModifiedOn = now;
                 }

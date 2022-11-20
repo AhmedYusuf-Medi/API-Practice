@@ -33,7 +33,7 @@ namespace Academy.Controllers
         /// </summary>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<StudentResponseModel>))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result<Exception>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(InfoResult)]
         public async Task<IActionResult> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
             Ok(await studentService.GetByIdAsync(id, cancellationToken));
 
