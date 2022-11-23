@@ -11,7 +11,7 @@ namespace Services.Contracts
 
         public BaseService(AcademyContext academyContext)
         {
-            dbContext = academyContext;
+            dbContext = academyContext ?? throw new ArgumentNullException();
             dbSet = dbContext.Set<TEntity>();
         }
 
@@ -27,8 +27,8 @@ namespace Services.Contracts
         public void Delete(TEntity entity) =>
            dbSet.Remove(entity);
 
-        public Task<int> SaveChangesAsync() =>
-            dbContext.SaveChangesAsync();
+        public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) =>
+            dbContext.SaveChangesAsync(cancellationToken);
 
         public void Update(TEntity entity)
         {

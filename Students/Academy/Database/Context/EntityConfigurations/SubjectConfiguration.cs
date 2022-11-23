@@ -9,10 +9,7 @@ namespace Database.Context.EntityConfigurations
         public void Configure(EntityTypeBuilder<Subject> builder)
         {
             builder.HasMany(x => x.Students)
-                .WithMany(x => x.Subjects);
-
-            builder.HasMany(x => x.Lecturers)
-                .WithMany(x => x.Subjects);
+                .WithOne(x => x.Subject);
         }
     }
 }

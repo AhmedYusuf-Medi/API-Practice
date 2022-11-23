@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Services.Common;
 using System;
 using System.Net;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Academy.Middlewares
@@ -31,14 +32,16 @@ namespace Academy.Middlewares
                     case KeyNotFoundException e:
                         response.StatusCode = (int)HttpStatusCode.NotFound;
                         break;
+                    case BadRequestException e:
+                        response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        break;
                     default:
                         response.StatusCode = (int)HttpStatusCode.InternalServerError;
                         break;
                 }
                 
-
-                var result = new InfoResult { Message = error?.Message, ExceptionSource = error.Source};
-                await context.Response.WriteAsJsonAsync(result);
+                var result = JsonSerializer.Serialize(new InfoResult { Message = error?.Message, ExceptionSource = error.Source });
+                await response.WriteAsync(result);
             }
         }
     }

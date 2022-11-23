@@ -29,6 +29,10 @@ namespace Database.Context
 
         public DbSet<Lecturer> Lecturers { get; set; }
 
+        public DbSet<StudentsSubjects> StudentsSubjects { get; set; }
+
+        public DbSet<LecturersSubjects> LecturersSubjects { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

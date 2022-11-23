@@ -28,7 +28,9 @@ namespace Academy
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AcademyContext>(opt => opt.UseInMemoryDatabase("Academy"));
+            services.AddDbContext<AcademyContext>(
+                options => options.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddScoped<AcademyContext>();
 
             services.AddControllers();
@@ -41,6 +43,8 @@ namespace Academy
             });
 
             services.AddScoped<IStudentService, StudentService>();
+
+            services.AddAutoMapper(typeof(Program));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

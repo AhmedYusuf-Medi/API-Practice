@@ -8,8 +8,6 @@ namespace Database.Context.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Lecturer> builder)
         {
-            builder.HasMany(x => x.Subjects)
-                .WithMany(x => x.Lecturers);
         }
     }
 }

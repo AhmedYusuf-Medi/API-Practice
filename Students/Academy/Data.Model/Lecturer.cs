@@ -12,6 +12,6 @@ namespace Data.Models
 
         public byte YearsOfExperience { get; set; }
 
-        public ICollection<Subject>? Subjects { get; set; }
+        public ICollection<LecturersSubjects>? Subjects { get; set; }
     }
 }
