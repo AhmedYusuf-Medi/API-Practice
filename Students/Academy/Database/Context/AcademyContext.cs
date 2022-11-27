@@ -33,6 +33,10 @@ namespace Database.Context
 
         public DbSet<LecturersSubjects> LecturersSubjects { get; set; }
 
+        public DbSet<Meme> Memes { get; set; }
+
+        public DbSet<MemePreviewLink> MemePreviewLinks { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

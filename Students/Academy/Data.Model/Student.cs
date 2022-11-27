@@ -12,6 +12,6 @@ namespace Data.Models
 
         public DateTime BirthDate { get; set; }
 
-        public ICollection<StudentsSubjects>? Subjects { get; set; }
+        public ICollection<StudentsSubjects>? Subjects { get; set; } = new List<StudentsSubjects>();
     }
 }

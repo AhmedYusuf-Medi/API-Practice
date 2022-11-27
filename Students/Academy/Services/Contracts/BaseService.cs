@@ -1,4 +1,5 @@
-﻿using Database.Context;
+﻿using AutoMapper;
+using Database.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace Services.Contracts
@@ -6,36 +7,38 @@ namespace Services.Contracts
     public abstract class BaseService<TEntity> : IBaseService<TEntity>
         where TEntity : class
     {
-        protected readonly AcademyContext dbContext;
-        protected readonly DbSet<TEntity> dbSet;
+        protected readonly AcademyContext _dbContext;
+        protected readonly IMapper _mapper;
+        protected readonly DbSet<TEntity> _dbSet;
 
-        public BaseService(AcademyContext academyContext)
+        public BaseService(AcademyContext academyContext, IMapper mapper)
         {
-            dbContext = academyContext ?? throw new ArgumentNullException();
-            dbSet = dbContext.Set<TEntity>();
+            _dbContext = academyContext ?? throw new ArgumentNullException();
+            _mapper = mapper ?? throw new ArgumentNullException();
+            _dbSet = _dbContext.Set<TEntity>();
         }
 
         public async Task AddAsync(TEntity entity) =>
-            await dbContext.AddAsync(entity);
+            await _dbSet.AddAsync(entity);
 
         public IQueryable<TEntity> All() =>
-            dbSet;
+            _dbSet;
 
         public IQueryable<TEntity> AllAsNoTracking() =>
-           dbSet.AsNoTracking();
+           _dbSet.AsNoTracking();
 
         public void Delete(TEntity entity) =>
-           dbSet.Remove(entity);
+           _dbSet.Remove(entity);
 
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) =>
-            dbContext.SaveChangesAsync(cancellationToken);
+            _dbContext.SaveChangesAsync(cancellationToken);
 
         public void Update(TEntity entity)
         {
-            var entry = dbContext.Entry(entity);
+            var entry = _dbContext.Entry(entity);
             if (entry.State == EntityState.Detached)
             {
-                dbSet.Attach(entity);
+                _dbSet.Attach(entity);
             }
 
             entry.State = EntityState.Modified;

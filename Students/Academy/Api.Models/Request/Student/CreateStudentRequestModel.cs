@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Api.Models.Request
+namespace Api.Models.Request.Student
 {
-    public class CreateStudentRequest
+    public class CreateStudentRequestModel
     {
         [Required]
         public string? FirstName { get; set; }

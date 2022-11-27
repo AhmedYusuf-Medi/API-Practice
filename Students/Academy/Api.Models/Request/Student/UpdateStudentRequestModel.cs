@@ -1,6 +1,6 @@
-﻿namespace Api.Models.Request
+﻿namespace Api.Models.Request.Student
 {
-    public class UpdateStudentRequest
+    public class UpdateStudentRequestModel
     {
         public string? FirstName { get; set; }
 

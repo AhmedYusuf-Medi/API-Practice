@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Api.Models\Api.Models.csproj" />
     <ProjectReference Include="..\Data.Model\Data.Models.csproj" />
   </ItemGroup>
 

@@ -11,7 +11,8 @@
 
             var seeders = new List<ISeeder>
             {
-                new StudentSeeder()
+                new StudentSeeder(),
+                new MemeSeeder()
             };
 
             foreach (var seeder in seeders)

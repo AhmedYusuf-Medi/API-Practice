@@ -1,6 +1,6 @@
-﻿namespace Api.Models.Request
+﻿namespace Api.Models.Request.Student
 {
-    public class AddSubjectToStudentRequest
+    public class AddSubjectToStudentRequestModel
     {
         public Guid SubjectId { get; set; }
 

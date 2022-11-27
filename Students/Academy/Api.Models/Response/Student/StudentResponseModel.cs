@@ -1,4 +1,4 @@
-﻿namespace Api.Models.Response
+﻿namespace Api.Models.Response.Student
 {
     public class StudentResponseModel
     {

@@ -1,5 +1,5 @@
 ﻿using Api.Models.Base;
-using Api.Models.Response;
+using Api.Models.Response.Student;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;

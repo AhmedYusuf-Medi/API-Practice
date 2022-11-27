@@ -10,8 +10,8 @@ namespace Data.Models
 
         public byte ExecutionTime { get; set; }
 
-        public ICollection<LecturersSubjects>? Lecturers { get; set; }
+        public ICollection<LecturersSubjects>? Lecturers { get; set; } = new HashSet<LecturersSubjects>();
 
-        public ICollection<StudentsSubjects>? Students { get; set; }
+        public ICollection<StudentsSubjects>? Students { get; set; } = new HashSet<StudentsSubjects>();
     }
 }

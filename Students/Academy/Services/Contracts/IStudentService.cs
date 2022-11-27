@@ -1,5 +1,5 @@
 ﻿using Api.Models.Base;
-using Api.Models.Response;
+using Api.Models.Response.Student;
 
 namespace Services.Contracts
 {

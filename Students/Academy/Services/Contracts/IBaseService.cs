@@ -8,6 +8,6 @@
         public Task AddAsync(TEntity entity);
         public void Update(TEntity entity);
         public void Delete(TEntity entity);
-        public Task<int> SaveChangesAsync();
+        public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

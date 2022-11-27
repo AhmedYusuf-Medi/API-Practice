@@ -1,6 +1,6 @@
 ﻿using Api.Models.Base;
-using Api.Models.Request;
-using Api.Models.Response;
+using Api.Models.Request.Student;
+using Api.Models.Response.Student;
 using AutoMapper;
 using Data.Models;
 using Database.Context;
@@ -12,19 +12,16 @@ namespace Services
 {
     public class StudentService : BaseService<Student>, IStudentService
     {
-        private readonly IMapper _mapper;
-
         public StudentService(AcademyContext academyContext, IMapper mapper)
-            : base(academyContext)
+            : base(academyContext, mapper)
         {
-            this._mapper = mapper ?? throw new ArgumentNullException();
         }
 
         public async Task<Result<List<StudentResponseModel>?>> GetAllAsync(CancellationToken cancellationToken) =>
             new Result<List<StudentResponseModel>?>
             {
                 IsSuccess = true,
-                Message = string.Format("Successfully retrieved {0}!", nameof(dbContext.Students)),
+                Message = string.Format("Successfully retrieved {0}!", nameof(_dbContext.Students)),
                 Payload = await AllAsNoTracking().Select(x => new StudentResponseModel
                 {
                     Id = x.Id,
@@ -53,7 +50,7 @@ namespace Services
                 }).SingleOrDefaultAsync(cancellationToken) ?? throw new Common.KeyNotFoundException("Student doesn't exists!")
             };
 
-        public async Task<InfoResult> CreateAsync(CreateStudentRequest request)
+        public async Task<InfoResult> CreateAsync(CreateStudentRequestModel request)
         {
             var student = _mapper.Map<Student>(request);
 
@@ -69,7 +66,7 @@ namespace Services
             return result;
         }
 
-        public async Task<InfoResult> UpdateAsync(Guid id, UpdateStudentRequest request)
+        public async Task<InfoResult> UpdateAsync(Guid id, UpdateStudentRequestModel request)
         {
             var student = await All().SingleOrDefaultAsync(x => x.Id == id);
 
@@ -101,9 +98,9 @@ namespace Services
             return result;
         }
 
-        public async Task<InfoResult> AddSubjectToStudentAsync(AddSubjectToStudentRequest request)
+        public async Task<InfoResult> AddSubjectToStudentAsync(AddSubjectToStudentRequestModel request)
         {
-            if (await dbContext.StudentsSubjects.AnyAsync(x => x.KeyA == request.StudentId && x.KeyB == request.SubjectId))
+            if (await _dbContext.StudentsSubjects.AnyAsync(x => x.KeyA == request.StudentId && x.KeyB == request.SubjectId))
             {
                 throw new BadRequestException("Student already goes to the selected subject!");
             }
@@ -115,7 +112,7 @@ namespace Services
                 throw new Common.KeyNotFoundException("Student doesn't exists!");
             }
 
-            var subjectId = await dbContext.Subjects.AsNoTracking().Select(x => x.Id).SingleOrDefaultAsync(x => x == request.SubjectId);
+            var subjectId = await _dbContext.Subjects.AsNoTracking().Select(x => x.Id).SingleOrDefaultAsync(x => x == request.SubjectId);
 
             if (subjectId == null)
             {
@@ -128,7 +125,7 @@ namespace Services
                 KeyB = request.SubjectId
             };
 
-            await dbContext.StudentsSubjects.AddAsync(studentSubject);
+            await _dbContext.StudentsSubjects.AddAsync(studentSubject);
             await base.SaveChangesAsync();
 
             var result = new InfoResult

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Database.Context.EntityConfigurations
 {
-    public class LecturersSubjectsConfiguration : IEntityTypeConfiguration<LecturersSubjects>
+    internal class LecturersSubjectsConfiguration : IEntityTypeConfiguration<LecturersSubjects>
     {
         public void Configure(EntityTypeBuilder<LecturersSubjects> builder)
         {
