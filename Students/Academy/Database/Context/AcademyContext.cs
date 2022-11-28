@@ -1,6 +1,7 @@
 ﻿using Data.Base.Contracts;
 using Data.Models;
 using Database.Context.Extensions;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -8,7 +9,7 @@ using System.Reflection;
 
 namespace Database.Context
 {
-    public class AcademyContext : DbContext
+    public class AcademyContext : IdentityDbContext<AcademyUser, AcademyRole, string>
     {
         private static readonly MethodInfo SetIsDeletedQueryFilterMethod = typeof(AcademyContext)
             .GetMethod(nameof(SetIsDeletedQueryFilter),

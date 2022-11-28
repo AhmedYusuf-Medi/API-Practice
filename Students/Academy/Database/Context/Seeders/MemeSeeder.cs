@@ -10,6 +10,12 @@ namespace Database.Context.Seeders
         public async Task SeedAsync(AcademyContext dbContext)
         {
             const int MemesToSeed = 1000;
+
+            if (await dbContext.Memes.IgnoreQueryFilters().AnyAsync())
+            {
+                return;
+            }
+
             using HttpClient httpClient = new();
 
             var response = await httpClient.GetAsync($"https://meme-api.herokuapp.com/gimme/{MemesToSeed}");
